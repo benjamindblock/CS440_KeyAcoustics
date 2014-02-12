@@ -24,7 +24,6 @@ public class ComputeMFCC {
 	public double[][] run(){
 		short[] newInput = convert(audioInput);
 		double[][] mfcc = computeMFCC(newInput);
-		System.out.println(mfcc.length);
 		return mfcc;
 	}
 	

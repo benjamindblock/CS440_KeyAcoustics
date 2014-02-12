@@ -1,0 +1,40 @@
+import jAudioFeatureExtractor.AudioFeatures.MagnitudeSpectrum;
+import jAudioFeatureExtractor.AudioFeatures.PeakFinder;
+
+
+public class ComputePeakFinder {
+	
+	double[] audioData; //
+	
+	public ComputePeakFinder(double[] audioData){
+		this.audioData = audioData;
+	}
+	
+	public double[] compute(){
+		
+		double[] peaks = new double[0];
+		
+		MagnitudeSpectrum ms = new MagnitudeSpectrum();
+		PeakFinder pf = new PeakFinder();
+
+		try {
+			double[] magnitudeSpec = ms.extractFeature(audioData, 44100, null);
+			double[][] otherFV = new double[1][magnitudeSpec.length];
+			
+			for(int i = 0; i < 1; i++){
+				for(int j = 0; j < magnitudeSpec.length; j++){
+					otherFV[i][j] = magnitudeSpec[j];
+				}
+			}
+			
+			peaks = pf.extractFeature(audioData, 44100, otherFV);
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			System.out.println("Peak Finder failed.");
+			e.printStackTrace();
+		}
+		
+		return peaks;
+	}
+}

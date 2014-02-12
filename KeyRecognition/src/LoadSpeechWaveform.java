@@ -1,7 +1,10 @@
 
 
-import java.io.File;
+import jAudioFeatureExtractor.ACE.DataTypes.FeatureDefinition;
+import jAudioFeatureExtractor.AudioFeatures.MagnitudeSpectrum;
+import jAudioFeatureExtractor.AudioFeatures.PeakFinder;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 
 import javax.sound.sampled.AudioInputStream;
@@ -9,6 +12,7 @@ import javax.sound.sampled.AudioSystem;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+
 import javax.swing.*;
 import javax.swing.filechooser.*;
 
@@ -71,7 +75,20 @@ public class LoadSpeechWaveform{
 	public static void main(String[] args) throws FileNotFoundException{
 		double[] audioData = fileReader();
 		System.out.println(audioData.length);
+		
+		//Find the peaks in our .wav file. We may need to tweak the PeakFinder class and adjust the threshold 
+		//to get the proper amount of peaks that we need (ie. not too sensitive a threshold such that there are
+		//an abundance of peaks and the data no longer is relevant).
+		ComputePeakFinder cpf = new ComputePeakFinder(audioData);
+		double[] audioPeaks = cpf.compute();
+		
+		//Now send the audioData and the peakData to our class that will split up the audio
+		//and then send back a bunch of new .wav files that we will individually scan for
+		//MFCC's
+		
+		//Find the mfcc in our .wav file.
 		ComputeMFCC mfcc = new ComputeMFCC(audioData); //Create a new instance of ComputeMFCC and pass it our double array.
 		double[][] featureValues = mfcc.run();
+		
 	}
 }
