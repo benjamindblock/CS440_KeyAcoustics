@@ -16,6 +16,7 @@ public class ComputePeakFinder {
 	public ComputePeakFinder(double[] audioData){
 		this.audioData = audioData; 
 	}
+
 	
 	/**
 	 * Takes the audio data passed to us in the constructor and then searches it
@@ -30,6 +31,14 @@ public class ComputePeakFinder {
 		
 		MagnitudeSpectrum ms = new MagnitudeSpectrum();
 		PeakFinder pf = new PeakFinder();
+		
+		try {
+			pf.setPeakThreshold(1.14);
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			System.out.println("Set peak failed");
+			e1.printStackTrace();
+		}
 
 		try {
 			/**

@@ -1,2 +1,2 @@
-commit_dialog_history_messages=<?xml version\="1.0" encoding\="UTF-8"?>\n<messages>\n<message>Working Eclipse version.</message>\n<message>Working version in Eclipse&\#x0A;</message>\n</messages>
+commit_dialog_history_messages=<?xml version\="1.0" encoding\="UTF-8"?>\n<messages>\n<message>Created ComputePeakFinder class.</message>\n<message>Created a new class ComputePeakFinder that takes audio data as input and&\#x0A;returns the locations of the peaks by using jAudio&apos;s PeakFinder class.</message>\n<message>Working Eclipse version.</message>\n<message>Working version in Eclipse&\#x0A;</message>\n</messages>
 eclipse.preferences.version=1

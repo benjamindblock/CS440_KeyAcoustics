@@ -3,4 +3,9 @@
 <fullyQualifiedTypeName name="jAudioFeatureExtractor.AudioFeatures.PeakFinder"/>
 <fullyQualifiedTypeName name="java.lang.System"/>
 <fullyQualifiedTypeName name="jAudioFeatureExtractor.ACE.DataTypes.FeatureDefinition"/>
+<fullyQualifiedTypeName name="jAudioFeatureExtractor.AudioFeatures.MagnitudeSpectrum"/>
+<fullyQualifiedTypeName name="java.util.Arrays"/>
+<fullyQualifiedTypeName name="java.util.ArrayList"/>
+<fullyQualifiedTypeName name="java.util.List"/>
+<fullyQualifiedTypeName name="jAudioFeatureExtractor.jAudioTools.FFT"/>
 </qualifiedTypeNameHistroy>

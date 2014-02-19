@@ -14,7 +14,7 @@ import jAudioFeatureExtractor.ACE.DataTypes.FeatureDefinition;
  */
 public class PeakFinder extends FeatureExtractor {
 
-	int peakThreshold = 10;
+	double peakThreshold = 10;
 
 	/**
 	 * Basic constructor that sets the definition and dependencies (and their
@@ -90,7 +90,7 @@ public class PeakFinder extends FeatureExtractor {
 			throw new Exception("INTERNAL ERROR: PeakFinder index != 0 ("
 					+ index + ")");
 		} else {
-			return Integer.toString(peakThreshold);
+			return Integer.toString((int) peakThreshold);
 		}
 	}
 
@@ -99,7 +99,7 @@ public class PeakFinder extends FeatureExtractor {
 	 * @param peak			sets 1/N as threshold for peak detection.
 	 * @throws Exception	thrown if a non-positive threshold is set.
 	 */
-	public void setPeakThreshold(int peak) throws Exception {
+	public void setPeakThreshold(double peak) throws Exception {
 		if (peak <= 0) {
 			throw new Exception(
 					"PeakFinder peakThreshold must be a positive value.");
