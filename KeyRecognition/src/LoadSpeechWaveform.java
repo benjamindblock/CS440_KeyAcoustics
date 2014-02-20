@@ -85,11 +85,10 @@ public class LoadSpeechWaveform{
 	
 	public static void main(String[] args) throws FileNotFoundException{
 		double[] audioData = fileReader(); //Get our first audio file
-		double[] audioData2 = fileReader(); //Get our second audio file (delete when done and we only have one)
+//		double[] audioData2 = fileReader(); //Get our second audio file (delete when done and we only have one)
 		
 		PeakAnalysis pa = new PeakAnalysis(audioData);
-		pa.split();
-		pa.normalize(pa.doFFT());
+		pa.run();
 		
 		//Find the peaks in our .wav file. We may need to tweak the PeakFinder class and adjust the threshold 
 		//to get the proper amount of peaks that we need (ie. not too sensitive a threshold such that there are
@@ -101,12 +100,12 @@ public class LoadSpeechWaveform{
 		//and then send back a bunch of new .wav files that we will individually scan for
 		//MFCC's
 		
-		//Find the mfcc in our .wav file.
-		ComputeMFCC mfcc = new ComputeMFCC(audioData); //Create a new instance of ComputeMFCC and pass it our double array.
-		ComputeMFCC mfcc2 = new ComputeMFCC(audioData2); 
-		double[][] featureValues = mfcc.run(); //Compute MFCC for audio sample 1
-		double[][] featureValues2 = mfcc2.run(); //Compute MFCC for audio sample 2
-		boolean equal = Arrays.deepEquals(featureValues, featureValues2); //Compare
-		System.out.println(equal);
+//		//Find the mfcc in our .wav file.
+//		ComputeMFCC mfcc = new ComputeMFCC(audioData); //Create a new instance of ComputeMFCC and pass it our double array.
+//		ComputeMFCC mfcc2 = new ComputeMFCC(audioData2); 
+//		double[][] featureValues = mfcc.run(); //Compute MFCC for audio sample 1
+//		double[][] featureValues2 = mfcc2.run(); //Compute MFCC for audio sample 2
+//		boolean equal = Arrays.deepEquals(featureValues, featureValues2); //Compare
+//		System.out.println(equal);
 	}
 }
