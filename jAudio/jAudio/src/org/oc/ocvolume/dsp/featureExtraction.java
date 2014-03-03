@@ -52,6 +52,10 @@ package org.oc.ocvolume.dsp;
  * <b>input:</b> speech signal<br>
  * <b>output:</b> mel-frequency cepstral coefficient
  * @author Danny Su
+ * 
+ * Updated 3/28/2014 by Ben Block and Walker Bohannan.
+ * Changed the shiftInterval to reflect the process outlined in 
+ * "Keyboard Acoustic Emanations Revisited" (p. 3:9)
  */
 public class featureExtraction{
     /**
@@ -64,8 +68,10 @@ public class featureExtraction{
     protected final static int frameLength = 512;
     /**
      * Number of overlapping samples (usually 50% of frame length)
+     * \
+     * Modified to be a quarter to go in line with 
      */
-    protected final static int shiftInterval = frameLength / 2;
+    protected final static int shiftInterval = frameLength / 4;
     /**
      * Number of MFCCs per frame
      * Modifed 4/5/06 to be non final variable - Daniel McEnnnis

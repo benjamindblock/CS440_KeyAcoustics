@@ -1,9 +1,0 @@
-
-public class PeakAnalysis {
-
-	double[] audioData;
-	public PeakAnalysis(double[] audioData){
-		this.audioData = audioData;
-		
-	}
-}

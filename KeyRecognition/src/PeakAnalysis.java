@@ -1,8 +1,10 @@
 import jAudioFeatureExtractor.jAudioTools.FFT;
-import java.math.*;
 
+import java.math.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 
 public class PeakAnalysis {
@@ -10,6 +12,21 @@ public class PeakAnalysis {
 	double[] audioData; //This is our original audio data that is inputted to us.
 	ArrayList<List<Double>> samples; //Our array list of lists. Each list contained within "samples"
 									 //is a "window" of audio data. Each window is 100 samples long (~2ms).
+	private ArrayList<List<Double>> mfcc; //Our array list of lists. Each list contained within "mfcc" is a 40ms
+								  //window of audio data that contains the information for the hit peak of
+								  // the audio signal, which we can then pass to our ComputeMFCC class.
+	
+	/**
+	 * Declaring variables to allow for fine-tuning of peak-analysis characteristics.
+	 */
+	private final int PEAK_WIDTH = -10; //This describes the number of windows on either side of the peak to MFCC.
+	private final double THRESH_VALUE = 1.05; //How sensitive we want our threshold. A lower THRESH_VALUE will mean
+											  //a tighter threshold, but this could exclude peaks that we need.
+	private final int KEY_PRESS_SPACE = 60; //How much space between peaks we want to assert. Each increase +1 in the
+											//int is ~2ms in audio data. So a value of 50 is 100ms.
+	
+	
+	
 	
 	/**
 	 * Constructor takes an input of audio data and initializes our global variables.
@@ -19,27 +36,56 @@ public class PeakAnalysis {
 	public PeakAnalysis(double[] audioData){
 		this.audioData = audioData;
 		samples = new ArrayList<List<Double>>();
+		mfcc = new ArrayList<List<Double>>();
 	}
 	
 	/**
 	 * Runs the whole Peak Finder algorithm.
 	 */
 	public void run(){
+		//THIS VERSION USES THE DELTA VECTORS
+//		split();
+//		double[] normalized = normalize(doFFT());
+//		double[] vector = deltaVector(normalized);
+//		double thresh = computeThreshold(vector);
+//		HashMap<Double, Integer> potPeaks = potentialPeaks(thresh, vector);
+//		System.out.println("Threshold is "+thresh);
+//		System.out.println(potPeaks.toString());
+//	
+//		ArrayList<Double> input = new ArrayList<Double>();
+//		for(int x = 0; x < vector.length; x++){
+//			input.add(vector[x]);
+//		}
+		
+		//THIS VERSION DOES NOT USE DELTA VECTORS, ONLY THE NORMALIZED VALUES
 		split();
 		double[] normalized = normalize(doFFT());
-		double[] vector = deltaVector(normalized);
-		System.out.println(computeThreshold(vector));
+		double thresh = computeThreshold(normalized);
+		HashMap<Integer, Double> potPeaks = potentialPeaks(thresh, normalized);
+		setMFCC(potPeaks);
+		
+		System.out.println("Threshold is "+thresh);
+		System.out.println(potPeaks.toString());
+	
+		ArrayList<Double> input = new ArrayList<Double>();
+		for(int x = 0; x < normalized.length; x++){
+			input.add(normalized[x]);
+		}
+		
+		System.out.println(mfcc.size());
+		
 	}
 	
 	/**
-	 * The split method takes our audio data and splits it up into 100 sample chunks.
+	 * The split method takes our audio data and splits it up into 100 sample chunks (~2ms).
 	 * Each of these chunks is a list of doubles, and then each of these lists is placed
 	 * into our global sample bank called "samples."
 	 */
-	public void split(){
+	private void split(){
 		int globalCounter = 0;
 		int arrayCounter = 0;
 		boolean needToPad = false;
+		
 		if(audioData.length % 100 < 4){
 			needToPad = true;
 		}
@@ -54,6 +100,7 @@ public class PeakAnalysis {
 			samples.add(addTo); //Add our ArrayList (should contain 100 samples) to samples.
 			arrayCounter = 0;
 		}
+		
 		if(needToPad){
 			samples.get(samples.size()-1).add((double) 0);
 			samples.get(samples.size()-1).add((double) 0);
@@ -70,7 +117,7 @@ public class PeakAnalysis {
 	 * 1. Take 
 	 * @return
 	 */
-	public ArrayList<Double> doFFT(){
+	private ArrayList<Double> doFFT(){
 		ArrayList<Double> energies = new ArrayList<Double>(); //This ArrayList holds the magnitude
 															  //for each sample window. 
 		
@@ -108,7 +155,7 @@ public class PeakAnalysis {
 	 * @param input Our FFT coefficients
 	 * @return A single value that is the summed value of all the FFT coefficients given to us.
 	 */
-	public double sumFFT(FFT input){
+	private double sumFFT(FFT input){
 		double fftEnergy = 0;
 		double[] realValues = input.getRealValues(); //Get all of the FFT coefficients.
 		
@@ -125,7 +172,7 @@ public class PeakAnalysis {
 	 * @param input An ArrayList of magnitude values.
 	 * @return A double[] of magnitude values normalized between 0 and 1.
 	 */
-	public double[] normalize(ArrayList<Double> input){
+	private double[] normalize(ArrayList<Double> input){
 		double[] output = new double[input.size()];
 		
 		//Finding the max and min
@@ -161,14 +208,16 @@ public class PeakAnalysis {
 	 * @param input
 	 * @return
 	 */
-	public double[] deltaVector(double[] input){
+	private double[] deltaVector(double[] input){
 		double[] vector = new double[input.length];
 		for(int x = 0; x < input.length; x++){
 			if(x < input.length - 1){
-				double difference = input[x] - input[x+1];
-				difference = Math.abs(difference);
-				vector[x] = difference;
-				System.out.println("vector["+x+"] = "+vector[x]);
+				if(input[x] - input[x+1] < 0){
+					double difference = input[x] - input[x+1];
+					difference = Math.abs(difference);
+					vector[x] = difference;
+					System.out.println("vector["+x+"] = "+vector[x]);
+				}
 			}
 		}
 		return vector;
@@ -176,11 +225,13 @@ public class PeakAnalysis {
 	
 	/**
 	 * Takes a double[] and sets a threshold.
+	 * To do this, we take the input of audio data that has been normalized between 0 and 1, 
+	 * find the max, and compute a threshold that is a ratio of that peak as defined by THRESH_VALUE.
 	 * 
 	 * @param input
 	 * @return A double that is the threshold, everything less than which we exclude.
 	 */
-	public double computeThreshold(double[] input){
+	private double computeThreshold(double[] input){
 		double threshold = 0.0;
 		double max = 0.0;
 		
@@ -190,7 +241,86 @@ public class PeakAnalysis {
 			}
 		}
 		
-		threshold = max/1.5;
+		threshold = max/THRESH_VALUE;
 		return threshold;
+	}
+	
+	/**
+	 * 
+	 * 
+	 * @param threshold The threshold we will use to roughly detect peaks.
+	 * @param input The normalized audio data that we are picking the peaks out of.
+	 * @return A HashMap that maps the peaks position its energy value
+	 */
+	private HashMap<Integer, Double> potentialPeaks(double threshold, double[] input){
+		HashMap<Integer, Double> potentialPeaks = new HashMap<Integer, Double>();
+		for(int x = 0; x < input.length; x++){
+			if(input[x] >= threshold){
+				potentialPeaks.put(x, input[x]);
+			}
+		}
+		
+		//Put in here a check to see if any two values (positions in the audioData array) are within
+		//100ms of each other, if they are, then pick the highest one because this is the real hit peak.
+		//As shown in "Keyboard Acoustic Emanations Revisited" (p. 3:5), key presses typically occur 
+		//over the course of 100ms, and so there is generally 100ms or more between key presses. Thus,
+		//we want to make sure we do not get more than one "peak" in the space of 100ms, otherwise we
+		//would be computing the MFCC values for two peaks that are really part of the same keypress.
+		//KEY_PRESS_SPACE allows us to change the value of 100ms to whatever we want.
+		Set<Integer> positions = potentialPeaks.keySet();
+		ArrayList<Integer> removals = new ArrayList<Integer>();
+		for(Integer pos : positions){
+			for(Integer pos2 : positions){
+				if(pos != pos2){
+					int pDifference = Math.abs(pos - pos2);
+					if(pDifference < KEY_PRESS_SPACE){
+						if(pos > pos2){
+							removals.add(pos2); //Make a "note" to remove this non-peak from the peak hashmap
+						}else{
+							removals.add(pos); 
+						}
+					}
+				}
+			}
+		}
+		
+		for(Integer remove : removals){
+			potentialPeaks.remove(remove);
+		}
+		
+		return potentialPeaks;
+	}
+	
+	/**
+	 * From the point of the peak, which is in the middle of the entire push peak, we want to calculate
+	 * the MFCC from 20ms before the peak and 20ms after, which should cover the entire push peak.
+	 * 
+	 * 1. Get the sample chunks out of "samples" for the location of the peak.
+	 * 2. Get the sample chunks for every window 10 locations before and 10 locations after
+	 * the peak, which will get us the entire push peak.
+	 * 3. Recombine these into a single List<Double> that is the raw audio data for one keypress's peak.
+	 * 4. Put this List into the larger list that contains all the peak's for the whole input file.
+	 * 
+	 * @param input
+	 */
+	private void setMFCC(HashMap<Integer, Double> input){
+		Set<Integer> locations = input.keySet();
+		for(Integer loc : locations){ //Our very outer loop that will go through all the peak positions.
+			List<Double> addTo = new ArrayList<Double>(); //Create the list that will hold all of the data for these
+														  //twenty windows of audio
+			for(int x = PEAK_WIDTH; x < Math.abs(PEAK_WIDTH); x++){ //Our loop to go to ten windows before and ten after
+				for(int y = 0; y < 100; y++){ //Our loop to get all 100 samples from each window
+					addTo.add(samples.get(loc+x).get(y)); //Put each sample into our ArrayList that holds all data
+//					addTo.add(audioData[((loc+x)*100)+y]);
+				}	
+			}
+			mfcc.add(addTo); //Put this peak data into the master MFCC "to do" array that we will then give to 
+							 //our MFCC class
+		}
+		
+	}
+	
+	public ArrayList<List<Double>> getMFCC(){
+		return mfcc;
 	}
 }

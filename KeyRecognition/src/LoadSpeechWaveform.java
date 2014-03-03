@@ -85,27 +85,12 @@ public class LoadSpeechWaveform{
 	
 	public static void main(String[] args) throws FileNotFoundException{
 		double[] audioData = fileReader(); //Get our first audio file
-//		double[] audioData2 = fileReader(); //Get our second audio file (delete when done and we only have one)
 		
-		PeakAnalysis pa = new PeakAnalysis(audioData);
-		pa.run();
-		
-		//Find the peaks in our .wav file. We may need to tweak the PeakFinder class and adjust the threshold 
-		//to get the proper amount of peaks that we need (ie. not too sensitive a threshold such that there are
-		//an abundance of peaks and the data no longer is relevant).
-		ComputePeakFinder cpf = new ComputePeakFinder(audioData);
-		double[] audioPeaks = cpf.compute();
-		
-		//Now send the audioData and the peakData to our class that will split up the audio
-		//and then send back a bunch of new .wav files that we will individually scan for
-		//MFCC's
-		
-//		//Find the mfcc in our .wav file.
-//		ComputeMFCC mfcc = new ComputeMFCC(audioData); //Create a new instance of ComputeMFCC and pass it our double array.
-//		ComputeMFCC mfcc2 = new ComputeMFCC(audioData2); 
-//		double[][] featureValues = mfcc.run(); //Compute MFCC for audio sample 1
-//		double[][] featureValues2 = mfcc2.run(); //Compute MFCC for audio sample 2
-//		boolean equal = Arrays.deepEquals(featureValues, featureValues2); //Compare
-//		System.out.println(equal);
+		PeakAnalysis pa = new PeakAnalysis(audioData); 
+		pa.run(); //Run our peak analysis.
+		ComputeMFCC cm = new ComputeMFCC(pa.getMFCC()); 
+		cm.run(); //Run our MFCC calculations
+		System.out.println(cm.getMFCCOutput().size());
+	
 	}
 }
