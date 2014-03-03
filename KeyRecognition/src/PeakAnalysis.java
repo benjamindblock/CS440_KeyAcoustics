@@ -22,7 +22,7 @@ public class PeakAnalysis {
 	private final int PEAK_WIDTH = -10; //This describes the number of windows on either side of the peak to MFCC.
 	private final double THRESH_VALUE = 1.05; //How sensitive we want our threshold. A lower THRESH_VALUE will mean
 											  //a tighter threshold, but this could exclude peaks that we need.
-	private final int KEY_PRESS_SPACE = 60; //How much space between peaks we want to assert. Each increase +1 in the
+	private final int KEY_PRESS_SPACE = 50; //How much space between peaks we want to assert. Each increase +1 in the
 											//int is ~2ms in audio data. So a value of 50 is 100ms.
 	
 	
@@ -274,7 +274,7 @@ public class PeakAnalysis {
 				if(pos != pos2){
 					int pDifference = Math.abs(pos - pos2);
 					if(pDifference < KEY_PRESS_SPACE){
-						if(pos > pos2){
+						if(potentialPeaks.get(pos) > potentialPeaks.get(pos2)){
 							removals.add(pos2); //Make a "note" to remove this non-peak from the peak hashmap
 						}else{
 							removals.add(pos); 
@@ -308,12 +308,14 @@ public class PeakAnalysis {
 		for(Integer loc : locations){ //Our very outer loop that will go through all the peak positions.
 			List<Double> addTo = new ArrayList<Double>(); //Create the list that will hold all of the data for these
 														  //twenty windows of audio
+			
 			for(int x = PEAK_WIDTH; x < Math.abs(PEAK_WIDTH); x++){ //Our loop to go to ten windows before and ten after
 				for(int y = 0; y < 100; y++){ //Our loop to get all 100 samples from each window
 					addTo.add(samples.get(loc+x).get(y)); //Put each sample into our ArrayList that holds all data
 //					addTo.add(audioData[((loc+x)*100)+y]);
 				}	
 			}
+			
 			mfcc.add(addTo); //Put this peak data into the master MFCC "to do" array that we will then give to 
 							 //our MFCC class
 		}

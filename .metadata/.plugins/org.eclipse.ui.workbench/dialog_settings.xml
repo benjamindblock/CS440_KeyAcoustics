@@ -4,7 +4,8 @@
 		<item value="false" key="WizardFileSystemResourceImportPage1.STORE_OVERWRITE_EXISTING_RESOURCES_ID"/>
 		<item value="false" key="WizardFileSystemResourceImportPage1.STORE_CREATE_CONTAINER_STRUCTURE_ID"/>
 		<list key="WizardFileSystemResourceImportPage1.STORE_SOURCE_NAMES_ID">
-			<item value="/Users/walkerbohannan/Downloads/jahmm-0.6.1/src/be/ac/ulg/montefiore/run"/>
+			<item value="/Users/Ben/Documents/School/2013-2014/Spring/CSCI440/jahmm-0.6.1/src"/>
+			<item value="/Users/Ben/Documents/School/2013-2014/Spring/CSCI440/GitHub/CS440_KeyAcoustics/jahmm-0.6.1"/>
 		</list>
 	</section>
 	<section name="org.eclipse.ui.internal.QuickAccess">
@@ -22,8 +23,6 @@
 	<section name="WorkbenchPreferenceDialogSettings">
 		<item value="28" key="DIALOG_Y_ORIGIN"/>
 		<item value="313" key="DIALOG_X_ORIGIN"/>
-	</section>
-	<section name="ZipFileImportWizard">
 	</section>
 	<section name="ShowViewDialog">
 		<item value="308" key="DIALOG_WIDTH"/>

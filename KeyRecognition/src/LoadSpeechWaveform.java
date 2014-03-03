@@ -91,6 +91,9 @@ public class LoadSpeechWaveform{
 		ComputeMFCC cm = new ComputeMFCC(pa.getMFCC()); 
 		cm.run(); //Run our MFCC calculations
 		System.out.println(cm.getMFCCOutput().size());
+		if(Arrays.deepEquals(cm.getMFCCOutput().get(0), cm.getMFCCOutput().get(1))){
+			System.out.println("true");
+		}
 	
 	}
 }

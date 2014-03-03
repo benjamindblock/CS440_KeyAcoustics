@@ -54,7 +54,7 @@ package org.oc.ocvolume.dsp;
  * @author Danny Su
  * 
  * Updated 3/28/2014 by Ben Block and Walker Bohannan.
- * Changed the shiftInterval to reflect the process outlined in 
+ * Changed the shiftInterval, numMelFilters, upperFilerFreq, and numCepstra to reflect the process outlined in 
  * "Keyboard Acoustic Emanations Revisited" (p. 3:9)
  */
 public class featureExtraction{
@@ -76,7 +76,7 @@ public class featureExtraction{
      * Number of MFCCs per frame
      * Modifed 4/5/06 to be non final variable - Daniel McEnnnis
      */
-    public int numCepstra = 13;
+    public int numCepstra = 16;
     /**
      * FFT Size (Must be be a power of 2)
      */
@@ -92,11 +92,11 @@ public class featureExtraction{
     /**
      * upper limit of filter (or half of sampling freq.?)
      */
-    protected final static double upperFilterFreq = 6855.4976;
+    protected final static double upperFilterFreq = 12000;
     /**
      * number of mel filters (SPHINX-III uses 40)
      */
-    protected final static int numMelFilters = 23;
+    protected final static int numMelFilters = 32;
     /**
      * All the frames of the input signal
      */
