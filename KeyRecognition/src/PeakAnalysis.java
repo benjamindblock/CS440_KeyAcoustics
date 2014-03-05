@@ -20,13 +20,38 @@ public class PeakAnalysis {
 	 * Declaring variables to allow for fine-tuning of peak-analysis characteristics.
 	 */
 	private final int PEAK_WIDTH = -10; //This describes the number of windows on either side of the peak to MFCC.
-	private final double THRESH_VALUE = 1.05; //How sensitive we want our threshold. A lower THRESH_VALUE will mean
+	private final double THRESH_VALUE = 1.35; //How sensitive we want our threshold. A lower THRESH_VALUE will mean
 											  //a tighter threshold, but this could exclude peaks that we need.
-	private final int KEY_PRESS_SPACE = 50; //How much space between peaks we want to assert. Each increase +1 in the
+	private final int KEY_PRESS_SPACE = 100; //How much space between peaks we want to assert. Each increase +1 in the
 											//int is ~2ms in audio data. So a value of 50 is 100ms.
+	private final boolean USE_DELTA_VECTORS = true; //Do we want to use delta vectors or just the normalized values?
 	
-	
-	
+	/**
+	 * Potential class to use to avoid using HashMaps. Not yet implemented.
+	 * 
+	 * @author Ben
+	 *
+	 */
+	private class Peak{
+		
+		private int location;
+		private double magnitude;
+		
+		private Peak(int location, double magnitude){
+			this.location = location;
+			this.magnitude = magnitude;
+		}
+		
+		private int getLocation(){
+			return location;
+		}
+		
+		private double getMagnitude(){
+			return magnitude;
+		}
+		
+		
+	}
 	
 	/**
 	 * Constructor takes an input of audio data and initializes our global variables.
@@ -43,36 +68,34 @@ public class PeakAnalysis {
 	 * Runs the whole Peak Finder algorithm.
 	 */
 	public void run(){
-		//THIS VERSION USES THE DELTA VECTORS
-//		split();
-//		double[] normalized = normalize(doFFT());
-//		double[] vector = deltaVector(normalized);
-//		double thresh = computeThreshold(vector);
-//		HashMap<Double, Integer> potPeaks = potentialPeaks(thresh, vector);
-//		System.out.println("Threshold is "+thresh);
-//		System.out.println(potPeaks.toString());
-//	
-//		ArrayList<Double> input = new ArrayList<Double>();
-//		for(int x = 0; x < vector.length; x++){
-//			input.add(vector[x]);
-//		}
-		
-		//THIS VERSION DOES NOT USE DELTA VECTORS, ONLY THE NORMALIZED VALUES
-		split();
-		double[] normalized = normalize(doFFT());
-		double thresh = computeThreshold(normalized);
-		HashMap<Integer, Double> potPeaks = potentialPeaks(thresh, normalized);
-		setMFCC(potPeaks);
-		
-		System.out.println("Threshold is "+thresh);
-		System.out.println(potPeaks.toString());
-	
-		ArrayList<Double> input = new ArrayList<Double>();
-		for(int x = 0; x < normalized.length; x++){
-			input.add(normalized[x]);
+		if(USE_DELTA_VECTORS){ //Use delta vectors to find peaks and such.
+			split();
+			double[] normalized = normalize(doFFT());
+			double[] vector = deltaVector(normalized);
+			double thresh = computeThreshold(vector);
+			HashMap<Integer, Double> peaks = findPeaks(thresh, vector);
+			setMFCC(peaks);
+//			ArrayList<Peak> peaks = getPeaks(thresh, vector);
+//			setUpMFCC(peaks);
+
+			System.out.println("Threshold is "+thresh);
+			System.out.println("Number of peaks is "+peaks.size());
+			System.out.println("Peaks are: "+peaks.toString());
+			System.out.println(mfcc.size());
+		}else{ //Do not use delta vectors, just normalized data.
+			split();
+			double[] normalized = normalize(doFFT());
+			double thresh = computeThreshold(normalized);
+			HashMap<Integer, Double> peaks = findPeaks(thresh, normalized);
+			setMFCC(peaks);
+//			ArrayList<Peak> peaks = getPeaks(thresh, normalized);
+//			setUpMFCC(peaks);
+			
+			System.out.println("Threshold is "+thresh);
+			System.out.println("Number of peaks is "+peaks.size());
+			System.out.println("Peaks are: "+peaks.toString());
+			System.out.println(mfcc.size());
 		}
-		
-		System.out.println(mfcc.size());
 		
 	}
 	
@@ -216,7 +239,6 @@ public class PeakAnalysis {
 					double difference = input[x] - input[x+1];
 					difference = Math.abs(difference);
 					vector[x] = difference;
-					System.out.println("vector["+x+"] = "+vector[x]);
 				}
 			}
 		}
@@ -246,13 +268,13 @@ public class PeakAnalysis {
 	}
 	
 	/**
-	 * 
+	 * A version that does not use the new Peak class and uses a HashMap instead.
 	 * 
 	 * @param threshold The threshold we will use to roughly detect peaks.
 	 * @param input The normalized audio data that we are picking the peaks out of.
 	 * @return A HashMap that maps the peaks position its energy value
 	 */
-	private HashMap<Integer, Double> potentialPeaks(double threshold, double[] input){
+	private HashMap<Integer, Double> findPeaks(double threshold, double[] input){
 		HashMap<Integer, Double> potentialPeaks = new HashMap<Integer, Double>();
 		for(int x = 0; x < input.length; x++){
 			if(input[x] >= threshold){
@@ -292,6 +314,46 @@ public class PeakAnalysis {
 	}
 	
 	/**
+	 * A version that uses the new Peak class.
+	 * 
+	 * @param threshold The threshold we will use to roughly detect peaks.
+	 * @param input The normalized audio data that we are picking the peaks out of.
+	 * @return A HashMap that maps the peaks position its energy value
+	 */
+//	private ArrayList<Peak> getPeaks(double threshold, double[] input){
+//		ArrayList<Peak> potentialPeaks = new ArrayList<Peak>();
+//		
+//		for(int x = 0; x < input.length; x++){
+//			if(input[x] >= threshold){
+//				potentialPeaks.add(new Peak(x, input[x]));
+//			}
+//		}
+//		
+//		ArrayList<Peak> removals = new ArrayList<Peak>();
+//		
+//		for(int x = 0; x < potentialPeaks.size()-1; x++){
+//			int location1 = potentialPeaks.get(x).getLocation();
+//			int location2 = potentialPeaks.get(x+1).getLocation();
+//			if(location1 != location2){
+//				int difference = Math.abs(location1 - location2);
+//				if(difference < KEY_PRESS_SPACE){
+//					if(potentialPeaks.get(x).getMagnitude() > potentialPeaks.get(x+1).getMagnitude()){
+//						removals.add(potentialPeaks.get(x+1));
+//					}else{
+//						removals.add(potentialPeaks.get(x));
+//					}
+//				}
+//			}
+//		}
+//		
+//		for(Peak remove : removals){
+//			potentialPeaks.remove(remove);
+//		}
+//		
+//		return potentialPeaks;
+//	}
+	
+	/**
 	 * From the point of the peak, which is in the middle of the entire push peak, we want to calculate
 	 * the MFCC from 20ms before the peak and 20ms after, which should cover the entire push peak.
 	 * 
@@ -312,7 +374,6 @@ public class PeakAnalysis {
 			for(int x = PEAK_WIDTH; x < Math.abs(PEAK_WIDTH); x++){ //Our loop to go to ten windows before and ten after
 				for(int y = 0; y < 100; y++){ //Our loop to get all 100 samples from each window
 					addTo.add(samples.get(loc+x).get(y)); //Put each sample into our ArrayList that holds all data
-//					addTo.add(audioData[((loc+x)*100)+y]);
 				}	
 			}
 			
@@ -321,6 +382,35 @@ public class PeakAnalysis {
 		}
 		
 	}
+	
+	/**
+	 * From the point of the peak, which is in the middle of the entire push peak, we want to calculate
+	 * the MFCC from 20ms before the peak and 20ms after, which should cover the entire push peak.
+	 * 
+	 * 1. Get the sample chunks out of "samples" for the location of the peak.
+	 * 2. Get the sample chunks for every window 10 locations before and 10 locations after
+	 * the peak, which will get us the entire push peak.
+	 * 3. Recombine these into a single List<Double> that is the raw audio data for one keypress's peak.
+	 * 4. Put this List into the larger list that contains all the peak's for the whole input file.
+	 * 
+	 * @param input
+	 */
+//	private void setUpMFCC(ArrayList<Peak> input){
+//		for(int x = 0; x < input.size(); x++){ //Our very outer loop that will go through all the peak positions.
+//			List<Double> addTo = new ArrayList<Double>(); //Create the list that will hold all of the data for these
+//														  //twenty windows of audio
+//			
+//			for(int y = PEAK_WIDTH; y < Math.abs(PEAK_WIDTH); y++){ //Our loop to go to ten windows before and ten after
+//				for(int z = 0; z < 100; z++){ //Our loop to get all 100 samples from each window
+//					addTo.add(samples.get(input.get(x).getLocation()+y).get(z)); //Put each sample into our ArrayList that holds all data
+//				}	
+//			}
+//			
+//			mfcc.add(addTo); //Put this peak data into the master MFCC "to do" array that we will then give to 
+//							 //our MFCC class
+//		}
+//		
+//	}
 	
 	public ArrayList<List<Double>> getMFCC(){
 		return mfcc;

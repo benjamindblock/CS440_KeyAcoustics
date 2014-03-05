@@ -12,6 +12,7 @@ import javax.sound.sampled.AudioSystem;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import javax.swing.*;
@@ -91,9 +92,17 @@ public class LoadSpeechWaveform{
 		ComputeMFCC cm = new ComputeMFCC(pa.getMFCC()); 
 		cm.run(); //Run our MFCC calculations
 		System.out.println(cm.getMFCCOutput().size());
-		if(Arrays.deepEquals(cm.getMFCCOutput().get(0), cm.getMFCCOutput().get(1))){
-			System.out.println("true");
-		}
-	
+		ArrayList<double[][]> mfcc = cm.getMFCCOutput();
+		KMeans km = new KMeans(mfcc);
+		
+		//Try jAudio's PeakFinder algorithm
+//		ComputePeakFinder cpf = new ComputePeakFinder(audioData);
+//		double[] peaks = cpf.compute();
+//		System.out.println("Using jAudio's peak finder, the number of peaks is: "+peaks.length);
+//		System.out.println("Peak locations: ");
+//		for(int x = 0; x < peaks.length; x++){
+//			System.out.println("Peak "+x+": "+peaks[x]);
+//		}
+				
 	}
 }
