@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
 <fullyQualifiedTypeName name="jAudioFeatureExtractor.AudioFeatures.PeakFinder"/>
-<fullyQualifiedTypeName name="java.lang.System"/>
 <fullyQualifiedTypeName name="jAudioFeatureExtractor.ACE.DataTypes.FeatureDefinition"/>
 <fullyQualifiedTypeName name="jAudioFeatureExtractor.AudioFeatures.MagnitudeSpectrum"/>
 <fullyQualifiedTypeName name="java.util.Arrays"/>
@@ -11,4 +10,6 @@
 <fullyQualifiedTypeName name="java.util.Set"/>
 <fullyQualifiedTypeName name="be.ac.ulg.montefiore.run.jahmm.KMeansCalculator"/>
 <fullyQualifiedTypeName name="java.util.ArrayList"/>
+<fullyQualifiedTypeName name="java.lang.System"/>
+<fullyQualifiedTypeName name="be.ac.ulg.montefiore.run.jahmm.learn.KMeansLearner"/>
 </qualifiedTypeNameHistroy>

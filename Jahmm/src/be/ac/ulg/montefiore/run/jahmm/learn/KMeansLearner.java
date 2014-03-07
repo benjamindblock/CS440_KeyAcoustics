@@ -65,8 +65,8 @@ public class KMeansLearner<O extends Observation & CentroidFactory<? super O>>
 		clusters = new Clusters<O>(nbStates, observations);
 		terminated = false;
 	}
-	
-	
+
+
 	/**
 	 * Performs one iteration of the K-Means algorithm.
 	 * In one iteration, a new HMM is computed using the current clusters, and

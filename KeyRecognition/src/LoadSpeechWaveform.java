@@ -93,8 +93,8 @@ public class LoadSpeechWaveform{
 		cm.run(); //Run our MFCC calculations
 		System.out.println(cm.getMFCCOutput().size());
 		ArrayList<double[][]> mfcc = cm.getMFCCOutput();
-		KMeans km = new KMeans(mfcc);
-		
+		StandardDeviationCalculator sdc = new StandardDeviationCalculator(mfcc);
+		KMeans km = new KMeans(sdc.run());
 		//Try jAudio's PeakFinder algorithm
 //		ComputePeakFinder cpf = new ComputePeakFinder(audioData);
 //		double[] peaks = cpf.compute();
