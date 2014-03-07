@@ -4,7 +4,6 @@
 <fullyQualifiedTypeName name="jAudioFeatureExtractor.ACE.DataTypes.FeatureDefinition"/>
 <fullyQualifiedTypeName name="jAudioFeatureExtractor.AudioFeatures.MagnitudeSpectrum"/>
 <fullyQualifiedTypeName name="java.util.Arrays"/>
-<fullyQualifiedTypeName name="java.util.List"/>
 <fullyQualifiedTypeName name="jAudioFeatureExtractor.jAudioTools.FFT"/>
 <fullyQualifiedTypeName name="java.util.HashMap"/>
 <fullyQualifiedTypeName name="java.util.Set"/>
@@ -12,4 +11,5 @@
 <fullyQualifiedTypeName name="java.util.ArrayList"/>
 <fullyQualifiedTypeName name="java.lang.System"/>
 <fullyQualifiedTypeName name="be.ac.ulg.montefiore.run.jahmm.learn.KMeansLearner"/>
+<fullyQualifiedTypeName name="java.util.List"/>
 </qualifiedTypeNameHistroy>

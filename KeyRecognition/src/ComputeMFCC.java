@@ -49,28 +49,10 @@ public class ComputeMFCC {
 		for(int x = 0; x < converted.length; x++){
 			converted[x] = input.get(x);
 		}
-		short[] newInput = convert(converted);
-		double[][] mfcc = computeMFCC(newInput);
+		double[][] mfcc = computeMFCC(converted);
 		return mfcc;
 	}
 	
-	/**
-	 * Takes the inputed double[] of audio information and converts it to a short[],
-	 * which is the required input for featureExtraction's "process" method.
-	 * 
-	 * @param input The double[] that we wish to convert
-	 * @return The converted short[]
-	 */
-	private short[] convert(double[] input){
-		int bufferSize = input.length;
-		double[] buffer = new double[bufferSize];
-		short[] transformed = new short[bufferSize];
-
-		for (int j=0;j<bufferSize;j++) {
-		    transformed[j] = (short)buffer[j];
-		}
-		return transformed;
-	}
 	
 	/**
 	 * This method calls the process function from featureExtraction.
@@ -78,7 +60,7 @@ public class ComputeMFCC {
 	 * @param audioData The short[] of audio data that we are getting the MFCC for.
 	 * @return Returns a double[][] that contains the MFCC information.
 	 */
-	private double[][] computeMFCC(short[] audioData){
+	private double[][] computeMFCC(double[] audioData){
 		double[][] audioOutput;
 		featureExtraction fe = new featureExtraction();
 		audioOutput = fe.process(audioData, 44100);

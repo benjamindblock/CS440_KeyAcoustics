@@ -119,7 +119,7 @@ public class featureExtraction{
      * @param inputSignal Speech Waveform (16 bit integer data)
      * @return Mel Frequency Cepstral Coefficients (32 bit floating point data)
      */
-    public double[][] process(short inputSignal[],double samplingRate){
+    public double[][] process(double inputSignal[],double samplingRate){
         double MFCC[][];
 
         // Pre-Emphasis
@@ -372,7 +372,7 @@ public class featureExtraction{
      * @param inputSignal Speech Signal (16 bit integer data)
      * @return Speech signal after pre-emphasis (16 bit integer data)
      */
-    protected static double[] preEmphasis(short inputSignal[]){
+    protected static double[] preEmphasis(double inputSignal[]){
         double outputSignal[] = new double[inputSignal.length];
         
         // apply pre-emphasis to each sample
