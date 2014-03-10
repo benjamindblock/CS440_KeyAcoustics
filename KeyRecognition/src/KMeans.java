@@ -19,7 +19,7 @@ public class KMeans{
 			kMeansSequences.add(oV);
 		}
 		KMeansLearner kml = new KMeansLearner(50, new OpdfMultiGaussianFactory(2), kMeansSequences);
-		//kml.learn();
+		kml.learn();
 	}
 }
 
