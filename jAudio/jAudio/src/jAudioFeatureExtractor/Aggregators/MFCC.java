@@ -6,15 +6,15 @@
 package jAudioFeatureExtractor.Aggregators;
 
 import jAudioFeatureExtractor.ACE.DataTypes.AggregatorDefinition;
+
 import jAudioFeatureExtractor.ACE.DataTypes.FeatureDefinition;
 import jAudioFeatureExtractor.AudioFeatures.FeatureExtractor;
 import jAudioFeatureExtractor.GeneralTools.Statistics;
 import jAudioFeatureExtractor.GeneralTools.StringMethods;
 
 import java.io.DataOutputStream;
-
-import org.oc.ocvolume.dsp.featureExtraction;
 import org.oc.ocvolume.dsp.fft;
+import org.oc.ocvolume.dsp.mfccExtraction;
 
 /**
  * MFCC Aggregator
@@ -27,7 +27,7 @@ import org.oc.ocvolume.dsp.fft;
  */
 public class MFCC extends Aggregator {
 
-	featureExtraction fe = new featureExtraction();
+	mfccExtraction fe = new mfccExtraction();
 
 	int index = -1;
 	

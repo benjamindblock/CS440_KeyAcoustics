@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
 
-import org.oc.ocvolume.dsp.featureExtraction;
+import org.oc.ocvolume.dsp.mfccExtraction;
 
 public class ComputeMFCC {
 
@@ -62,7 +62,7 @@ public class ComputeMFCC {
 	 */
 	private double[][] computeMFCC(double[] audioData){
 		double[][] audioOutput;
-		featureExtraction fe = new featureExtraction();
+		mfccExtraction fe = new mfccExtraction();
 		audioOutput = fe.process(audioData, 44100);
 		return audioOutput;
 	}

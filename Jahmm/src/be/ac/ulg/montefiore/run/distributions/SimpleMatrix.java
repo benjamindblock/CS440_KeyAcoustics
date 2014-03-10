@@ -252,7 +252,9 @@ class SimpleMatrix
 				lj[k] = s = (m[j][k] - s) / l[k][k];
 				d = d + s * s;
 			}
-			System.out.println("d: "+d+"\n");
+			
+			System.out.println("d1: "+d+"\n");
+			
 			if ((d = m[j][j] - d) <= 0.)
 				throw new IllegalArgumentException("Matrix is not positive " + 
 				"defined");

@@ -57,7 +57,7 @@ package org.oc.ocvolume.dsp;
  * Changed the shiftInterval, numMelFilters, upperFilerFreq, and numCepstra to reflect the process outlined in 
  * "Keyboard Acoustic Emanations Revisited" (p. 3:9)
  */
-public class featureExtraction{
+public class mfccExtraction{
     /**
      * sample rate in Hz
      */

@@ -3,6 +3,6 @@ digraph G {
 	0 -> 1 [label=0.05];
 	1 -> 0 [label=0.1];
 	1 -> 1 [label=0.9];
-	0 [shape=doublecircle, label="0 - Pi= 0.96 - [ Discrete distribution --- OK 0.953, LOSS 0.047 ]"];
-	1 [shape=doublecircle, label="1 - Pi= 0.04 - [ Discrete distribution --- OK 0.215, LOSS 0.785 ]"];
+	0 [shape=doublecircle, label="0 - Pi= 0.98 - [ Discrete distribution --- OK 0.951, LOSS 0.049 ]"];
+	1 [shape=doublecircle, label="1 - Pi= 0.02 - [ Discrete distribution --- OK 0.192, LOSS 0.808 ]"];
 }

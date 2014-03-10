@@ -1,6 +1,6 @@
 package jAudioFeatureExtractor.AudioFeatures;
 
-import org.oc.ocvolume.dsp.featureExtraction;
+import org.oc.ocvolume.dsp.mfccExtraction;
 
 import jAudioFeatureExtractor.ACE.DataTypes.FeatureDefinition;
 
@@ -14,7 +14,7 @@ import jAudioFeatureExtractor.ACE.DataTypes.FeatureDefinition;
  */
 public class MFCC extends FeatureExtractor {
 
-	featureExtraction fe;
+	mfccExtraction fe;
 	
 	/**
 	 * Construct a MFCC object, setting definition, dependencies, and offsets.
@@ -26,7 +26,7 @@ public class MFCC extends FeatureExtractor {
 		definition = new FeatureDefinition(name, description, true, 13,attributes);
 		dependencies = new String[] { "Magnitude Spectrum" };
 		offsets = new int[] { 0 };
-		fe = new featureExtraction();
+		fe = new mfccExtraction();
 	}
 
 	/**
