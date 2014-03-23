@@ -86,16 +86,33 @@ public class LoadSpeechWaveform{
 
 	
 	public static void main(String[] args) throws FileNotFoundException{
-		double[] audioData = fileReader(); //Get our first audio file
+		double[] trainingData = fileReader(); //Get our first audio file (training data).
+		double[] attackData = fileReader(); //Get our second audio file (audio we want to get text from).
 		
-		PeakAnalysis pa = new PeakAnalysis(audioData); 
+		//Steps for our training data.
+		PeakAnalysis pa = new PeakAnalysis(trainingData); 
 		pa.run(); //Run our peak analysis.
 		ComputeMFCC cm = new ComputeMFCC(pa.getMFCC()); 
 		cm.run(); //Run our MFCC calculations
 		System.out.println(cm.getMFCCOutput().size());
 		ArrayList<double[][]> mfcc = cm.getMFCCOutput();
 		StandardDeviationCalculator sdc = new StandardDeviationCalculator(mfcc);
-		KMeans km = new KMeans(sdc.run());
+		ArrayList<double[]> mfccData = sdc.run();
+		KMeans km = new KMeans(mfccData);
+		
+		//Steps for our attack data.
+		PeakAnalysis pa2 = new PeakAnalysis(attackData); 
+		pa2.run(); //Run our peak analysis.
+		ComputeMFCC cm2 = new ComputeMFCC(pa2.getMFCC()); 
+		cm2.run(); //Run our MFCC calculations
+		System.out.println(cm2.getMFCCOutput().size());
+		ArrayList<double[][]> mfcc2 = cm2.getMFCCOutput();
+		StandardDeviationCalculator sdc2 = new StandardDeviationCalculator(mfcc2);
+		ArrayList<double[]> mfccData2 = sdc2.run();
+		
+		TextRetrieval tr = new TextRetrieval(km.getModels(), mfccData2);
+		System.out.println(tr.getUtterance());
+		
 		//Try jAudio's PeakFinder algorithm
 //		ComputePeakFinder cpf = new ComputePeakFinder(audioData);
 //		double[] peaks = cpf.compute();

@@ -11,25 +11,24 @@ public class KMeans{
 	private final int NO_OF_TESTS = 30; //Number of times each key is pressed in training data.
 	
 	private Hmm hmm;
-	
+	private Hmm[] allModels;
 	
 	public KMeans(ArrayList<double[]> mfccInput){
 		
-		ArrayList< List <ObservationVector>> kMeansSequences = new ArrayList< List<ObservationVector>>();
-		ArrayList<ObservationVector> oV = new ArrayList<ObservationVector>();
-		for(int i = 0; i<mfccInput.size(); i++){
-			oV.add(new ObservationVector(mfccInput.get(i)));
-			System.out.println("Count: "+i);
-		}
-		for(int k = 0; k<NO_OF_SEQUENCES; k++){
-			kMeansSequences.add(oV);
-		}
+//		ArrayList< List <ObservationVector>> kMeansSequences = new ArrayList< List<ObservationVector>>();
+//		ArrayList<ObservationVector> oV = new ArrayList<ObservationVector>();
+//		for(int i = 0; i<mfccInput.size(); i++){
+//			oV.add(new ObservationVector(mfccInput.get(i)));
+//			System.out.println("Count: "+i);
+//		}
+//		for(int k = 0; k<NO_OF_SEQUENCES; k++){
+//			kMeansSequences.add(oV);
+//		}
+//		
+//		KMeansLearner kml = new KMeansLearner(5, new OpdfMultiGaussianFactory(2), kMeansSequences);
+//		this.hmm = kml.learn();
 		
-		KMeansLearner kml = new KMeansLearner(5, new OpdfMultiGaussianFactory(2), kMeansSequences);
-		this.hmm = kml.learn();
-		
-//		Hmm[] allModels = generateModels(mfccInput);
-//		System.out.println(allModels.length);
+		allModels = generateModels(mfccInput);
 		
 	}
 	
@@ -53,20 +52,18 @@ public class KMeans{
 					kMeansSequences.add(oV);
 				}
 				
-				KMeansLearner kml = new KMeansLearner(5, new OpdfMultiGaussianFactory(2), kMeansSequences);
+				KMeansLearner kml = new KMeansLearner(3, new OpdfMultiGaussianFactory(2), kMeansSequences);
 				addTo = kml.learn();
 				
 				models[j] = addTo;
 			}
 		}
 	
-		
-		
 		return models;
 	}
 	
-	public Hmm getHmm(){
-		return hmm;
+	public Hmm[] getModels(){
+		return allModels;
 	}
 }
 
