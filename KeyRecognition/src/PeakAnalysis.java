@@ -20,7 +20,7 @@ public class PeakAnalysis {
 	 * Declaring variables to allow for fine-tuning of peak-analysis characteristics.
 	 */
 	private final int PEAK_WIDTH = -10; //This describes the number of windows on either side of the peak to MFCC.
-	private final double THRESH_VALUE = 1.14; //How sensitive we want our threshold. A lower THRESH_VALUE will mean
+	private final double THRESH_VALUE = 1.365; //How sensitive we want our threshold. A lower THRESH_VALUE will mean
 											  //a tighter threshold, but this could exclude peaks that we need.
 	private final int KEY_PRESS_SPACE = 100; //How much space between peaks we want to assert. Each increase +1 in the
 											//int is ~2ms in audio data. So a value of 50 is 100ms.

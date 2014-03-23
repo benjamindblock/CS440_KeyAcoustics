@@ -46,6 +46,7 @@ public class LoadSpeechWaveform{
     public static double[] read(File file) {
         byte[] data = readByte(file);
         int N = data.length;
+        System.out.println("N: "+N+"\n");
         double[] d = new double[N/2];
         for (int i = 0; i < N/2; i++) {
             d[i] = ((short) (((data[2*i+1] & 0xFF) << 8) + (data[2*i] & 0xFF))) / ((double) MAX_16_BIT);
