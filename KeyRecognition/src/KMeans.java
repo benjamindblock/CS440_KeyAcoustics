@@ -52,7 +52,7 @@ public class KMeans{
 					kMeansSequences.add(oV);
 				}
 				
-				KMeansLearner kml = new KMeansLearner(3, new OpdfMultiGaussianFactory(2), kMeansSequences);
+				KMeansLearner kml = new KMeansLearner(5, new OpdfMultiGaussianFactory(2), kMeansSequences);
 				addTo = kml.learn();
 				
 				models[j] = addTo;

@@ -13,8 +13,10 @@
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="false" key="wholeword"/>
-		<item value="" key="selection"/>
+		<item value="cluster" key="selection"/>
 		<list key="findhistory">
+			<item value="cluster"/>
+			<item value="system"/>
 			<item value="System.out"/>
 			<item value="system.out"/>
 			<item value="short"/>

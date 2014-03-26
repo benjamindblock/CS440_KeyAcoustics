@@ -2,6 +2,7 @@ import java.util.ArrayList;
 
 import be.ac.ulg.montefiore.run.jahmm.Hmm;
 import be.ac.ulg.montefiore.run.jahmm.ObservationVector;
+import be.ac.ulg.montefiore.run.jahmm.ViterbiCalculator;
 
 
 public class TextRetrieval {
@@ -53,11 +54,18 @@ public class TextRetrieval {
 	}
 	
 	private double getProbability(Hmm model, double[] mfccData){
+		
+		
 		double probability = 0.0;
 		ArrayList<ObservationVector> oSeq = new ArrayList<ObservationVector>();
+		
 		oSeq.add(new ObservationVector(mfccData));
-		probability = model.probability(oSeq);
-		System.out.println("getProbability() probability is: "+probability);
+		
+		ViterbiCalculator vc = new ViterbiCalculator(oSeq, model);
+		probability = vc.lnProbability();
+		//probability = model.probability(oSeq);
+		//System.out.println("To string: \n" + model.toString());
+		//System.out.println("getProbability() probability is: "+probability);
 		return probability;
 	}
 	
