@@ -39,14 +39,14 @@ public class LetterPair {
 		l1_side = l1.ks;
 		l2_side = l2.ks;
 		
-		k1 = new KeyPosition(l1);
-		k2 = new KeyPosition(l2);
+		k1 = new KeyPosition(l1.name);
+		k2 = new KeyPosition(l2.name);
 		
 		distance();
 	}
 	
 	/**
-	 * Need to fill in. Will determine if the given letter pair is a near-pair or a
+	 * Determines if the given letter pair is a near-pair or a
 	 * far-pair.
 	 */
 	public void distance(){

@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 
 public class KeyPosition {
 
@@ -5,8 +7,8 @@ public class KeyPosition {
 	private int yPos;
 	private String name;
 
-	public KeyPosition(Letter letter){
-		this.name = letter.name;
+	public KeyPosition(String name){
+		this.name = name;
 		determineLocation();
 	}
 
@@ -151,5 +153,33 @@ public class KeyPosition {
 	public int getYPos(){
 		return yPos;
 	}
+	
+	public KEYBOARD_SIDE keyboardSide(){
+
+		ArrayList<String> lKeys = new ArrayList();
+		
+		lKeys.add("q");
+		lKeys.add("w");
+		lKeys.add("e");
+		lKeys.add("r");
+		lKeys.add("t");
+		lKeys.add("a");
+		lKeys.add("s");
+		lKeys.add("d");
+		lKeys.add("f");
+		lKeys.add("g");
+		lKeys.add("z");
+		lKeys.add("x");
+		lKeys.add("c");
+		lKeys.add("v");
+		lKeys.add("b");
+		
+		if(lKeys.contains(name)){
+			return KEYBOARD_SIDE.LEFT;
+		}else{
+			return KEYBOARD_SIDE.RIGHT;
+		}
+	}
+	
 
 }

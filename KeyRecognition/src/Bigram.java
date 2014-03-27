@@ -1,17 +1,26 @@
 
 public class Bigram {
+	private final int THRESHOLD = 3;
+	
 	private static String pair;
-	private static KEYBOARD_SIDE charOne;
-	private static KEYBOARD_SIDE charTwo;
+	private static KEYBOARD_SIDE charOneSide;
+	private static KEYBOARD_SIDE charTwoSide;
 	private static DISTANCE dist;
+	private static KeyPosition kp1;
+	private static KeyPosition kp2;
+	
 	
 	public Bigram(String str){
 		pair = str;
+		kp1 = new KeyPosition(str.substring(0, 0));
+		kp2 = new KeyPosition(str.substring(1, 1));
+		setKeyboardSides();
+		setDistance();
 	}
 	
-	public void setKeyboardSides(KEYBOARD_SIDE ks1, KEYBOARD_SIDE ks2){
-		charOne = ks1;
-		charTwo = ks2;
+	public void setKeyboardSides(){
+		charOneSide = kp1.keyboardSide();
+		charTwoSide = kp2.keyboardSide();
 	}
 	
 	public void setDistance(DISTANCE d){
@@ -30,7 +39,23 @@ public class Bigram {
 //		return charTwo;
 //	}
 
-	public static DISTANCE getDist() {
-		return dist;
+	/**
+	 * Determines if the given letter pair is a near-pair or a
+	 * far-pair.
+	 */
+	public void setDistance(){
+		int x = (kp2.getXPos() - kp1.getXPos());
+		x = x * x;
+		
+		int y = (kp2.getYPos() - kp1.getYPos());
+		y = y * y;
+		
+		double distance = Math.sqrt(x + y);
+		
+		if(distance > THRESHOLD){
+			dist = dist.FAR;
+		}else{
+			dist = dist.NEAR;
+		}
 	}
 }
