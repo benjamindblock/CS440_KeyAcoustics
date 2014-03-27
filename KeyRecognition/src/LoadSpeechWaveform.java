@@ -88,11 +88,16 @@ public class LoadSpeechWaveform{
 
 	
 	public static void main(String[] args) throws IOException{
-		TextStream.textReader();
-		char [] textArray = TextStream.getArray();
-		for(int i = 0; i < textArray.length; i++){
-			System.out.println(textArray[i]);
-		}
+//		Text Stream call
+//		TextStream.textReader();
+//		ArrayList<Character> textArray = TextStream.getArray();
+//		for(int i = 0; i < textArray.size(); i++){
+//			System.out.println(textArray.get(i));
+//		}
+		
+		Word w = new Word("patagonia");
+		
+		
 //		double[] trainingData = fileReader(); //Get our first audio file (training data).
 //		double[] attackData = fileReader(); //Get our second audio file (audio we want to get text from).
 //		

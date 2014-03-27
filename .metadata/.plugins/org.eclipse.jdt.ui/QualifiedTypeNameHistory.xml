@@ -8,11 +8,16 @@
 <fullyQualifiedTypeName name="java.util.HashMap"/>
 <fullyQualifiedTypeName name="java.util.Set"/>
 <fullyQualifiedTypeName name="be.ac.ulg.montefiore.run.jahmm.KMeansCalculator"/>
-<fullyQualifiedTypeName name="java.util.ArrayList"/>
 <fullyQualifiedTypeName name="java.lang.System"/>
 <fullyQualifiedTypeName name="be.ac.ulg.montefiore.run.jahmm.learn.KMeansLearner"/>
 <fullyQualifiedTypeName name="java.util.List"/>
 <fullyQualifiedTypeName name="org.oc.ocvolume.dsp.fftExtraction"/>
 <fullyQualifiedTypeName name="org.oc.ocvolume.dsp.mfccExtraction"/>
 <fullyQualifiedTypeName name="be.ac.ulg.montefiore.run.jahmm.ViterbiCalculator"/>
+<fullyQualifiedTypeName name="java.io.InputStreamReader"/>
+<fullyQualifiedTypeName name="java.io.Reader"/>
+<fullyQualifiedTypeName name="java.nio.charset.Charset"/>
+<fullyQualifiedTypeName name="java.io.InputStream"/>
+<fullyQualifiedTypeName name="java.io.FileInputStream"/>
+<fullyQualifiedTypeName name="java.util.ArrayList"/>
 </qualifiedTypeNameHistroy>

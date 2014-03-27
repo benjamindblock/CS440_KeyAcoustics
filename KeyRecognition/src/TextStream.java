@@ -8,6 +8,7 @@ import java.io.InputStreamReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
 
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -15,44 +16,45 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 
 public class TextStream {
-	static FileNameExtensionFilter filter = new FileNameExtensionFilter("Plain text files, (.txt)", "txt");
-	static JFileChooser fileChooser = new JFileChooser();
-	static File inFile;
-	static char[] array = new char[633];
+	private static FileNameExtensionFilter filter = new FileNameExtensionFilter("Plain text files, (.txt)", "txt");
+	private static JFileChooser fileChooser = new JFileChooser();
+	private static File inFile;
+	public static ArrayList<Character> characterList = new ArrayList<Character>();
+	public static ArrayList< ArrayList<String>> wordCharacterPairs = new ArrayList< ArrayList<String>>();
 
 	public static void textReader() throws IOException{
 		fileChooser.setFileFilter(filter);
 		if (fileChooser.showOpenDialog(null) != JFileChooser.APPROVE_OPTION)
 			throw new Error("Input file not selected");
 		inFile = fileChooser.getSelectedFile();
-		Charset encoding = Charset.defaultCharset();
-		handleFile(inFile, encoding);
 		System.out.println("Opened:" + inFile.getName());
+		Charset encoding = Charset.defaultCharset();
+		handleCharacters(inFile, encoding);
 	} 
 
 
-	private static void handleFile(File file, Charset encoding) throws IOException {
+	private static void handleCharacters(File file, Charset encoding) throws IOException {
 		try (InputStream in = new FileInputStream(file);
 				Reader reader = new InputStreamReader(in, encoding);
 				// buffer for efficiency
 				Reader buffer = new BufferedReader(reader)) {
-			handleCharacters(buffer);
+			createCharacterList(buffer);
 		}
 	}
 
-	private static void handleCharacters(Reader reader)
+	private static void createCharacterList(Reader reader)
 			throws IOException {
 		int r;
 		int counter = 0;
 		while ((r = reader.read()) != -1) {
 			char ch = (char) r;
-			array[counter] = ch;
+			characterList.add(ch);
 			counter++;
 		}
 	}
 	
-	public static char[] getArray(){
-		return array;
+	public static ArrayList<Character> getArray(){
+		return characterList;
 	}
 	
 }
