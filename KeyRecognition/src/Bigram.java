@@ -12,8 +12,8 @@ public class Bigram {
 	
 	public Bigram(String str){
 		pair = str;
-		kp1 = new KeyPosition(str.substring(0, 0));
-		kp2 = new KeyPosition(str.substring(1, 1));
+		kp1 = new KeyPosition(str.substring(0, 1));
+		kp2 = new KeyPosition(str.substring(1, 2));
 		setKeyboardSides();
 		setDistance();
 	}
@@ -23,9 +23,9 @@ public class Bigram {
 		charTwoSide = kp2.keyboardSide();
 	}
 	
-	public void setDistance(DISTANCE d){
-		dist = d;
-	}
+//	public void setDistance(DISTANCE d){
+//		dist = d;
+//	}
 
 	public static String getPair() {
 		return pair;
@@ -53,9 +53,18 @@ public class Bigram {
 		double distance = Math.sqrt(x + y);
 		
 		if(distance > THRESHOLD){
-			dist = dist.FAR;
+			dist = DISTANCE.FAR;
 		}else{
-			dist = dist.NEAR;
+			dist = DISTANCE.NEAR;
 		}
+	}
+	
+	public String toString(){
+		String ret = "";
+		ret = "Word: "+pair+"\n";
+		ret = ret+"Distance: "+dist+"\n";
+		ret = ret+"Side one: "+charOneSide+"\n";
+		ret = ret+"Side two: "+charTwoSide+"\n";
+		return ret;
 	}
 }

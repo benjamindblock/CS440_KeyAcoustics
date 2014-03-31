@@ -87,7 +87,7 @@ public class LoadSpeechWaveform{
 
 
 	
-	public static void main(String[] args) throws IOException{
+//	public static void main(String[] args) throws IOException{
 //		Text Stream call
 //		TextStream.textReader();
 //		ArrayList<Character> textArray = TextStream.getArray();
@@ -95,7 +95,7 @@ public class LoadSpeechWaveform{
 //			System.out.println(textArray.get(i));
 //		}
 		
-		Word w = new Word("patagonia");
+//		Word w = new Word("patagonia");
 		
 		
 //		double[] trainingData = fileReader(); //Get our first audio file (training data).
@@ -135,4 +135,4 @@ public class LoadSpeechWaveform{
 ////		}
 //				
 	}
-}
+//}

@@ -1,5 +1,12 @@
 import java.util.ArrayList;
 
+/**
+ * A class which determines whether a key (letter) is on the left or right side of the keyboard, in 
+ * addition to determining what its coordinates are. "t", "g" and "b" represent 0 on the x-axis, for example.
+ * 
+ * @author Ben Block and Walker Bohannan
+ * 
+ */
 
 public class KeyPosition {
 
@@ -156,7 +163,7 @@ public class KeyPosition {
 	
 	public KEYBOARD_SIDE keyboardSide(){
 
-		ArrayList<String> lKeys = new ArrayList();
+		ArrayList<String> lKeys = new ArrayList<String>();
 		
 		lKeys.add("q");
 		lKeys.add("w");

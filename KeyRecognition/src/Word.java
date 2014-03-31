@@ -6,7 +6,7 @@ public class Word {
 	public Word(String word){
 		keyWord = word;
 		int n = keyWord.length();
-		bigramArray = new Bigram [n-1];
+		bigramArray = new Bigram[n-1];
 		createBigramArray();
 	}
 	
@@ -17,8 +17,8 @@ public class Word {
 			pairArray[1] = keyWord.charAt(i+1);
 			String pair = new String(pairArray);
 			Bigram big = new Bigram(pair);
-			System.out.println(keyWord + " pair [" + i + "]: "+pair);
-			//big.addPair(pair);
+			bigramArray[i] = big;
+			System.out.println(big.toString());
 		}
 	}
 		
