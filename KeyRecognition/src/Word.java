@@ -1,5 +1,13 @@
-
+/**
+ * This class comprises words that will make up our dictionary.
+ * Used when importing the dictionary and when we are checking against it.
+ * 
+ * @author Ben Block and Walker Bohannan
+ *
+ */
 public class Word {
+	
+	
 	private static String keyWord;
 	private static Bigram[] bigramArray;
 	

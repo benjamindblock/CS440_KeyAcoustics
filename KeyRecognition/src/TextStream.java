@@ -13,7 +13,12 @@ import java.util.ArrayList;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-
+/**
+ * Class that imports the text that corresponds with the audio for our training data.
+ * 
+ * @author Ben
+ *
+ */
 
 public class TextStream {
 	private static FileNameExtensionFilter filter = new FileNameExtensionFilter("Plain text files, (.txt)", "txt");

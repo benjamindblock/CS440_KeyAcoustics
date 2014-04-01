@@ -5,6 +5,8 @@ import java.util.ArrayList;
  * the feature vector associated with it, and whether it is on
  * the left or right side of the keyboard.
  * 
+ * Used to train our Neural Network for the Left/Right determination.
+ * 
  * Organization and method taken from: (sp)iPhone: Decoding Vibrations From Nearby Keyboards
  * Using Mobile Phone Accelerometers, by Philip Marquardt, et al.
  * 

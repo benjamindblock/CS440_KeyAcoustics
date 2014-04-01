@@ -2,6 +2,8 @@
  * Represents a letter-pair, such as "ab." Contains data as to the name of the letter-pair,
  * the feature vector associated with it, and whether it is a near or far pair.
  * 
+ * Used to train our Neural Network in the Near/Far determination.
+ * 
  * Organization and method taken from: (sp)iPhone: Decoding Vibrations From Nearby Keyboards
  * Using Mobile Phone Accelerometers, by Philip Marquardt, et al.
  * 
