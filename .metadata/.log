@@ -2025,3 +2025,27 @@ Command-line arguments:  -os macosx -ws cocoa -arch x86 -product org.eclipse.epp
 
 !ENTRY org.eclipse.core.net 1 0 2014-04-01 14:44:35.477
 !MESSAGE System property http.nonProxyHosts has been set to local|*.local|169.254/16|*.169.254/16 by an external source. This value will be overwritten using the values from the preferences
+!SESSION 2014-04-01 15:26:46.968 -----------------------------------------------
+eclipse.buildId=4.3.0.M20130911-1000
+java.version=1.6.0_65
+java.vendor=Apple Inc.
+BootLoader constants: OS=macosx, ARCH=x86, WS=cocoa, NL=en_US
+Framework arguments:  -product org.eclipse.epp.package.standard.product -keyring /Users/Ben/.eclipse_keyring -showlocation
+Command-line arguments:  -os macosx -ws cocoa -arch x86 -product org.eclipse.epp.package.standard.product -keyring /Users/Ben/.eclipse_keyring -showlocation
+
+!ENTRY org.eclipse.egit.core 4 0 2014-04-01 15:28:29.895
+!MESSAGE An exception occurred during push on URI https://github.com/benjamindblock/CS440_KeyAcoustics.git: https://github.com/benjamindblock/CS440_KeyAcoustics.git: 500 Internal Server Error
+!STACK 0
+org.eclipse.jgit.api.errors.TransportException: https://github.com/benjamindblock/CS440_KeyAcoustics.git: 500 Internal Server Error
+	at org.eclipse.jgit.api.PushCommand.call(PushCommand.java:160)
+	at org.eclipse.egit.core.op.PushOperation.run(PushOperation.java:221)
+	at org.eclipse.egit.ui.internal.push.PushOperationUI.execute(PushOperationUI.java:164)
+	at org.eclipse.egit.ui.internal.push.PushOperationUI$1.run(PushOperationUI.java:226)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:53)
+Caused by: org.eclipse.jgit.errors.TransportException: https://github.com/benjamindblock/CS440_KeyAcoustics.git: 500 Internal Server Error
+	at org.eclipse.jgit.transport.TransportHttp.connect(TransportHttp.java:491)
+	at org.eclipse.jgit.transport.TransportHttp.openPush(TransportHttp.java:398)
+	at org.eclipse.jgit.transport.PushProcess.execute(PushProcess.java:154)
+	at org.eclipse.jgit.transport.Transport.push(Transport.java:1173)
+	at org.eclipse.jgit.api.PushCommand.call(PushCommand.java:156)
+	... 4 more
