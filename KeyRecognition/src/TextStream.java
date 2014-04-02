@@ -25,36 +25,58 @@ public class TextStream {
 	private static JFileChooser fileChooser = new JFileChooser();
 	private static File inFile;
 	public static ArrayList<Character> characterList = new ArrayList<Character>();
-	public static ArrayList< ArrayList<String>> wordCharacterPairs = new ArrayList< ArrayList<String>>();
+	public static ArrayList<Word> wordList = new ArrayList<Word>();
 
 	public static void textReader() throws IOException{
 		fileChooser.setFileFilter(filter);
+		fileChooser.setDialogTitle("Select file for dictionary.");
 		if (fileChooser.showOpenDialog(null) != JFileChooser.APPROVE_OPTION)
 			throw new Error("Input file not selected");
 		inFile = fileChooser.getSelectedFile();
 		System.out.println("Opened:" + inFile.getName());
 		Charset encoding = Charset.defaultCharset();
-		handleCharacters(inFile, encoding);
+		handleCharacters(inFile, encoding, 0);
+		fileChooser.setFileFilter(filter);
+		fileChooser.setDialogTitle("Select file for character training.");
+		if (fileChooser.showOpenDialog(null) != JFileChooser.APPROVE_OPTION)
+			throw new Error("Input file not selected");
+		inFile = fileChooser.getSelectedFile();
+		System.out.println("Opened:" + inFile.getName());
+		handleCharacters(inFile, encoding, 1);
 	} 
 
 
-	private static void handleCharacters(File file, Charset encoding) throws IOException {
+	private static void handleCharacters(File file, Charset encoding, int type) throws IOException {
 		try (InputStream in = new FileInputStream(file);
 				Reader reader = new InputStreamReader(in, encoding);
 				// buffer for efficiency
+				Reader wordReader = new InputStreamReader(in);
+				BufferedReader wordBuffer = new BufferedReader(wordReader);
 				Reader buffer = new BufferedReader(reader)) {
-			createCharacterList(buffer);
+			if(type == 0){
+				createWordList(wordBuffer);
+			} else if (type == 1) {
+				createCharacterList(buffer);
+			}
+		}
+	}
+	
+	private static void createWordList(BufferedReader reader)
+			throws IOException {
+		String s;
+		while ((s = reader.readLine()) != null) {
+			String st = (String) s;
+			System.out.println("Word: "+st);
+			wordList.add(new Word(st));
 		}
 	}
 
 	private static void createCharacterList(Reader reader)
 			throws IOException {
 		int r;
-		int counter = 0;
 		while ((r = reader.read()) != -1) {
 			char ch = (char) r;
 			characterList.add(ch);
-			counter++;
 		}
 	}
 	

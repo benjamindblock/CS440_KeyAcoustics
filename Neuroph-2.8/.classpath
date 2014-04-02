@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="Contrib/src/main/java"/>
+	<classpathentry kind="src" path="Contrib/src/test/java"/>
+	<classpathentry kind="src" path="Core/src/main/java"/>
+	<classpathentry kind="src" path="Core/src/test/java"/>
+	<classpathentry kind="src" path="Samples/src/main/java"/>
+	<classpathentry kind="src" path="Samples/src/test/java"/>
+	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="JUnit/junit-4.11-sources.jar"/>
+	<classpathentry kind="lib" path="JUnit/junit-4.11.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
