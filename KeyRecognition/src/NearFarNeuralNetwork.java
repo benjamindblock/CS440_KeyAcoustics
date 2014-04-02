@@ -100,7 +100,7 @@ public class NearFarNeuralNetwork {
 	 * @param filePath where our network is.
 	 */
 	public void loadNetwork(String filePath){
-		NeuralNetwork loadedPerceptron = NeuralNetwork.load("mySamplePerceptron.nnet");
+		NeuralNetwork loadedPerceptron = NeuralNetwork.load(filePath);
 		neuralNetwork = loadedPerceptron;
 	}
 	
