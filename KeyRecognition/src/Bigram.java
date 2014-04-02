@@ -1,4 +1,13 @@
 
+/**
+ * This class represents a string of length two (i.e. "ab"). 
+ * 
+ * It contains methods to determine what side of the keyboard each character is on,
+ * and whether or not the bigram is a near or far pair.  
+ * 
+ * @author Ben
+ *
+ */
 public class Bigram {
 	private final int THRESHOLD = 3;
 	
@@ -22,22 +31,37 @@ public class Bigram {
 		charOneSide = kp1.keyboardSide();
 		charTwoSide = kp2.keyboardSide();
 	}
-	
-//	public void setDistance(DISTANCE d){
-//		dist = d;
-//	}
 
 	public static String getPair() {
 		return pair;
 	}
 
-//	public static KEYBOARD_SIDE getCharOne() {
-//		return charOne;
-//	}
-//
-//	public static KEYBOARD_SIDE getCharTwo() {
-//		return charTwo;
-//	}
+	/**
+	 * Gives us the side of the keyboard that the first character in the bigram is on.
+	 * 
+	 * @return Left or Right
+	 */
+	public KEYBOARD_SIDE getCharOneSide() {
+		return charOneSide;
+	}
+
+	/**
+	 * Gives us the side of the keyboard that the second character in the bigram is on.
+	 * 
+	 * @return Left or Right
+	 */
+	public KEYBOARD_SIDE getCharTwoSide() {
+		return charTwoSide;
+	}
+	
+	/**
+	 * Tells us whether this is a near or far bigram.
+	 * 
+	 * @return Near or Far
+	 */
+	public DISTANCE getDistance(){
+		return dist;
+	}
 
 	/**
 	 * Determines if the given letter pair is a near-pair or a
@@ -67,4 +91,5 @@ public class Bigram {
 		ret = ret+"Side two: "+charTwoSide+"\n";
 		return ret;
 	}
+	
 }

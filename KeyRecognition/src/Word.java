@@ -8,8 +8,8 @@
 public class Word {
 	
 	
-	private static String keyWord;
-	private static Bigram[] bigramArray;
+	private String keyWord;
+	private Bigram[] bigramArray;
 	
 	public Word(String word){
 		keyWord = word;
@@ -18,7 +18,7 @@ public class Word {
 		createBigramArray();
 	}
 	
-	public static void createBigramArray(){
+	public void createBigramArray(){
 		for(int i = 0; i < keyWord.length()-1; i++){
 			char[] pairArray = new char [2];
 			pairArray[0] = keyWord.charAt(i);
@@ -28,6 +28,24 @@ public class Word {
 			bigramArray[i] = big;
 			System.out.println(big.toString());
 		}
+	}
+	
+	/**
+	 * Returns the name of this word.
+	 * 
+	 * @return The name
+	 */
+	public String getWordName(){
+		return keyWord;
+	}
+	
+	/**
+	 * Returns the bigram array for this word.
+	 * 
+	 * @return The array
+	 */
+	public Bigram[] getBigrams(){
+		return bigramArray;
 	}
 		
 }
