@@ -1,3 +1,4 @@
+package cs_440.keyacoustics.dictionary;
 
 /**
  * A quick enumerated type that is used to let us know if a given letter-pair

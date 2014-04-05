@@ -1,3 +1,4 @@
+package cs_440.keyacoustics.dictionary;
 
 /**
  * This class represents a string of length two (i.e. "ab"). 

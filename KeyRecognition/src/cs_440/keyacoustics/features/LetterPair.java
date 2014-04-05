@@ -1,3 +1,8 @@
+package cs_440.keyacoustics.features;
+import cs_440.keyacoustics.dictionary.DISTANCE;
+import cs_440.keyacoustics.dictionary.KEYBOARD_SIDE;
+import cs_440.keyacoustics.dictionary.KeyPosition;
+
 /**
  * Represents a letter-pair, such as "ab." Contains data as to the name of the letter-pair,
  * the feature vector associated with it, and whether it is a near or far pair.

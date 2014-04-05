@@ -19,6 +19,8 @@ import java.util.Arrays;
 import javax.swing.*;
 import javax.swing.filechooser.*;
 
+import cs_440.keyacoustics.dictionary.TextStream;
+
 
 public class LoadSpeechWaveform{
 	static FileNameExtensionFilter filter = new FileNameExtensionFilter("Speech waveform files, (.wav)", "wav");

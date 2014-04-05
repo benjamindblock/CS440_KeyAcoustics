@@ -1,3 +1,4 @@
+package cs_440.keyacoustics.dictionary;
 import java.util.ArrayList;
 
 /**

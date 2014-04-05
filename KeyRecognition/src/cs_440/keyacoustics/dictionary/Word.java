@@ -1,3 +1,4 @@
+package cs_440.keyacoustics.dictionary;
 /**
  * This class comprises words that will make up our dictionary.
  * Used when importing the dictionary and when we are checking against it.

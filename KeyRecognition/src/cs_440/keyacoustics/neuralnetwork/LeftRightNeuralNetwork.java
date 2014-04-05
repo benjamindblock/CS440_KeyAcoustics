@@ -1,8 +1,12 @@
+package cs_440.keyacoustics.neuralnetwork;
 import org.neuroph.core.NeuralNetwork;
 import org.neuroph.core.data.DataSet;
 import org.neuroph.core.data.DataSetRow;
 import org.neuroph.nnet.Perceptron;
 import org.neuroph.*;
+
+import cs_440.keyacoustics.dictionary.KEYBOARD_SIDE;
+import cs_440.keyacoustics.features.Letter;
 
 import java.util.ArrayList;
 import java.util.Vector;

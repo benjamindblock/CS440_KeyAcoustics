@@ -1,3 +1,5 @@
+package cs_440.keyacoustics.dictionary;
+
 
 public abstract class Gram {
 	

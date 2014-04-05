@@ -1,4 +1,8 @@
+package cs_440.keyacoustics.features;
 import java.util.ArrayList;
+
+import cs_440.keyacoustics.dictionary.KEYBOARD_SIDE;
+import cs_440.keyacoustics.dictionary.KeyPosition;
 
 /**
  * Represents a letter. Contains data as to the name of the letter,
