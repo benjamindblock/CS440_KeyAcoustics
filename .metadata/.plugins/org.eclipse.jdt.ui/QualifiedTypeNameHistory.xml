@@ -6,7 +6,6 @@
 <fullyQualifiedTypeName name="java.util.Arrays"/>
 <fullyQualifiedTypeName name="jAudioFeatureExtractor.jAudioTools.FFT"/>
 <fullyQualifiedTypeName name="java.util.HashMap"/>
-<fullyQualifiedTypeName name="java.util.Set"/>
 <fullyQualifiedTypeName name="be.ac.ulg.montefiore.run.jahmm.KMeansCalculator"/>
 <fullyQualifiedTypeName name="java.lang.System"/>
 <fullyQualifiedTypeName name="be.ac.ulg.montefiore.run.jahmm.learn.KMeansLearner"/>
@@ -22,4 +21,9 @@
 <fullyQualifiedTypeName name="org.neuroph.core.data.DataSet"/>
 <fullyQualifiedTypeName name="org.neuroph.core.data.DataSetRow"/>
 <fullyQualifiedTypeName name="java.util.ArrayList"/>
+<fullyQualifiedTypeName name="java.sql.Connection"/>
+<fullyQualifiedTypeName name="java.sql.Statement"/>
+<fullyQualifiedTypeName name="java.sql.SQLException"/>
+<fullyQualifiedTypeName name="java.util.HashSet"/>
+<fullyQualifiedTypeName name="java.util.Set"/>
 </qualifiedTypeNameHistroy>

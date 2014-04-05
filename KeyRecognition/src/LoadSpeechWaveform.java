@@ -87,9 +87,11 @@ public class LoadSpeechWaveform{
 
 
 	
-//	public static void main(String[] args) throws IOException{
+	public static void main(String[] args) throws IOException{
 //		Text Stream call
-//		TextStream.textReader();
+		TextStream ts = new TextStream();
+		ts.textReader();
+		ts.insertIntoDatabase();
 //		ArrayList<Character> textArray = TextStream.getArray();
 //		for(int i = 0; i < textArray.size(); i++){
 //			System.out.println(textArray.get(i));
@@ -135,4 +137,4 @@ public class LoadSpeechWaveform{
 ////		}
 //				
 	}
-//}
+}

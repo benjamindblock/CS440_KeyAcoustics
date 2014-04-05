@@ -10,29 +10,38 @@
  */
 public class Bigram {
 	private final int THRESHOLD = 3;
+	private boolean isSpecialCase;
+	private String pair;
+	private KEYBOARD_SIDE charOneSide;
+	private KEYBOARD_SIDE charTwoSide;
+	private DISTANCE dist;
+	private KeyPosition kp1;
+	private KeyPosition kp2;
 	
-	private static String pair;
-	private static KEYBOARD_SIDE charOneSide;
-	private static KEYBOARD_SIDE charTwoSide;
-	private static DISTANCE dist;
-	private static KeyPosition kp1;
-	private static KeyPosition kp2;
 	
-	
-	public Bigram(String str){
+	public Bigram(String str, boolean isSpecial){
 		pair = str;
-		kp1 = new KeyPosition(str.substring(0, 1));
-		kp2 = new KeyPosition(str.substring(1, 2));
+		isSpecialCase = isSpecial;
+		if (isSpecialCase) {
+			kp1 = new KeyPosition(str.substring(0, 1));
+		} else {
+			kp1 = new KeyPosition(str.substring(0, 1));
+			kp2 = new KeyPosition(str.substring(1, 2));
+			setDistance();
+		}
 		setKeyboardSides();
-		setDistance();
 	}
 	
 	public void setKeyboardSides(){
-		charOneSide = kp1.keyboardSide();
-		charTwoSide = kp2.keyboardSide();
+		if(isSpecialCase) {
+			charOneSide = kp1.keyboardSide();
+		} else {
+			charOneSide = kp1.keyboardSide();
+			charTwoSide = kp2.keyboardSide();
+		}	
 	}
 
-	public static String getPair() {
+	public String getPair() {
 		return pair;
 	}
 

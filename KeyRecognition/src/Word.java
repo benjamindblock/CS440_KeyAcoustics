@@ -6,30 +6,44 @@
  *
  */
 public class Word {
-	
-	
+
+
 	private String keyWord;
 	private Bigram[] bigramArray;
-	
+	private int wordLength;
+
 	public Word(String word){
 		keyWord = word;
-		int n = keyWord.length();
-		bigramArray = new Bigram[n-1];
+		wordLength = keyWord.length();
+		if (wordLength == 1) {
+			bigramArray = new Bigram[wordLength];
+		} else {
+			bigramArray = new Bigram[wordLength-1];
+		}
 		createBigramArray();
 	}
-	
+
 	public void createBigramArray(){
-		for(int i = 0; i < keyWord.length()-1; i++){
-			char[] pairArray = new char [2];
-			pairArray[0] = keyWord.charAt(i);
-			pairArray[1] = keyWord.charAt(i+1);
-			String pair = new String(pairArray);
-			Bigram big = new Bigram(pair);
-			bigramArray[i] = big;
-			System.out.println(big.toString());
+		boolean isSpecial = false;
+		if (keyWord.length() == 1) {
+			isSpecial = true;
+			String pair = keyWord;
+			Bigram big = new Bigram(pair, isSpecial);
+			bigramArray[0] = big;
+			//System.out.println(big.toString());
+		} else {
+			for(int i = 0; i < keyWord.length()-1; i++){
+				char[] pairArray = new char [2];
+				pairArray[0] = keyWord.charAt(i);
+				pairArray[1] = keyWord.charAt(i+1);
+				String pair = new String(pairArray);
+				Bigram big = new Bigram(pair, isSpecial);
+				bigramArray[i] = big;
+				//System.out.println(big.toString());
+			}
 		}
 	}
-	
+
 	/**
 	 * Returns the name of this word.
 	 * 
@@ -38,7 +52,11 @@ public class Word {
 	public String getWordName(){
 		return keyWord;
 	}
-	
+
+	public int getWordLength(){
+		return wordLength;
+	} 
+
 	/**
 	 * Returns the bigram array for this word.
 	 * 
@@ -47,5 +65,5 @@ public class Word {
 	public Bigram[] getBigrams(){
 		return bigramArray;
 	}
-		
+
 }

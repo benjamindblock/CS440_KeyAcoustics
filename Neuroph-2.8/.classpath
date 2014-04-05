@@ -7,7 +7,7 @@
 	<classpathentry kind="src" path="Samples/src/main/java"/>
 	<classpathentry kind="src" path="Samples/src/test/java"/>
 	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="JUnit/junit-4.11-sources.jar"/>
-	<classpathentry kind="lib" path="JUnit/junit-4.11.jar"/>
+	<classpathentry kind="lib" path="/Users/walkerbohannan/Downloads/junit-4.11-sources.jar"/>
+	<classpathentry kind="lib" path="/Users/walkerbohannan/Downloads/junit-4.11.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
