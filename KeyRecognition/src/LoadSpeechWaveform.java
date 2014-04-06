@@ -20,6 +20,9 @@ import javax.swing.*;
 import javax.swing.filechooser.*;
 
 import cs_440.keyacoustics.dictionary.TextStream;
+import cs_440.keyacoustics.features.ComputeMFCC;
+import cs_440.keyacoustics.features.PeakAnalysis;
+import cs_440.keyacoustics.features.StandardDeviationCalculator;
 
 
 public class LoadSpeechWaveform{
@@ -87,13 +90,38 @@ public class LoadSpeechWaveform{
         return data;
     }
 
-
+    public static void determineThreshold(int numOfCharacters, double[] trainingData){
+    	System.out.println("Setting threshold (this may take a while)...");
+    	double newThresh = 1.200;
+    	PeakAnalysis pa = new PeakAnalysis(trainingData);
+    	while(numOfCharacters != pa.run()){
+//    		while(pa.run() < numOfCharacters){
+//    			newThresh = newThresh + 0.1;
+//    			pa = new PeakAnalysis(trainingData);
+//        		pa.setThreshold(newThresh);
+//        		System.out.println(newThresh);
+//    		}
+//    		while(pa.run() > numOfCharacters){
+//    			newThresh = newThresh - 0.05;
+//    			pa = new PeakAnalysis(trainingData);
+//        		pa.setThreshold(newThresh);
+//        		System.out.println(newThresh);
+//    		}
+//    		while(pa.run() < numOfCharacters){
+    			newThresh = newThresh + 0.01;
+    			pa = new PeakAnalysis(trainingData);
+        		pa.setThreshold(newThresh);
+        		System.out.println(newThresh);
+    		//}
+    	}
+    	System.out.println("Success! The threshold was set at "+newThresh+" for "+numOfCharacters+" number of characters.");
+    }
 	
 	public static void main(String[] args) throws IOException{
 //		Text Stream call
 		TextStream ts = new TextStream();
 		ts.textReader();
-		ts.insertIntoDatabase();
+		//ts.insertIntoDatabase();
 //		ArrayList<Character> textArray = TextStream.getArray();
 //		for(int i = 0; i < textArray.size(); i++){
 //			System.out.println(textArray.get(i));
@@ -102,11 +130,13 @@ public class LoadSpeechWaveform{
 //		Word w = new Word("patagonia");
 		
 		
-//		double[] trainingData = fileReader(); //Get our first audio file (training data).
+		double[] trainingData = fileReader(); //Get our first audio file (training data).
 //		double[] attackData = fileReader(); //Get our second audio file (audio we want to get text from).
 //		
 //		//Steps for our training data.
-//		PeakAnalysis pa = new PeakAnalysis(trainingData); 
+		//PeakAnalysis pa = new PeakAnalysis(trainingData); 
+		int numOfCharacters = ts.getNumOfCharacters();
+		determineThreshold(numOfCharacters, trainingData);
 //		pa.run(); //Run our peak analysis.
 //		ComputeMFCC cm = new ComputeMFCC(pa.getMFCC()); 
 //		cm.run(); //Run our MFCC calculations
@@ -114,7 +144,7 @@ public class LoadSpeechWaveform{
 //		ArrayList<double[][]> mfcc = cm.getMFCCOutput();
 //		StandardDeviationCalculator sdc = new StandardDeviationCalculator(mfcc);
 //		ArrayList<double[]> mfccData = sdc.run();
-//		KMeans km = new KMeans(mfccData);
+		//KMeans km = new KMeans(mfccData);
 //		
 //		//Steps for our attack data.
 //		PeakAnalysis pa2 = new PeakAnalysis(attackData); 

@@ -21,7 +21,7 @@ public class PeakAnalysis {
 	 * Declaring variables to allow for fine-tuning of peak-analysis characteristics.
 	 */
 	private final int PEAK_WIDTH = -10; //This describes the number of windows on either side of the peak to MFCC.
-	private final double THRESH_VALUE = 1.3645; //How sensitive we want our threshold. A lower THRESH_VALUE will mean
+	private double thresh_value = 1.2; //How sensitive we want our threshold. A lower THRESH_VALUE will mean
 											  //a tighter threshold, but this could exclude peaks that we need.
 	private final int KEY_PRESS_SPACE = 100; //How much space between peaks we want to assert. Each increase +1 in the
 											//int is ~2ms in audio data. So a value of 50 is 100ms.
@@ -65,39 +65,48 @@ public class PeakAnalysis {
 		mfcc = new ArrayList<List<Double>>();
 	}
 	
+	public void setThreshold(double newThresh){
+		thresh_value = newThresh;
+	}
+	
+	
 	/**
 	 * Runs the whole Peak Finder algorithm.
+	 * 
+	 * Returns the number of peaks.
 	 */
-	public void run(){
+	public int run(){
+		HashMap<Integer, Double> peaks;
 		if(USE_DELTA_VECTORS){ //Use delta vectors to find peaks and such.
 			split();
 			double[] normalized = normalize(doFFT());
 			double[] vector = deltaVector(normalized);
 			double thresh = computeThreshold(vector);
-			HashMap<Integer, Double> peaks = findPeaks(thresh, vector);
+			peaks = findPeaks(thresh, vector);
 			setMFCC(peaks);
 //			ArrayList<Peak> peaks = getPeaks(thresh, vector);
 //			setUpMFCC(peaks);
 
 			System.out.println("Threshold is "+thresh);
 			System.out.println("Number of peaks is "+peaks.size());
-			System.out.println("Peaks are: "+peaks.toString());
-			System.out.println(mfcc.size());
+			//System.out.println("Peaks are: "+peaks.toString());
+			//System.out.println(mfcc.size());
 		}else{ //Do not use delta vectors, just normalized data.
 			split();
 			double[] normalized = normalize(doFFT());
 			double thresh = computeThreshold(normalized);
-			HashMap<Integer, Double> peaks = findPeaks(thresh, normalized);
+			peaks = findPeaks(thresh, normalized);
 			setMFCC(peaks);
 //			ArrayList<Peak> peaks = getPeaks(thresh, normalized);
 //			setUpMFCC(peaks);
 			
 			System.out.println("Threshold is "+thresh);
 			System.out.println("Number of peaks is "+peaks.size());
-			System.out.println("Peaks are: "+peaks.toString());
-			System.out.println(mfcc.size());
+//			System.out.println("Peaks are: "+peaks.toString());
+//			System.out.println(mfcc.size());
+//			
 		}
-		
+		return peaks.size();
 	}
 	
 	/**
@@ -131,7 +140,7 @@ public class PeakAnalysis {
 			System.err.println("Padding our array because it has less than 3 values.");
 		}
 		
-		System.out.println("audioData's length is: "+audioData.length+"\nsamples's length is:"+samples.size());
+		//System.out.println("audioData's length is: "+audioData.length+"\nsamples's length is:"+samples.size());
 		
 	}
 	
@@ -215,7 +224,7 @@ public class PeakAnalysis {
 			}
 		}
 		
-		System.out.println("Max is "+max+" at position "+maxPos+" and Min is "+min+" at position "+minPos);
+		//System.out.println("Max is "+max+" at position "+maxPos+" and Min is "+min+" at position "+minPos);
 		
 		//Now normalize with those results.
 		for(int x = 0; x < input.size(); x++){
@@ -264,7 +273,7 @@ public class PeakAnalysis {
 			}
 		}
 		
-		threshold = max/THRESH_VALUE;
+		threshold = max/thresh_value;
 		return threshold;
 	}
 	

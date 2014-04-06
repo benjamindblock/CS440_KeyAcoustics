@@ -22,14 +22,13 @@ import java.util.Vector;
 
 public class NearFarNeuralNetwork {
 
-	private NeuralNetwork neuralNetwork;
+	private static NeuralNetwork neuralNetwork;
 	
-	//Create a new neural netowrk
-	public NearFarNeuralNetwork(ArrayList<LetterPair> letterPairs){
-
+	public static void trainNetwork(ArrayList<LetterPair> letterPairs){
+		
 		/**
 		 *
-		 * We want our neural network to have five inputs and one output.
+		 * We want our neural network to have four inputs and one output.
 		 * 
 		 * Inputs
 		 * 1. Standard Deviation of MFCC of the first letter in the pair.
@@ -65,8 +64,6 @@ public class NearFarNeuralNetwork {
 
 		// Test perceptron
 //		testNeuralNetwork(myPerceptron, trainingSet); //we need to create a test method
-
-		
 	}
 	
 	/**
@@ -76,12 +73,18 @@ public class NearFarNeuralNetwork {
 	 * @param inputs The Feature Vectors for each letter.
 	 * @return An ArrayList with near or far values for every letter pair passed to the neural network.
 	 */
-	public ArrayList<Double> evaluateValues(ArrayList<double[]> inputs){
+	public static ArrayList<Double> evaluateValues(ArrayList<double[]> inputs){
 		
 		ArrayList<Double> ret = new ArrayList<Double>();
 		
-		for(int i = 0; i < inputs.size(); i++){
-			neuralNetwork.setInput(inputs.get(i));
+		for(int i = 0; i < inputs.size()-1; i++){
+			double[] input = new double[4];
+			input[0] = inputs.get(i)[0];
+			input[1] = inputs.get(i)[1];
+			input[2] = inputs.get(i+1)[0];
+			input[3] = inputs.get(i+1)[1];
+			
+			neuralNetwork.setInput(input);
 			neuralNetwork.calculate();
 			double[] output = neuralNetwork.getOutput();
 			ret.add(output[0]);

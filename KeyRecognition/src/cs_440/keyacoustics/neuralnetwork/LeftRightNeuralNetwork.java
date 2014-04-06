@@ -21,10 +21,9 @@ import java.util.Vector;
  */
 public class LeftRightNeuralNetwork {
 
-	private NeuralNetwork neuralNetwork;
+	private static NeuralNetwork neuralNetwork;
 	
-	public LeftRightNeuralNetwork(ArrayList<Letter> letters){
-		
+	public static void trainNetwork(ArrayList<Letter> letters){
 		/**
 		 *
 		 * We want our neural network to have two inputs and one output:
@@ -59,7 +58,6 @@ public class LeftRightNeuralNetwork {
 
 		// Test perceptron
 //		testNeuralNetwork(myPerceptron, trainingSet); //we need to create a test method
-	
 	}
 	
 	/**
@@ -69,7 +67,7 @@ public class LeftRightNeuralNetwork {
 	 * @param inputs The Feature Vectors for each letter.
 	 * @return An ArrayList with left or right values for every letter pair passed to the neural network.
 	 */
-	public ArrayList<Double> evaluateValues(ArrayList<double[]> inputs){
+	public static ArrayList<Double> evaluateValues(ArrayList<double[]> inputs){
 		
 		ArrayList<Double> ret = new ArrayList<Double>();
 		

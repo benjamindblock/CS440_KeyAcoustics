@@ -33,6 +33,7 @@ public class TextStream {
 	private File inFile;
 	public ArrayList<Character> characterList = new ArrayList<Character>();
 	public ArrayList<Word> wordList = new ArrayList<Word>();
+	private int numOfCharacters;
 
 	public void textReader() throws IOException{
 		fileChooser.setFileFilter(filter);
@@ -86,10 +87,18 @@ public class TextStream {
 	private void createCharacterList(Reader reader)
 			throws IOException {
 		int r;
+		int counter = 0;
 		while ((r = reader.read()) != -1) {
 			char ch = (char) r;
 			characterList.add(ch);
+			counter++;
 		}
+		numOfCharacters = counter;
+	}
+	
+	public int getNumOfCharacters(){
+		System.out.println("Number of Characters: "+numOfCharacters);
+		return numOfCharacters;
 	}
 
 	public ArrayList<Character> getArray(){
@@ -126,7 +135,8 @@ public class TextStream {
 			for(int i = 0; i < wordList.size(); i++){
 				String insertWord = "INSERT INTO WORD " +
 						" VALUES ( \'"+wordList.get(i).getWordName()+"\', " +
-						wordList.get(i).getWordLength() + ", ";
+						wordList.get(i).getWordLength() + ", " +
+						i + ",";
 				Bigram[] bigrams = wordList.get(i).getBigrams();
 				for(int j = 0; j <= 29; j++){
 					if( j == 29) {
@@ -159,7 +169,7 @@ public class TextStream {
 									charSideOne + ", " +
 									charSideTwo + ", " +
 									distance + " )";
-							System.out.println(insertBigram);
+							//System.out.println(insertBigram);
 							stmt.executeUpdate(insertBigram);
 						}
 						
@@ -169,7 +179,7 @@ public class TextStream {
 					}
 				}
 				sql = insertWord + " )";
-				//System.out.println(sql);
+				System.out.println(sql);
 				stmt.executeUpdate(sql);
 			}
 
