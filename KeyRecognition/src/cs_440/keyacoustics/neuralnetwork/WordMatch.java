@@ -27,6 +27,11 @@ public class WordMatch {
 	public WordMatch(WordProfile wp){
 		potentialMatches = new ArrayList<String>();
 		predictionProfile = wp.getWordProfile();
+		for(int i = 0; i < predictionProfile.size(); i++){
+			for(int j = 0; j < predictionProfile.get(i).length; j++){
+				System.out.println("Prediction profile"+predictionProfile.get(i)[j]);
+			}
+		}
 		this.wp = wp;
 
 		try {
@@ -50,7 +55,7 @@ public class WordMatch {
 				curScore = score;
 				wordPos = i;
 			}else if(score == -1){
-				System.err.print("Words are not the same length. Uh oh.");
+				//System.err.print("Words are not the same length. Uh oh.\n");
 			}
 
 		}
@@ -93,14 +98,15 @@ public class WordMatch {
 	public void getWords() throws SQLException {
 
 		Statement stmt = null;
-		String query = "SELECT id" +
-					   "FROM WORD" +
-					   "WHERE WORD.word_length = "+wp.getWordLength();
+		String query = 	" SELECT * FROM WORD "+
+						" WHERE word_length = "+wp.getWordLength();
 		try {
+			System.out.println("I'm here");
 			stmt = con.createStatement();
 			ResultSet rs = stmt.executeQuery(query);
 			while (rs.next()) {
-				String word = rs.getString("id");
+				String word = rs.getString("WORD.id");
+				System.out.println("Word:"+word);
 				potentialMatches.add(word);
 			}
 		} catch (SQLException se ) {
@@ -109,6 +115,11 @@ public class WordMatch {
 			e.printStackTrace();
 		}finally {
 			if (stmt != null) { stmt.close();  }
+		}
+		
+		System.out.println("List of potential matches for word length of "+wp.getWordLength()+": ");
+		for(int i = 0; i < potentialMatches.size(); i++){
+			System.out.println(potentialMatches.get(i));
 		}
 	}
 

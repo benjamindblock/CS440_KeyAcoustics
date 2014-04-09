@@ -153,7 +153,7 @@ public class TextStream {
 								charSideOne = 1;
 							}
 							int charSideTwo;
-							if((bigrams[j].getPair().length() == 2) && (bigrams[j].getCharTwoSide().equals(KEYBOARD_SIDE.LEFT))){
+							if((bigrams[j].getPair().length() == 2) && (bigrams[j].getCharTwoSide().equals	(KEYBOARD_SIDE.LEFT))){
 								charSideTwo = 0;
 							} else {
 								charSideTwo = 1;

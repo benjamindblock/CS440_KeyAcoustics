@@ -23,6 +23,9 @@ import cs_440.keyacoustics.dictionary.TextStream;
 import cs_440.keyacoustics.features.ComputeMFCC;
 import cs_440.keyacoustics.features.PeakAnalysis;
 import cs_440.keyacoustics.features.StandardDeviationCalculator;
+import cs_440.keyacoustics.features.TrainNetworks;
+import cs_440.keyacoustics.neuralnetwork.WordMatch;
+import cs_440.keyacoustics.neuralnetwork.WordProfile;
 
 
 public class LoadSpeechWaveform{
@@ -32,8 +35,9 @@ public class LoadSpeechWaveform{
 	private static final double MAX_16_BIT = Short.MAX_VALUE;     // 32,767
 
 	
-	public static double[] fileReader() throws FileNotFoundException{
+	public static double[] fileReader(String audioType) throws FileNotFoundException{
 		fileChooser.setFileFilter(filter);
+		fileChooser.setDialogTitle("Select file for "+audioType+".");
 		if (fileChooser.showOpenDialog(null) != JFileChooser.APPROVE_OPTION)
 			throw new Error("Input file not selected");
 		inFile = fileChooser.getSelectedFile();
@@ -90,7 +94,7 @@ public class LoadSpeechWaveform{
         return data;
     }
 
-    public static void determineThreshold(int numOfCharacters, double[] trainingData){
+    public static double determineThreshold(int numOfCharacters, double[] trainingData){
     	System.out.println("Setting threshold (this may take a while)...");
     	double newThresh = 1.200;
     	PeakAnalysis pa = new PeakAnalysis(trainingData);
@@ -115,6 +119,7 @@ public class LoadSpeechWaveform{
     		//}
     	}
     	System.out.println("Success! The threshold was set at "+newThresh+" for "+numOfCharacters+" number of characters.");
+    	return newThresh;
     }
 	
 	public static void main(String[] args) throws IOException{
@@ -130,31 +135,40 @@ public class LoadSpeechWaveform{
 //		Word w = new Word("patagonia");
 		
 		
-		double[] trainingData = fileReader(); //Get our first audio file (training data).
-//		double[] attackData = fileReader(); //Get our second audio file (audio we want to get text from).
+		double[] trainingData = fileReader("training data"); //Get our first audio file (training data).
+		double[] attackData = fileReader("attack data"); //Get our second audio file (audio we want to get text from).
 //		
 //		//Steps for our training data.
-		//PeakAnalysis pa = new PeakAnalysis(trainingData); 
 		int numOfCharacters = ts.getNumOfCharacters();
-		determineThreshold(numOfCharacters, trainingData);
-//		pa.run(); //Run our peak analysis.
-//		ComputeMFCC cm = new ComputeMFCC(pa.getMFCC()); 
-//		cm.run(); //Run our MFCC calculations
+		double threshold = determineThreshold(numOfCharacters, trainingData);
+		PeakAnalysis pa = new PeakAnalysis(trainingData); 
+		pa.setThreshold(threshold);
+		pa.run(); //Run our peak analysis.
+		ComputeMFCC cm = new ComputeMFCC(pa.getMFCC()); 
+		cm.run(); //Run our MFCC calculations
 //		System.out.println(cm.getMFCCOutput().size());
-//		ArrayList<double[][]> mfcc = cm.getMFCCOutput();
-//		StandardDeviationCalculator sdc = new StandardDeviationCalculator(mfcc);
-//		ArrayList<double[]> mfccData = sdc.run();
-		//KMeans km = new KMeans(mfccData);
-//		
-//		//Steps for our attack data.
-//		PeakAnalysis pa2 = new PeakAnalysis(attackData); 
-//		pa2.run(); //Run our peak analysis.
-//		ComputeMFCC cm2 = new ComputeMFCC(pa2.getMFCC()); 
-//		cm2.run(); //Run our MFCC calculations
+		ArrayList<double[][]> mfcc = cm.getMFCCOutput();
+		StandardDeviationCalculator sdc = new StandardDeviationCalculator(mfcc);
+		ArrayList<double[]> mfccData = sdc.run();
+		System.out.println("Training neural networks...");
+		TrainNetworks tn = new TrainNetworks(ts.getArray(), mfccData);
+		
+	
+		//Steps for our attack data.
+		threshold = determineThreshold(5, attackData);
+		PeakAnalysis pa2 = new PeakAnalysis(attackData); 
+		pa2.setThreshold(threshold); 
+		pa2.run(); //Run our peak analysis.
+		ComputeMFCC cm2 = new ComputeMFCC(pa2.getMFCC()); 
+		cm2.run(); //Run our MFCC calculations
 //		System.out.println(cm2.getMFCCOutput().size());
-//		ArrayList<double[][]> mfcc2 = cm2.getMFCCOutput();
-//		StandardDeviationCalculator sdc2 = new StandardDeviationCalculator(mfcc2);
-//		ArrayList<double[]> mfccData2 = sdc2.run();
+		ArrayList<double[][]> mfcc2 = cm2.getMFCCOutput();
+		StandardDeviationCalculator sdc2 = new StandardDeviationCalculator(mfcc2);
+		ArrayList<double[]> mfccData2 = sdc2.run();
+		System.out.println(mfccData2.get(0)[0]);
+		WordMatch wm = new WordMatch(new WordProfile(mfccData2));
+		System.out.println("Predicted word is :"+wm.findWord());
+		
 //		
 //		TextRetrieval tr = new TextRetrieval(km.getModels(), mfccData2);
 //		System.out.println("You typed: " + tr.getUtterance() + " ?");

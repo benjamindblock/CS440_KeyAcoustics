@@ -33,6 +33,7 @@ public class CreateTable {
 			String sql = 	"CREATE TABLE WORD " +
 					"(id VARCHAR(255) not NULL, " +
 					" word_length INTEGER, " + 
+					" frequency INTEGER, " +
 					" bigram_1 VARCHAR(255), " +
 					" bigram_2 VARCHAR(255), " +
 					" bigram_3 VARCHAR(255), " +

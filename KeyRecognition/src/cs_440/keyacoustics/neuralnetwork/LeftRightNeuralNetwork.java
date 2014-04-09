@@ -21,7 +21,7 @@ import java.util.Vector;
  */
 public class LeftRightNeuralNetwork {
 
-	private static NeuralNetwork neuralNetwork;
+	private static NeuralNetwork neuralNetwork = new Perceptron(2, 1);
 	
 	public static void trainNetwork(ArrayList<Letter> letters){
 		/**
@@ -37,7 +37,7 @@ public class LeftRightNeuralNetwork {
 		 * returned 1 means the letter is on the right.
 		 */
 		
-		neuralNetwork = new Perceptron(2, 1);
+//		neuralNetwork = new Perceptron(2, 1);
 		
 		// Create our training set.
 		DataSet trainingSet = new DataSet(2, 1); 
@@ -72,6 +72,7 @@ public class LeftRightNeuralNetwork {
 		ArrayList<Double> ret = new ArrayList<Double>();
 		
 		for(int i = 0; i < inputs.size(); i++){
+			System.out.println("In evaluateValues loop, i = "+i+", inputs.size() = "+inputs.size());
 			neuralNetwork.setInput(inputs.get(i));
 			neuralNetwork.calculate();
 			double[] output = neuralNetwork.getOutput();

@@ -22,7 +22,7 @@ import java.util.Vector;
 
 public class NearFarNeuralNetwork {
 
-	private static NeuralNetwork neuralNetwork;
+	private static NeuralNetwork neuralNetwork = new Perceptron(4, 1);
 	
 	public static void trainNetwork(ArrayList<LetterPair> letterPairs){
 		
@@ -41,7 +41,7 @@ public class NearFarNeuralNetwork {
 		 * returned 1 means the letter pair is far.
 		 */
 		
-		neuralNetwork = new Perceptron(4, 1);
+//		neuralNetwork = new Perceptron(4, 1);
 		
 		// Create our training set.
 		DataSet trainingSet = new DataSet(4, 1); 

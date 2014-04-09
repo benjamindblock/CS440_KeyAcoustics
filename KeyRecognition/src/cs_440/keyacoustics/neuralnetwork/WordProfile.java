@@ -7,7 +7,7 @@ public class WordProfile {
 	private ArrayList <double []> wordProfile;
 	private int wordLength;
 	
-	public WordProfile(ArrayList<double []> input, LeftRightNeuralNetwork lr, NearFarNeuralNetwork nf) {
+	public WordProfile(ArrayList<double []> input) {
 		
 		wordProfile = new ArrayList<double []>();
 		wordLength = input.size();

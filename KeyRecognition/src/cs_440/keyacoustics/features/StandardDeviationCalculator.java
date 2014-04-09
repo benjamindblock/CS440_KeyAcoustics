@@ -41,8 +41,8 @@ public class StandardDeviationCalculator {
 		}
 		ret[0] = mean;
 		ret[1] = Math.sqrt(variance);
-		//System.out.print("Mean: "+ret[0]+"\n");
-		//System.out.print("Standard Deviation: "+ret[1]+"\n");
+//		System.out.print("Mean: "+ret[0]+"\n");
+//		System.out.print("Standard Deviation: "+ret[1]+"\n");
 		return ret;
 	} 
 	

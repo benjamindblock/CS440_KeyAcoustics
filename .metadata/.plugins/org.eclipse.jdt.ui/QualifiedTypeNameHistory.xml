@@ -20,10 +20,16 @@
 <fullyQualifiedTypeName name="java.io.FileInputStream"/>
 <fullyQualifiedTypeName name="org.neuroph.core.data.DataSet"/>
 <fullyQualifiedTypeName name="org.neuroph.core.data.DataSetRow"/>
-<fullyQualifiedTypeName name="java.util.ArrayList"/>
 <fullyQualifiedTypeName name="java.sql.Connection"/>
 <fullyQualifiedTypeName name="java.sql.Statement"/>
 <fullyQualifiedTypeName name="java.sql.SQLException"/>
 <fullyQualifiedTypeName name="java.util.HashSet"/>
 <fullyQualifiedTypeName name="java.util.Set"/>
+<fullyQualifiedTypeName name="java.util.ArrayList"/>
+<fullyQualifiedTypeName name="cs_440.keyacoustics.features.PeakAnalysis"/>
+<fullyQualifiedTypeName name="cs_440.keyacoustics.features.ComputeMFCC"/>
+<fullyQualifiedTypeName name="cs_440.keyacoustics.features.StandardDeviationCalculator"/>
+<fullyQualifiedTypeName name="cs_440.keyacoustics.features.TrainNetworks"/>
+<fullyQualifiedTypeName name="cs_440.keyacoustics.neuralnetwork.WordMatch"/>
+<fullyQualifiedTypeName name="cs_440.keyacoustics.neuralnetwork.WordProfile"/>
 </qualifiedTypeNameHistroy>
