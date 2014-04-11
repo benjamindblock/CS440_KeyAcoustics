@@ -96,9 +96,9 @@ public class LoadSpeechWaveform{
 
     public static double determineThreshold(int numOfCharacters, double[] trainingData){
     	System.out.println("Setting threshold (this may take a while)...");
-    	double newThresh = 1.3;
-    	PeakAnalysis pa = new PeakAnalysis(trainingData);
-    	while(numOfCharacters != pa.run()){
+    	double newThresh = 5.00;
+    	PeakAnalysis pa = new PeakAnalysis();
+    	while(numOfCharacters != pa.run(trainingData)){
 //    		while(pa.run() < numOfCharacters){
 //    			newThresh = newThresh + 0.1;
 //    			pa = new PeakAnalysis(trainingData);
@@ -112,8 +112,8 @@ public class LoadSpeechWaveform{
 //        		System.out.println(newThresh);
 //    		}
 //    		while(pa.run() < numOfCharacters){
-    			newThresh = newThresh + 0.01;
-    			pa = new PeakAnalysis(trainingData);
+    			newThresh = newThresh + 50.0;
+    			pa = new PeakAnalysis();
         		pa.setThreshold(newThresh);
         		System.out.println(newThresh);
     		//}
@@ -141,9 +141,9 @@ public class LoadSpeechWaveform{
 //		//Steps for our training data.
 		int numOfCharacters = ts.getNumOfCharacters();
 		double threshold = determineThreshold(numOfCharacters, trainingData);
-		PeakAnalysis pa = new PeakAnalysis(trainingData); 
+		PeakAnalysis pa = new PeakAnalysis(); 
 		pa.setThreshold(threshold);
-		pa.run(); //Run our peak analysis.
+		pa.run(trainingData);
 		ComputeMFCC cm = new ComputeMFCC(pa.getMFCC()); 
 		cm.run(); //Run our MFCC calculations
 //		System.out.println(cm.getMFCCOutput().size());
@@ -156,9 +156,9 @@ public class LoadSpeechWaveform{
 	
 		//Steps for our attack data.
 		threshold = determineThreshold(5, attackData);
-		PeakAnalysis pa2 = new PeakAnalysis(attackData); 
-		pa2.setThreshold(threshold); 
-		pa2.run(); //Run our peak analysis.
+		PeakAnalysis pa2 = new PeakAnalysis(); 
+		pa2.setThreshold(threshold);
+		pa2.run(attackData);
 		ComputeMFCC cm2 = new ComputeMFCC(pa2.getMFCC()); 
 		cm2.run(); //Run our MFCC calculations
 //		System.out.println(cm2.getMFCCOutput().size());

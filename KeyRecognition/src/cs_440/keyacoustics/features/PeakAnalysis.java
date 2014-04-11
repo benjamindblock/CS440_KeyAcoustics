@@ -10,7 +10,6 @@ import java.util.Set;
 
 public class PeakAnalysis {
 
-	double[] audioData; //This is our original audio data that is inputted to us.
 	ArrayList<List<Double>> samples; //Our array list of lists. Each list contained within "samples"
 									 //is a "window" of audio data. Each window is 100 samples long (~2ms).
 	private ArrayList<List<Double>> mfcc; //Our array list of lists. Each list contained within "mfcc" is a 40ms
@@ -21,7 +20,7 @@ public class PeakAnalysis {
 	 * Declaring variables to allow for fine-tuning of peak-analysis characteristics.
 	 */
 	private final int PEAK_WIDTH = -10; //This describes the number of windows on either side of the peak to MFCC.
-	private double thresh_value = 1.3; //How sensitive we want our threshold. A lower THRESH_VALUE will mean
+	private double thresh_value = 5.0; //How sensitive we want our threshold. A lower THRESH_VALUE will mean
 											  //a tighter threshold, but this could exclude peaks that we need.
 	private final int KEY_PRESS_SPACE = 100; //How much space between peaks we want to assert. Each increase +1 in the
 											//int is ~2ms in audio data. So a value of 50 is 100ms.
@@ -59,8 +58,8 @@ public class PeakAnalysis {
 	 * 
 	 * @param audioData Our audio data that we are analyzing
 	 */
-	public PeakAnalysis(double[] audioData){
-		this.audioData = audioData;
+	public PeakAnalysis(){
+		System.out.println("In peak analysis.");
 		samples = new ArrayList<List<Double>>();
 		mfcc = new ArrayList<List<Double>>();
 	}
@@ -75,10 +74,10 @@ public class PeakAnalysis {
 	 * 
 	 * Returns the number of peaks.
 	 */
-	public int run(){
+	public int run(double[] audioData){
 		HashMap<Integer, Double> peaks;
 		if(USE_DELTA_VECTORS){ //Use delta vectors to find peaks and such.
-			split();
+			split(audioData);
 			double[] normalized = normalize(doFFT());
 			double[] vector = deltaVector(normalized);
 			double thresh = computeThreshold(vector);
@@ -92,7 +91,7 @@ public class PeakAnalysis {
 			//System.out.println("Peaks are: "+peaks.toString());
 			//System.out.println(mfcc.size());
 		}else{ //Do not use delta vectors, just normalized data.
-			split();
+			split(audioData);
 			double[] normalized = normalize(doFFT());
 			double thresh = computeThreshold(normalized);
 			peaks = findPeaks(thresh, normalized);
@@ -114,7 +113,7 @@ public class PeakAnalysis {
 	 * Each of these chunks is a list of doubles, and then each of these lists is placed
 	 * into our global sample bank called "samples."
 	 */
-	private void split(){
+	private void split(double[] audioData){
 		int globalCounter = 0;
 		int arrayCounter = 0;
 		boolean needToPad = false;
