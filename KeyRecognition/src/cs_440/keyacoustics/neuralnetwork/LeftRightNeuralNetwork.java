@@ -62,7 +62,7 @@ public class LeftRightNeuralNetwork {
 	
 	/**
 	 * Our method that runs our keypresses through the neural network.
-	 * The network takes four inputs (two for each letter in the pair), and gives one output.
+	 * The network takes two inputs and gives one output.
 	 * 
 	 * @param inputs The Feature Vectors for each letter.
 	 * @return An ArrayList with left or right values for every letter pair passed to the neural network.

@@ -7,7 +7,6 @@
 <fullyQualifiedTypeName name="jAudioFeatureExtractor.jAudioTools.FFT"/>
 <fullyQualifiedTypeName name="java.util.HashMap"/>
 <fullyQualifiedTypeName name="be.ac.ulg.montefiore.run.jahmm.KMeansCalculator"/>
-<fullyQualifiedTypeName name="java.lang.System"/>
 <fullyQualifiedTypeName name="be.ac.ulg.montefiore.run.jahmm.learn.KMeansLearner"/>
 <fullyQualifiedTypeName name="java.util.List"/>
 <fullyQualifiedTypeName name="org.oc.ocvolume.dsp.fftExtraction"/>
@@ -25,11 +24,13 @@
 <fullyQualifiedTypeName name="java.sql.SQLException"/>
 <fullyQualifiedTypeName name="java.util.HashSet"/>
 <fullyQualifiedTypeName name="java.util.Set"/>
-<fullyQualifiedTypeName name="java.util.ArrayList"/>
 <fullyQualifiedTypeName name="cs_440.keyacoustics.features.PeakAnalysis"/>
 <fullyQualifiedTypeName name="cs_440.keyacoustics.features.ComputeMFCC"/>
 <fullyQualifiedTypeName name="cs_440.keyacoustics.features.StandardDeviationCalculator"/>
 <fullyQualifiedTypeName name="cs_440.keyacoustics.features.TrainNetworks"/>
 <fullyQualifiedTypeName name="cs_440.keyacoustics.neuralnetwork.WordMatch"/>
 <fullyQualifiedTypeName name="cs_440.keyacoustics.neuralnetwork.WordProfile"/>
+<fullyQualifiedTypeName name="java.lang.System"/>
+<fullyQualifiedTypeName name="org.omg.CORBA.TIMEOUT"/>
+<fullyQualifiedTypeName name="java.util.ArrayList"/>
 </qualifiedTypeNameHistroy>

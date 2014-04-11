@@ -1,5 +1,6 @@
 package cs_440.keyacoustics.database;
 import java.sql.*;
+import java.util.ArrayList;
 
 
 public class SelectDatabase {
@@ -13,6 +14,47 @@ public class SelectDatabase {
 	//  Database credentials
 	static final String USER = "root";
 	static final String PASS = "";
+	
+	public ArrayList<String> queryWordMatches(String word) {
+		ArrayList<String> matches = new ArrayList<String>();
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		try{
+			Class.forName(JDBC_DRIVER);
+			conn = DriverManager.getConnection(DB_URL, USER, PASS);
+			stmt = conn.prepareStatement("SELECT * FROM WORD  WHERE word_length = "+word.length()); 
+			ResultSet rs = stmt.executeQuery();
+			while(rs.next()) {
+				String id = rs.getString(0);
+				matches.add(id);
+			}
+			rs.close();
+		}catch(SQLException se){
+			se.printStackTrace();
+		}catch(Exception e){
+			e.printStackTrace();
+		}finally{
+			if (stmt != null){
+				try {
+					stmt.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if (conn != null){
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		return matches;
+	}
+	
+	
 
 	public static void main(String[] args) {
 		Connection conn = null;
@@ -27,18 +69,16 @@ public class SelectDatabase {
 			System.out.println("Connected database successfully...");
 
 			//STEP 4: Execute a query
-			System.out.println("Creating table in given database...");
 			stmt = conn.createStatement();
-
-			String sql = 	" SELECT * FROM WORD "+
+			System.out.println("Selecting from database...");
+			String sql = 	" SELECT word_id FROM BIGRAM "+
 							" WHERE word_length = 5 ";
 			
 			ResultSet rs = stmt.executeQuery(sql);
 			while(rs.next()) {
 				String id = rs.getString("id");
-				System.out.println(id);
+//				testList.add(id);
 			}
-			System.out.println("Created table in given database...");
 		}catch(SQLException se){
 			//Handle errors for JDBC
 			se.printStackTrace();
@@ -59,6 +99,7 @@ public class SelectDatabase {
 				se.printStackTrace();
 			}//end finally try
 		}//end try
+//		System.out.println(testList.size());
 		System.out.println("Goodbye!");
 	}//end main
 }

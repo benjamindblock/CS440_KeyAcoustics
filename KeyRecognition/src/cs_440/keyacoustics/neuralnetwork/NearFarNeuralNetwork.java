@@ -16,7 +16,7 @@ import java.util.Vector;
  * if a letter pair, when passed to the network, has a near or far
  * relationship
  * 
- * @author Ben Blocka and Walker Bohannan
+ * @author Ben Block and Walker Bohannan
  *
  */
 
@@ -89,7 +89,7 @@ public class NearFarNeuralNetwork {
 			double[] output = neuralNetwork.getOutput();
 			ret.add(output[0]);
 		}
-		
+		System.out.println("ret : "+ret);
 		return ret;
 	}
 

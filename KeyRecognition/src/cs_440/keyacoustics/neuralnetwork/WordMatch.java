@@ -2,10 +2,13 @@ package cs_440.keyacoustics.neuralnetwork;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+
+import org.omg.CORBA.TIMEOUT;
 
 /**
  * Word Match is used to go through the dictionary and match predictions to actual words. 
@@ -23,21 +26,49 @@ public class WordMatch {
 	private WordProfile wp;
 	private String foundWord;
 	Connection con;
+	static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";  
+	static final String DB_URL = "jdbc:mysql://localhost:3306/DICTIONARY";
+	static final int COLUMN_MAX = 34;
 
+	//  Database credentials
+	static final String USER = "root";
+	static final String PASS = "";
+	
+	
 	public WordMatch(WordProfile wp){
 		potentialMatches = new ArrayList<String>();
 		predictionProfile = wp.getWordProfile();
 		for(int i = 0; i < predictionProfile.size(); i++){
 			for(int j = 0; j < predictionProfile.get(i).length; j++){
-				System.out.println("Prediction profile"+predictionProfile.get(i)[j]);
+				System.out.println("Prediction profile: "+predictionProfile.get(i)[j]);
 			}
 		}
 		this.wp = wp;
 
+		ArrayList<String> wordMatches = queryWordMatches(wp.getWordLength());
+		int maxScore = 0;
+		int finalWordPos = 0;
+		for(int i = 0; i < wordMatches.size(); i++){
+//			System.out.println(i+": "+wordMatches.get(i));
+			ArrayList<String> bigrams = queryFindBigrams(wordMatches.get(i));
+			ArrayList<double[]> wordProfile = new ArrayList<double[]>();
+			for(int j = 0; j < bigrams.size(); j++){
+				double[] bigramProfile = queryFindBigramProfile(bigrams.get(j));
+				wordProfile.add(bigramProfile);
+			}
+			int score = compareProfiles(predictionProfile, wordProfile);
+			if(score > maxScore){
+				maxScore = score;
+				finalWordPos = i;
+			}
+		}
+		
+		System.out.println("Best word is: "+wordMatches.get(finalWordPos)+" with a score of: "+maxScore);
+		
 		try {
 			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/DICTIONARY", "root", "");
-			getWords();
-			foundWord = findWord();
+//			getWords();
+//			foundWord = findWord(wordMatches);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -45,12 +76,12 @@ public class WordMatch {
 
 	}
 
-	public String findWord(){
+	public String findWord(ArrayList<String> wordMatches){
 		int curScore = 0;
 		int wordPos = 0;
 
-		for(int i = 0; i < potentialMatches.size(); i++){
-			int score = compareProfiles(predictionProfile, getWordProfile(potentialMatches.get(i)));
+		for(int i = 0; i < wordMatches.size(); i++){
+			int score = compareProfiles(predictionProfile, getWordProfile(wordMatches.get(i)));
 			if(curScore < score){
 				curScore = score;
 				wordPos = i;
@@ -60,7 +91,7 @@ public class WordMatch {
 
 		}
 
-		return potentialMatches.get(wordPos);
+		return wordMatches.get(wordPos);
 
 	}
 
@@ -74,7 +105,7 @@ public class WordMatch {
 	 */
 	public int compareProfiles(ArrayList<double[]> wordOne, ArrayList<double[]> wordTwo){
 		int score = 0;
-
+		//System.out.println("WordOne size: " +wordOne.size()+"\nWordTwo size: "+wordTwo.size());
 		if(wordOne.size() == wordTwo.size()){
 			for(int i = 0; i < wordOne.size(); i++){
 				for(int j = 0; j < 3; j++){
@@ -90,6 +121,135 @@ public class WordMatch {
 		return score;
 	}
 
+	public ArrayList<String> queryWordMatches(int wordLength) {
+		ArrayList<String> matches = new ArrayList<String>();
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		try{
+			Class.forName(JDBC_DRIVER);
+			conn = DriverManager.getConnection(DB_URL, USER, PASS);
+			stmt = conn.prepareStatement("SELECT * FROM WORD  WHERE word_length = "+wordLength); 
+			ResultSet rs = stmt.executeQuery();
+			while(rs.next()) {
+				String id = rs.getString(1);
+				matches.add(id);
+			}
+			rs.close();
+		}catch(SQLException se){
+			se.printStackTrace();
+		}catch(Exception e){
+			e.printStackTrace();
+		}finally{
+			if (stmt != null){
+				try {
+					stmt.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if (conn != null){
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		return matches;
+	}
+	
+	public ArrayList<String> queryFindBigrams(String word) {
+		ArrayList<String> matches = new ArrayList<String>();
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		try{
+			Class.forName(JDBC_DRIVER);
+			conn = DriverManager.getConnection(DB_URL, USER, PASS);
+			stmt = conn.prepareStatement("SELECT * FROM WORD WHERE id = \'"+word+"\'"); 
+			ResultSet rs = stmt.executeQuery();
+			int column = 4; 								// Bigrams start at column 4.
+			rs.next();
+			while(column < COLUMN_MAX) {
+				if(rs.getString(column) != null){
+					String id = rs.getString(column);
+					matches.add(id);
+				}
+				column++;
+			}
+			rs.close();
+		}catch(SQLException se){
+			se.printStackTrace();
+		}catch(Exception e){
+			e.printStackTrace();
+		}finally{
+			if (stmt != null){
+				try {
+					stmt.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if (conn != null){
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		
+		return matches;
+	}
+	
+	public double[] queryFindBigramProfile(String bigramInput) {
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		double[] bigramProfile = new double[3];
+		try{
+			Class.forName(JDBC_DRIVER);
+			conn = DriverManager.getConnection(DB_URL, USER, PASS);
+			stmt = conn.prepareStatement("SELECT * FROM BIGRAM WHERE id = \'"+bigramInput+"\'"); 
+			ResultSet rs = stmt.executeQuery();
+			int column = 2; 								// Bigrams start at column 4.
+			rs.next();
+			while(column < 5) {
+				if(rs.getString(column) != null){
+					double info = (double) rs.getInt(column);
+					bigramProfile[column-2] = info;
+				}
+				column++;
+			}
+			rs.close();
+		}catch(SQLException se){
+			se.printStackTrace();
+		}catch(Exception e){
+			e.printStackTrace();
+		}finally{
+			if (stmt != null){
+				try {
+					stmt.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if (conn != null){
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		
+		return bigramProfile;
+	}
+	
 	/**
 	 * Gets all words from our database with the same length as our potential word.
 	 * 
@@ -106,9 +266,13 @@ public class WordMatch {
 			ResultSet rs = stmt.executeQuery(query);
 			while (rs.next()) {
 				String word = rs.getString("WORD.id");
-				System.out.println("Word:"+word);
+				//System.out.println("Word:"+word);
 				potentialMatches.add(word);
 			}
+			rs.close();
+			stmt.close();
+			con.close();
+			//System.out.println("potential matches: "+potentialMatches.size());
 		} catch (SQLException se ) {
 			con.close();
 		} catch (Exception e){
@@ -117,10 +281,10 @@ public class WordMatch {
 			if (stmt != null) { stmt.close();  }
 		}
 		
-		System.out.println("List of potential matches for word length of "+wp.getWordLength()+": ");
-		for(int i = 0; i < potentialMatches.size(); i++){
-			System.out.println(potentialMatches.get(i));
-		}
+//		System.out.println("List of potential matches for word length of "+wp.getWordLength()+": ");
+//		for(int i = 0; i < potentialMatches.size(); i++){
+//			System.out.println(potentialMatches.get(i));
+//		}
 	}
 
 	/**
@@ -133,27 +297,28 @@ public class WordMatch {
 	public ArrayList<double[]> getWordProfile(String word){
 
 		ArrayList<double[]> wordProfile = new ArrayList<double[]>();
-
 		Statement stmt = null;
 		String query = "SELECT *" +
-					   "FROM WORD" +
-					   "WHERE WORD.id = \'"+word+"\'";
+				   "FROM WORD" +
+				   "WHERE WORD.id = \'"+word+"\'";
 		try {
+			int bigramCount = 1;
+			
 			stmt = con.createStatement();
 			ResultSet rs = stmt.executeQuery(query);
-
-			int bigramCount = 1;
-			while (rs.next()) {
-				String query2 = "SELECT charOneSide, charTwoSide, dist" +
-								"FROM BIGRAM" +
+			for (int i = 0; i < potentialMatches.size(); i ++) {
+				String query2 = "SELECT *" +
+								"FROM BIGRAM, WORD" +
 								"WHERE BIGRAM.id = \'"+rs.getString("WORD.bigram_"+bigramCount)+"\'"+
 								" AND WORD.bigram_"+bigramCount+" IS NOT NULL";
 				ResultSet rs2 = stmt.executeQuery(query2);
 				double[] addTo = new double[3];
-				addTo[0] = rs2.getDouble("charOneSide");
-				addTo[1] = rs2.getDouble("charTwoSide");
-				addTo[2] = rs2.getDouble("dist");
-				wordProfile.add(bigramCount-1, addTo);
+				addTo[0] = (double)(rs2.getInt("charOneSide"));
+				addTo[1] = (double)(rs2.getInt("charTwoSide"));
+				addTo[2] = (double)(rs2.getInt("dist"));
+				wordProfile.add(addTo);
+				System.out.println("Size of word profile: "+wordProfile.size()+"\n"+
+									"addTo charOneSide: "+addTo[0]);
 				bigramCount++;
 			}
 		} catch (SQLException se ) {
@@ -173,6 +338,8 @@ public class WordMatch {
 				e.printStackTrace();
 			} }
 		}
+		
+		
 
 		return wordProfile;
 	}

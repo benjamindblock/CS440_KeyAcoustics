@@ -96,7 +96,7 @@ public class LoadSpeechWaveform{
 
     public static double determineThreshold(int numOfCharacters, double[] trainingData){
     	System.out.println("Setting threshold (this may take a while)...");
-    	double newThresh = 1.200;
+    	double newThresh = 1.3;
     	PeakAnalysis pa = new PeakAnalysis(trainingData);
     	while(numOfCharacters != pa.run()){
 //    		while(pa.run() < numOfCharacters){
@@ -167,7 +167,7 @@ public class LoadSpeechWaveform{
 		ArrayList<double[]> mfccData2 = sdc2.run();
 		System.out.println(mfccData2.get(0)[0]);
 		WordMatch wm = new WordMatch(new WordProfile(mfccData2));
-		System.out.println("Predicted word is :"+wm.findWord());
+		//System.out.println("Predicted word is :"+wm.findWord());
 		
 //		
 //		TextRetrieval tr = new TextRetrieval(km.getModels(), mfccData2);
