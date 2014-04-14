@@ -86,7 +86,7 @@ public class LeftRightNeuralNetwork {
 	/**
 	 * Save our neural network at the file path designated.
 	 */
-	public void saveNetwork(String filePath){
+	public static void saveNetwork(String filePath){
 		neuralNetwork.save(filePath);
 	}
 	
@@ -95,8 +95,8 @@ public class LeftRightNeuralNetwork {
 	 * 
 	 * @param filePath where our network is.
 	 */
-	public void loadNetwork(String filePath){
-		NeuralNetwork loadedPerceptron = NeuralNetwork.load("mySamplePerceptron.nnet");
+	public static void loadNetwork(String filePath){
+		NeuralNetwork loadedPerceptron = NeuralNetwork.load(filePath);
 		neuralNetwork = loadedPerceptron;
 	}
 	
