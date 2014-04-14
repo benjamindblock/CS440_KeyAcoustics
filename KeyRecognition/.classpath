@@ -7,5 +7,8 @@
 	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/jAudio"/>
 	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/Jahmm"/>
 	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/Neuroph-2.8"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.launching.macosx.MacOSXType/Java SE 7 [1.7.0_51]"/>
+	<classpathentry exported="true" kind="lib" path="/Users/Ben/Documents/School/2013-2014/Spring/CSCI440/GitHub/CS440_KeyAcoustics/Neuroph-2.8/junit-4.11-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="/Users/Ben/Documents/School/2013-2014/Spring/CSCI440/GitHub/CS440_KeyAcoustics/Neuroph-2.8/junit-4.11.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

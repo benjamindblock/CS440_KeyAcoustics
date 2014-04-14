@@ -6,8 +6,8 @@
 	<classpathentry kind="src" path="Core/src/test/java"/>
 	<classpathentry kind="src" path="Samples/src/main/java"/>
 	<classpathentry kind="src" path="Samples/src/test/java"/>
-	<classpathentry kind="lib" path="/Users/walkerbohannan/Documents/GitHub/CS440_KeyAcoustics/Neuroph-2.8/junit-4.11-sources.jar"/>
-	<classpathentry kind="lib" path="/Users/walkerbohannan/Documents/GitHub/CS440_KeyAcoustics/Neuroph-2.8/junit-4.11.jar"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry exported="true" kind="lib" path="/Users/Ben/Documents/School/2013-2014/Spring/CSCI440/GitHub/CS440_KeyAcoustics/Neuroph-2.8/junit-4.11-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="/Users/Ben/Documents/School/2013-2014/Spring/CSCI440/GitHub/CS440_KeyAcoustics/Neuroph-2.8/junit-4.11.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

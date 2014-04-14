@@ -24,6 +24,8 @@ import cs_440.keyacoustics.features.ComputeMFCC;
 import cs_440.keyacoustics.features.PeakAnalysis;
 import cs_440.keyacoustics.features.StandardDeviationCalculator;
 import cs_440.keyacoustics.features.TrainNetworks;
+import cs_440.keyacoustics.neuralnetwork.LeftRightNeuralNetwork;
+import cs_440.keyacoustics.neuralnetwork.NearFarNeuralNetwork;
 import cs_440.keyacoustics.neuralnetwork.WordMatch;
 import cs_440.keyacoustics.neuralnetwork.WordProfile;
 
@@ -33,6 +35,7 @@ public class LoadSpeechWaveform{
 	static JFileChooser fileChooser = new JFileChooser();
 	static File inFile;
 	private static final double MAX_16_BIT = Short.MAX_VALUE;     // 32,767
+	private final static boolean useSavedNetworks = false;
 
 	
 	public static double[] fileReader(String audioType) throws FileNotFoundException{
@@ -98,7 +101,31 @@ public class LoadSpeechWaveform{
     	System.out.println("Setting threshold (this may take a while)...");
     	double newThresh = 5.00;
     	PeakAnalysis pa = new PeakAnalysis();
-    	while(numOfCharacters != pa.run(trainingData)){
+    	
+    	int tempPeaks = pa.run(trainingData);
+    	Boolean lastPlace = null; //Less than clause is false, greater than clause is true.
+    	double threshIncrement = 50.0;
+    	while(numOfCharacters != tempPeaks){
+    		
+    		if(tempPeaks < numOfCharacters){
+    			if(lastPlace != null && lastPlace == true){
+    				threshIncrement = threshIncrement/2;
+    			}
+    			newThresh = newThresh + threshIncrement;
+    			pa.setThreshold(newThresh);
+    			lastPlace = false;
+    			System.out.println("newThresh is: "+newThresh);
+    		}
+    		
+    		if(tempPeaks > numOfCharacters){
+    			if(lastPlace != null && lastPlace == false){
+    				threshIncrement = threshIncrement/2;
+    			}
+    			newThresh = newThresh - threshIncrement;
+    			pa.setThreshold(newThresh);
+    			lastPlace = true;
+    			System.out.println("newThresh is: "+newThresh);
+    		}
 //    		while(pa.run() < numOfCharacters){
 //    			newThresh = newThresh + 0.1;
 //    			pa = new PeakAnalysis(trainingData);
@@ -111,12 +138,13 @@ public class LoadSpeechWaveform{
 //        		pa.setThreshold(newThresh);
 //        		System.out.println(newThresh);
 //    		}
-//    		while(pa.run() < numOfCharacters){
-    			newThresh = newThresh + 50.0;
-    			pa = new PeakAnalysis();
-        		pa.setThreshold(newThresh);
-        		System.out.println(newThresh);
+////    		while(pa.run() < numOfCharacters){
+//    			newThresh = newThresh + 50.0; //Uncomment here and comment out if statements to return to old verson
+//    			pa = new PeakAnalysis();  //**
+//        		pa.setThreshold(newThresh); //**
+//        		System.out.println(newThresh); //**
     		//}
+    		tempPeaks = pa.run(trainingData);
     	}
     	System.out.println("Success! The threshold was set at "+newThresh+" for "+numOfCharacters+" number of characters.");
     	return newThresh;
@@ -151,7 +179,16 @@ public class LoadSpeechWaveform{
 		StandardDeviationCalculator sdc = new StandardDeviationCalculator(mfcc);
 		ArrayList<double[]> mfccData = sdc.run();
 		System.out.println("Training neural networks...");
-		TrainNetworks tn = new TrainNetworks(ts.getArray(), mfccData);
+		if(useSavedNetworks){
+			LeftRightNeuralNetwork.loadNetwork("");
+			NearFarNeuralNetwork.loadNetwork("");
+			TrainNetworks tn = new TrainNetworks(ts.getArray(), mfccData);
+			LeftRightNeuralNetwork.saveNetwork("");
+			NearFarNeuralNetwork.saveNetwork("");
+		}else{
+			TrainNetworks tn = new TrainNetworks(ts.getArray(), mfccData);
+		}
+		
 		
 	
 		//Steps for our attack data.

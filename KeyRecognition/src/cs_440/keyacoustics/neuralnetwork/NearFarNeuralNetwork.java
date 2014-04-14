@@ -97,7 +97,7 @@ public class NearFarNeuralNetwork {
 	/**
 	 * Save our neural network at the file path designated.
 	 */
-	public void saveNetwork(String filePath){
+	public static void saveNetwork(String filePath){
 		neuralNetwork.save(filePath);
 	}
 	
@@ -106,7 +106,7 @@ public class NearFarNeuralNetwork {
 	 * 
 	 * @param filePath where our network is.
 	 */
-	public void loadNetwork(String filePath){
+	public static void loadNetwork(String filePath){
 		NeuralNetwork loadedPerceptron = NeuralNetwork.load(filePath);
 		neuralNetwork = loadedPerceptron;
 	}
