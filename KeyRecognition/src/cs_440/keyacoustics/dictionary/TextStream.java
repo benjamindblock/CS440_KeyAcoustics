@@ -75,6 +75,7 @@ public class TextStream {
 		int max = 0;
 		while ((s = reader.readLine()) != null) {
 			String st = (String) s;
+			//If you need to know what the longest word's length is.
 			int length = st.length();
 			if (length > max) {
 				max = length;

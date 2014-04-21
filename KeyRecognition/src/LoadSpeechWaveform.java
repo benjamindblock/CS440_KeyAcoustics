@@ -35,9 +35,11 @@ public class LoadSpeechWaveform{
 	static JFileChooser fileChooser = new JFileChooser();
 	static File inFile;
 	private static final double MAX_16_BIT = Short.MAX_VALUE;     // 32,767
-	private final static boolean useSavedNetworks = false;
+	private final static boolean USESAVEDNETWORKS = true;
+	private static final String FILE_PATH_LR = "/Users/walkerbohannan/Documents/GitHub/CS440_KeyAcoustics/NeuralNetworks/perceptron_lr.nnet";
+	private static final String FILE_PATH_NF = "/Users/walkerbohannan/Documents/GitHub/CS440_KeyAcoustics/NeuralNetworks/perceptron_nf.nnet";
 
-	
+
 	public static double[] fileReader(String audioType) throws FileNotFoundException{
 		fileChooser.setFileFilter(filter);
 		fileChooser.setDialogTitle("Select file for "+audioType+".");
@@ -45,179 +47,179 @@ public class LoadSpeechWaveform{
 			throw new Error("Input file not selected");
 		inFile = fileChooser.getSelectedFile();
 		double[] audioData = read(inFile);
-		System.out.println("Opened:" + inFile.getName());
-		
+		System.out.println("Opened: " + inFile.getName());
+
 		return audioData;
 	} 
-	 
-	 /**
-     * Read audio samples from a file (in .wav or .au format) and return them as a double array
-     * with values between -1.0 and +1.0.
-     * 
-     * Code taken from: www.introcs.cs.princeton.edu/java/stdlib/StdAudio.java
-     */
-    public static double[] read(File file) {
-        byte[] data = readByte(file);
-        int N = data.length;
-        System.out.println("N: "+N+"\n");
-        double[] d = new double[N/2];
-        for (int i = 0; i < N/2; i++) {
-            d[i] = ((short) (((data[2*i+1] & 0xFF) << 8) + (data[2*i] & 0xFF))) / ((double) MAX_16_BIT);
-        }
-        return d;
-    }
-    
-    /**
-     * Return data as a byte array
-     * 
-     * Code taken from: www.introcs.cs.princeton.edu/java/stdlib/StdAudio.java
-     * 
-     * @param file Input file
-     * @return
-     */
-    		
-    private static byte[] readByte(File file) {
-        byte[] data = null;
-        AudioInputStream ais = null;
-        try {
 
-            // try to read from file
-            if (file.exists()) {
-                ais = AudioSystem.getAudioInputStream(file);
-                data = new byte[ais.available()];
-                ais.read(data);
-            }
+	/**
+	 * Read audio samples from a file (in .wav or .au format) and return them as a double array
+	 * with values between -1.0 and +1.0.
+	 * 
+	 * Code taken from: www.introcs.cs.princeton.edu/java/stdlib/StdAudio.java
+	 */
+	public static double[] read(File file) {
+		byte[] data = readByte(file);
+		int N = data.length;
+//		System.out.println("Size in bytes of file: "+N+"\n");
+		double[] d = new double[N/2];
+		for (int i = 0; i < N/2; i++) {
+			d[i] = ((short) (((data[2*i+1] & 0xFF) << 8) + (data[2*i] & 0xFF))) / ((double) MAX_16_BIT);
+		}
+		return d;
+	}
 
-        }
-        catch (Exception e) {
-            System.out.println(e.getMessage());
-            throw new RuntimeException("Could not read " + file.getName());
-        }
+	/**
+	 * Return data as a byte array
+	 * 
+	 * Code taken from: www.introcs.cs.princeton.edu/java/stdlib/StdAudio.java
+	 * 
+	 * @param file Input file
+	 * @return
+	 */
 
-        return data;
-    }
+	private static byte[] readByte(File file) {
+		byte[] data = null;
+		AudioInputStream ais = null;
+		try {
 
-    public static double determineThreshold(int numOfCharacters, double[] trainingData){
-    	System.out.println("Setting threshold (this may take a while)...");
-    	double newThresh = 5.00;
-    	PeakAnalysis pa = new PeakAnalysis();
-    	
-    	int tempPeaks = pa.run(trainingData);
-    	Boolean lastPlace = null; //Less than clause is false, greater than clause is true.
-    	double threshIncrement = 50.0;
-    	while(numOfCharacters != tempPeaks){
-    		
-    		if(tempPeaks < numOfCharacters){
-    			if(lastPlace != null && lastPlace == true){
-    				threshIncrement = threshIncrement/2;
-    			}
-    			newThresh = newThresh + threshIncrement;
-    			pa.setThreshold(newThresh);
-    			lastPlace = false;
-    			System.out.println("newThresh is: "+newThresh);
-    		}
-    		
-    		if(tempPeaks > numOfCharacters){
-    			if(lastPlace != null && lastPlace == false){
-    				threshIncrement = threshIncrement/2;
-    			}
-    			newThresh = newThresh - threshIncrement;
-    			pa.setThreshold(newThresh);
-    			lastPlace = true;
-    			System.out.println("newThresh is: "+newThresh);
-    		}
-//    		while(pa.run() < numOfCharacters){
-//    			newThresh = newThresh + 0.1;
-//    			pa = new PeakAnalysis(trainingData);
-//        		pa.setThreshold(newThresh);
-//        		System.out.println(newThresh);
-//    		}
-//    		while(pa.run() > numOfCharacters){
-//    			newThresh = newThresh - 0.05;
-//    			pa = new PeakAnalysis(trainingData);
-//        		pa.setThreshold(newThresh);
-//        		System.out.println(newThresh);
-//    		}
-////    		while(pa.run() < numOfCharacters){
-//    			newThresh = newThresh + 50.0; //Uncomment here and comment out if statements to return to old verson
-//    			pa = new PeakAnalysis();  //**
-//        		pa.setThreshold(newThresh); //**
-//        		System.out.println(newThresh); //**
-    		//}
-    		tempPeaks = pa.run(trainingData);
-    	}
-    	System.out.println("Success! The threshold was set at "+newThresh+" for "+numOfCharacters+" number of characters.");
-    	return newThresh;
-    }
-	
+			// try to read from file
+			if (file.exists()) {
+				ais = AudioSystem.getAudioInputStream(file);
+				data = new byte[ais.available()];
+				ais.read(data);
+			}
+
+		}
+		catch (Exception e) {
+			System.out.println(e.getMessage());
+			throw new RuntimeException("Could not read " + file.getName());
+		}
+
+		return data;
+	}
+
+	 public static double determineThreshold(int numOfCharacters, double[] trainingData){
+	    	System.out.println("Setting threshold (this may take a while)...");
+	    	double increment = 10;
+	    	boolean addConsecutive = true;
+	    	boolean minusConsecutive = true;
+	    	double newThresh = 1;
+	    	PeakAnalysis pa = new PeakAnalysis();
+	    	pa.setThreshold(newThresh);
+	    	pa.run(trainingData);
+	    	while(numOfCharacters != pa.getNumOfPeaks()){
+	    		if(numOfCharacters > pa.getNumOfPeaks()){
+	    			if(addConsecutive) {
+	    				newThresh = newThresh + increment;
+	    			} else {
+	    				increment = increment/2;
+	    				System.out.println("Addition increment changed! New increment is "+increment);
+	    				newThresh = newThresh + increment;
+	    			}
+	    			pa = new PeakAnalysis();
+	        		pa.setThreshold(newThresh);
+	        		pa.run(trainingData);
+	        		minusConsecutive = false;
+	        		addConsecutive = true;
+	        		System.out.println(newThresh);
+	        		
+	    		} else if (numOfCharacters < pa.getNumOfPeaks()){
+	    			if(minusConsecutive && (newThresh - increment) > 0) {
+	    				newThresh = newThresh - increment;
+	    			} else {
+	    				increment = increment/2;
+	    				System.out.println("Minus increment changed! New increment is "+increment);
+	    				newThresh = newThresh - increment;
+	    			}
+	    			pa = new PeakAnalysis();
+	        		pa.setThreshold(newThresh);
+	        		pa.run(trainingData);
+	        		minusConsecutive = true;
+	        		addConsecutive = false;
+	        		System.out.println(newThresh);	
+	    		}
+	    		//}
+	    	}
+	    	System.out.println("Success! The threshold was set at "+newThresh+" for "+numOfCharacters+" number of characters.");
+	    	return newThresh;
+	    }
+
 	public static void main(String[] args) throws IOException{
-//		Text Stream call
+		//		Text Stream call
 		TextStream ts = new TextStream();
 		ts.textReader();
 		//ts.insertIntoDatabase();
-//		ArrayList<Character> textArray = TextStream.getArray();
-//		for(int i = 0; i < textArray.size(); i++){
-//			System.out.println(textArray.get(i));
-//		}
-		
-//		Word w = new Word("patagonia");
-		
-		
-		double[] trainingData = fileReader("training data"); //Get our first audio file (training data).
-		double[] attackData = fileReader("attack data"); //Get our second audio file (audio we want to get text from).
-//		
-//		//Steps for our training data.
+		//		ArrayList<Character> textArray = TextStream.getArray();
+		//		for(int i = 0; i < textArray.size(); i++){
+		//			System.out.println(textArray.get(i));
+		//		}
+
+		//		Word w = new Word("patagonia");
+
+
+		//Get our first audio file (training data).
+		//		
+		//Steps for our training data.
+		double[] trainingData = fileReader("training data"); 
 		int numOfCharacters = ts.getNumOfCharacters();
 		double threshold = determineThreshold(numOfCharacters, trainingData);
-		PeakAnalysis pa = new PeakAnalysis(); 
+		PeakAnalysis pa = new PeakAnalysis();
 		pa.setThreshold(threshold);
 		pa.run(trainingData);
 		ComputeMFCC cm = new ComputeMFCC(pa.getMFCC()); 
 		cm.run(); //Run our MFCC calculations
-//		System.out.println(cm.getMFCCOutput().size());
 		ArrayList<double[][]> mfcc = cm.getMFCCOutput();
 		StandardDeviationCalculator sdc = new StandardDeviationCalculator(mfcc);
 		ArrayList<double[]> mfccData = sdc.run();
+		
 		System.out.println("Training neural networks...");
-		if(useSavedNetworks){
-			LeftRightNeuralNetwork.loadNetwork("");
-			NearFarNeuralNetwork.loadNetwork("");
+		if(USESAVEDNETWORKS){
+			System.out.println("Using previously saved networks :\n\t"+FILE_PATH_LR+"\n\t"+FILE_PATH_NF);
+			LeftRightNeuralNetwork.loadNetwork(FILE_PATH_LR);
+			NearFarNeuralNetwork.loadNetwork(FILE_PATH_NF);
 			TrainNetworks tn = new TrainNetworks(ts.getArray(), mfccData);
-			LeftRightNeuralNetwork.saveNetwork("");
-			NearFarNeuralNetwork.saveNetwork("");
+			LeftRightNeuralNetwork.saveNetwork(FILE_PATH_LR);
+			NearFarNeuralNetwork.saveNetwork(FILE_PATH_NF);
 		}else{
+			System.out.println("Creating a new network :\n\t"+FILE_PATH_LR+"\n\t"+FILE_PATH_NF);
 			TrainNetworks tn = new TrainNetworks(ts.getArray(), mfccData);
+			LeftRightNeuralNetwork.saveNetwork(FILE_PATH_LR);
+			NearFarNeuralNetwork.saveNetwork(FILE_PATH_NF);
 		}
 		
-		
-	
 		//Steps for our attack data.
-		threshold = determineThreshold(5, attackData);
+		double[] attackData = fileReader("attack data"); //Get our second audio file (audio we want to get text from).
+		//threshold = determineThreshold(5, attackData);
 		PeakAnalysis pa2 = new PeakAnalysis(); 
-		pa2.setThreshold(threshold);
+		pa2.setThreshold(1.31);
 		pa2.run(attackData);
 		ComputeMFCC cm2 = new ComputeMFCC(pa2.getMFCC()); 
 		cm2.run(); //Run our MFCC calculations
-//		System.out.println(cm2.getMFCCOutput().size());
 		ArrayList<double[][]> mfcc2 = cm2.getMFCCOutput();
 		StandardDeviationCalculator sdc2 = new StandardDeviationCalculator(mfcc2);
 		ArrayList<double[]> mfccData2 = sdc2.run();
 		System.out.println(mfccData2.get(0)[0]);
 		WordMatch wm = new WordMatch(new WordProfile(mfccData2));
-		//System.out.println("Predicted word is :"+wm.findWord());
 		
-//		
-//		TextRetrieval tr = new TextRetrieval(km.getModels(), mfccData2);
-//		System.out.println("You typed: " + tr.getUtterance() + " ?");
-//		
-//		//Try jAudio's PeakFinder algorithm
-////		ComputePeakFinder cpf = new ComputePeakFinder(audioData);
-////		double[] peaks = cpf.compute();
-////		System.out.println("Using jAudio's peak finder, the number of peaks is: "+peaks.length);
-////		System.out.println("Peak locations: ");
-////		for(int x = 0; x < peaks.length; x++){
-////			System.out.println("Peak "+x+": "+peaks[x]);
-////		}
-//				
+		
+		
+		
+		
+		//System.out.println("Predicted word is :"+wm.findWord());
+
+		//		
+		//		TextRetrieval tr = new TextRetrieval(km.getModels(), mfccData2);
+		//		System.out.println("You typed: " + tr.getUtterance() + " ?");
+		//		
+		//		//Try jAudio's PeakFinder algorithm
+		////		ComputePeakFinder cpf = new ComputePeakFinder(audioData);
+		////		double[] peaks = cpf.compute();
+		////		System.out.println("Using jAudio's peak finder, the number of peaks is: "+peaks.length);
+		////		System.out.println("Peak locations: ");
+		////		for(int x = 0; x < peaks.length; x++){
+		////			System.out.println("Peak "+x+": "+peaks[x]);
+		////		}
+		//				
 	}
 }

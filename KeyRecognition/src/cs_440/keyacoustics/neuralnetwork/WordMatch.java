@@ -47,7 +47,11 @@ public class WordMatch {
 
 		ArrayList<String> wordMatches = queryWordMatches(wp.getWordLength());
 		int maxScore = 0;
+		int secondHighest = 0;
+		int thirdHighest = 0;
 		int finalWordPos = 0;
+		int secondWordPos = 0;
+		int thirdWordPos = 0;
 		for(int i = 0; i < wordMatches.size(); i++){
 //			System.out.println(i+": "+wordMatches.get(i));
 			ArrayList<String> bigrams = queryFindBigrams(wordMatches.get(i));
@@ -60,10 +64,18 @@ public class WordMatch {
 			if(score > maxScore){
 				maxScore = score;
 				finalWordPos = i;
+			} else if (score > secondHighest) {
+				secondHighest = score;
+				secondWordPos = i;
+			} else if (score > thirdHighest) {
+				thirdHighest = score;
+				thirdWordPos = i;
 			}
 		}
 		
 		System.out.println("Best word is: "+wordMatches.get(finalWordPos)+" with a score of: "+maxScore);
+		System.out.println("Second best word is: "+wordMatches.get(secondWordPos)+" with a score of: "+secondHighest);
+		System.out.println("Third best word is: "+wordMatches.get(thirdWordPos)+" with a score of: "+thirdHighest);
 
 	}
 

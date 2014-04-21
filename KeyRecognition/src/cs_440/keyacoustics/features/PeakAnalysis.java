@@ -20,11 +20,13 @@ public class PeakAnalysis {
 	 * Declaring variables to allow for fine-tuning of peak-analysis characteristics.
 	 */
 	private final int PEAK_WIDTH = -10; //This describes the number of windows on either side of the peak to MFCC.
-	private double thresh_value = 5.0; //How sensitive we want our threshold. A lower THRESH_VALUE will mean
-											  //a tighter threshold, but this could exclude peaks that we need.
+	private double thresh_value; //How sensitive we want our threshold. A lower THRESH_VALUE will mean
+									  //a tighter threshold, but this could exclude peaks that we need.
 	private final int KEY_PRESS_SPACE = 100; //How much space between peaks we want to assert. Each increase +1 in the
 											//int is ~2ms in audio data. So a value of 50 is 100ms.
 	private final boolean USE_DELTA_VECTORS = true; //Do we want to use delta vectors or just the normalized values?
+	
+	private int no_of_peaks;
 	
 	/**
 	 * Potential class to use to avoid using HashMaps. Not yet implemented.
@@ -59,7 +61,7 @@ public class PeakAnalysis {
 	 * @param audioData Our audio data that we are analyzing
 	 */
 	public PeakAnalysis(){
-		System.out.println("In peak analysis.");
+		//System.out.println("In peak analysis.");
 		samples = new ArrayList<List<Double>>();
 		mfcc = new ArrayList<List<Double>>();
 	}
@@ -68,13 +70,16 @@ public class PeakAnalysis {
 		thresh_value = newThresh;
 	}
 	
+	public int getNumOfPeaks(){
+		return no_of_peaks;
+	}
 	
 	/**
 	 * Runs the whole Peak Finder algorithm.
 	 * 
 	 * Returns the number of peaks.
 	 */
-	public int run(double[] audioData){
+	public void run(double[] audioData){
 		HashMap<Integer, Double> peaks;
 		if(USE_DELTA_VECTORS){ //Use delta vectors to find peaks and such.
 			split(audioData);
@@ -85,8 +90,8 @@ public class PeakAnalysis {
 			setMFCC(peaks);
 //			ArrayList<Peak> peaks = getPeaks(thresh, vector);
 //			setUpMFCC(peaks);
-
-			System.out.println("Threshold is "+thresh);
+			no_of_peaks = peaks.size();
+			//System.out.println("Threshold is "+thresh);
 			System.out.println("Number of peaks is "+peaks.size());
 			//System.out.println("Peaks are: "+peaks.toString());
 			//System.out.println(mfcc.size());
@@ -98,14 +103,13 @@ public class PeakAnalysis {
 			setMFCC(peaks);
 //			ArrayList<Peak> peaks = getPeaks(thresh, normalized);
 //			setUpMFCC(peaks);
-			
+			no_of_peaks = peaks.size();
 			System.out.println("Threshold is "+thresh);
 			System.out.println("Number of peaks is "+peaks.size());
 //			System.out.println("Peaks are: "+peaks.toString());
 //			System.out.println(mfcc.size());
 //			
 		}
-		return peaks.size();
 	}
 	
 	/**

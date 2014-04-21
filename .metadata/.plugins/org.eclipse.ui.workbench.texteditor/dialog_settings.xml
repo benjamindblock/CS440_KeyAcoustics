@@ -12,17 +12,17 @@
 		<item value="false" key="isRegEx"/>
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
-		<item value="false" key="wholeword"/>
-		<item value="System.out.println" key="selection"/>
+		<item value="true" key="wholeword"/>
+		<item value="Peak" key="selection"/>
 		<list key="findhistory">
+			<item value="peak"/>
+			<item value="loadnetwork"/>
 			<item value="System.out.println"/>
 			<item value="potentialmatches"/>
 			<item value="getwords"/>
 			<item value="system"/>
 			<item value="number of peaks is"/>
 			<item value="thresh_value"/>
-			<item value="run"/>
-			<item value="thresh"/>
 		</list>
 		<list key="replacehistory">
 			<item value="double"/>
