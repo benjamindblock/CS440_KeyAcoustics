@@ -2,7 +2,9 @@ package cs_440.keyacoustics.neuralnetwork;
 import org.neuroph.core.NeuralNetwork;
 import org.neuroph.core.data.DataSet;
 import org.neuroph.core.data.DataSetRow;
+import org.neuroph.core.learning.SupervisedLearning;
 import org.neuroph.nnet.Perceptron;
+import org.neuroph.util.TransferFunctionType;
 import org.neuroph.*;
 
 import cs_440.keyacoustics.dictionary.KEYBOARD_SIDE;
@@ -21,7 +23,7 @@ import java.util.Vector;
  */
 public class LeftRightNeuralNetwork {
 
-	private static NeuralNetwork neuralNetwork = new Perceptron(2, 1);
+	private static NeuralNetwork<SupervisedLearning> neuralNetwork = new Perceptron(1, 1, TransferFunctionType.STEP);
 	
 	public static void trainNetwork(ArrayList<Letter> letters){
 		/**
@@ -40,7 +42,7 @@ public class LeftRightNeuralNetwork {
 //		neuralNetwork = new Perceptron(2, 1);
 		
 		// Create our training set.
-		DataSet trainingSet = new DataSet(2, 1); 
+		DataSet trainingSet = new DataSet(1, 1); 
 		for(int i = 0; i < letters.size(); i++){
 			Letter let = letters.get(i);
 			
@@ -48,13 +50,17 @@ public class LeftRightNeuralNetwork {
 			if(let.ks.equals(KEYBOARD_SIDE.RIGHT)){
 				leftOrRight = 1;
 			}
-			DataSetRow addTo = new DataSetRow(new double[]{let.fv[0], let.fv[1]}, new double[]{leftOrRight});
+			DataSetRow addTo = new DataSetRow(new double[]{let.fv[1]}, new double[]{leftOrRight});
 			trainingSet.addRow(addTo);
 		}
 		
 
 		// Learn the training set
-		neuralNetwork.learn(trainingSet);
+		System.out.println("Learning LR training set...");
+		neuralNetwork.learnInNewThread(trainingSet);
+		System.out.println(neuralNetwork.toString());
+		neuralNetwork.stopLearning();
+		System.out.println("Learned LR training set.");
 
 		// Test perceptron
 //		testNeuralNetwork(myPerceptron, trainingSet); //we need to create a test method
@@ -73,10 +79,12 @@ public class LeftRightNeuralNetwork {
 		
 		for(int i = 0; i < inputs.size(); i++){
 			System.out.println("In evaluateValues loop, i = "+i+", inputs.size() = "+inputs.size());
-			neuralNetwork.setInput(inputs.get(i));
+			neuralNetwork.setInput(inputs.get(i)[1]);
+			System.out.println("Input: "+inputs.get(i)+" ");
 			neuralNetwork.calculate();
 			double[] output = neuralNetwork.getOutput();
 			ret.add(output[0]);
+			System.out.println(output[0]);
 		}
 		
 		return ret;
@@ -96,8 +104,7 @@ public class LeftRightNeuralNetwork {
 	 * @param filePath where our network is.
 	 */
 	public static void loadNetwork(String filePath){
-		NeuralNetwork loadedPerceptron = NeuralNetwork.load(filePath);
-		neuralNetwork = loadedPerceptron;
+		neuralNetwork = NeuralNetwork.createFromFile(filePath);
 	}
 	
 }

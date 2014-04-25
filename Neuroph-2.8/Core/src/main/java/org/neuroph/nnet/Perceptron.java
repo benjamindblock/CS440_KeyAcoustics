@@ -114,7 +114,7 @@ public class Perceptron extends NeuralNetwork {
                 this.setLearningRule(new BinaryDeltaRule());
 		// set appropriate learning rule for this network
 //		if (transferFunctionType == TransferFunctionType.STEP) {
-//			this.setLearningRule(new BinaryDeltaRule(this));
+//			this.setLearningRule(new BinaryDeltaRule());
 //		} else if (transferFunctionType == TransferFunctionType.SIGMOID) {
 //			this.setLearningRule(new SigmoidDeltaRule(this));
 //		} else if (transferFunctionType == TransferFunctionType.TANH) {

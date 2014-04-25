@@ -2,7 +2,9 @@ package cs_440.keyacoustics.neuralnetwork;
 import org.neuroph.core.NeuralNetwork;
 import org.neuroph.core.data.DataSet;
 import org.neuroph.core.data.DataSetRow;
+import org.neuroph.core.learning.SupervisedLearning;
 import org.neuroph.nnet.Perceptron;
+import org.neuroph.util.TransferFunctionType;
 import org.neuroph.*;
 
 import cs_440.keyacoustics.dictionary.DISTANCE;
@@ -22,7 +24,9 @@ import java.util.Vector;
 
 public class NearFarNeuralNetwork {
 
-	private static NeuralNetwork neuralNetwork = new Perceptron(4, 1);
+//	private static NeuralNetwork<SupervisedLearning> neuralNetwork = new Perceptron(4, 1, TransferFunctionType.STEP);
+	private static NeuralNetwork<SupervisedLearning> neuralNetwork = new Perceptron(2, 1, TransferFunctionType.STEP);
+
 	
 	public static void trainNetwork(ArrayList<LetterPair> letterPairs){
 		
@@ -44,7 +48,7 @@ public class NearFarNeuralNetwork {
 //		neuralNetwork = new Perceptron(4, 1);
 		
 		// Create our training set.
-		DataSet trainingSet = new DataSet(4, 1); 
+		DataSet trainingSet = new DataSet(2, 1); 
 		for(int i = 0; i < letterPairs.size(); i++){
 			LetterPair letPair = letterPairs.get(i);
 			
@@ -53,14 +57,43 @@ public class NearFarNeuralNetwork {
 				nearOrFar = 1;
 			}
 			
-			DataSetRow addTo = new DataSetRow(new double[]{letPair.fv[0], letPair.fv[1], 
-					letPair.fv[2], letPair.fv[3]}, new double[]{nearOrFar});
+			DataSetRow addTo = new DataSetRow(new double[]{letPair.fv[1], 
+					letPair.fv[3]}, new double[]{nearOrFar});
 			trainingSet.addRow(addTo);
+			System.out.println(i+" "+addTo);
 		}
 		
 
 		// Learn the training set
-		neuralNetwork.learn(trainingSet);
+		System.out.println("Learning NF training set...");
+
+		neuralNetwork.learnInNewThread(trainingSet);
+		neuralNetwork.stopLearning();
+		System.out.println(neuralNetwork.toString());
+		System.out.println("Learned NF training set.");
+		
+//		// Create our training set.
+//				DataSet trainingSet = new DataSet(2, 1); 
+//				for(int i = 0; i < letterPairs.size(); i++){
+//					LetterPair letPair = letterPairs.get(i);
+//					
+//					int nearOrFar = 0;
+//					if(letPair.ds.equals(DISTANCE.FAR)){
+//						nearOrFar = 1;
+//					}
+//					
+//					DataSetRow addTo = new DataSetRow(new double[]{letPair.fv[1], letPair.fv[3]}, new double[]{nearOrFar});
+//					trainingSet.addRow(addTo);
+//					System.out.println(i+" "+addTo);
+//				}
+//				
+//
+//				// Learn the training set
+//				System.out.println("Learning NF training set...");
+//
+//				neuralNetwork.learnInNewThread(trainingSet);
+//				System.out.println("Learned NF training set.");
+
 
 		// Test perceptron
 //		testNeuralNetwork(myPerceptron, trainingSet); //we need to create a test method
@@ -78,11 +111,11 @@ public class NearFarNeuralNetwork {
 		ArrayList<Double> ret = new ArrayList<Double>();
 		
 		for(int i = 0; i < inputs.size()-1; i++){
-			double[] input = new double[4];
-			input[0] = inputs.get(i)[0];
-			input[1] = inputs.get(i)[1];
-			input[2] = inputs.get(i+1)[0];
-			input[3] = inputs.get(i+1)[1];
+			double[] input = new double[2];
+//			input[0] = inputs.get(i)[0];
+			input[0] = inputs.get(i)[1];
+//			input[2] = inputs.get(i+1)[0];
+			input[1] = inputs.get(i+1)[1];
 			
 			neuralNetwork.setInput(input);
 			neuralNetwork.calculate();
@@ -107,8 +140,7 @@ public class NearFarNeuralNetwork {
 	 * @param filePath where our network is.
 	 */
 	public static void loadNetwork(String filePath){
-		NeuralNetwork loadedPerceptron = NeuralNetwork.load(filePath);
-		neuralNetwork = loadedPerceptron;
+		neuralNetwork = NeuralNetwork.createFromFile(filePath);
 	}
 	
 	

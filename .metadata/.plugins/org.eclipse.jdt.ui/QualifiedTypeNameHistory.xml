@@ -17,8 +17,6 @@
 <fullyQualifiedTypeName name="java.nio.charset.Charset"/>
 <fullyQualifiedTypeName name="java.io.InputStream"/>
 <fullyQualifiedTypeName name="java.io.FileInputStream"/>
-<fullyQualifiedTypeName name="org.neuroph.core.data.DataSet"/>
-<fullyQualifiedTypeName name="org.neuroph.core.data.DataSetRow"/>
 <fullyQualifiedTypeName name="java.sql.Connection"/>
 <fullyQualifiedTypeName name="java.sql.Statement"/>
 <fullyQualifiedTypeName name="java.sql.SQLException"/>
@@ -33,4 +31,10 @@
 <fullyQualifiedTypeName name="java.lang.System"/>
 <fullyQualifiedTypeName name="org.omg.CORBA.TIMEOUT"/>
 <fullyQualifiedTypeName name="java.util.ArrayList"/>
+<fullyQualifiedTypeName name="org.neuroph.util.TransferFunctionType"/>
+<fullyQualifiedTypeName name="org.neuroph.core.NeuralNetwork"/>
+<fullyQualifiedTypeName name="org.neuroph.nnet.Perceptron"/>
+<fullyQualifiedTypeName name="org.neuroph.core.data.DataSet"/>
+<fullyQualifiedTypeName name="org.neuroph.core.data.DataSetRow"/>
+<fullyQualifiedTypeName name="org.neuroph.core.learning.SupervisedLearning"/>
 </qualifiedTypeNameHistroy>

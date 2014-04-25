@@ -39,8 +39,8 @@ public class LetterPair {
 			fv[i] = l1.fv[i];
 		}
 		
-		for(int i = l1.fv.length; i < l2.fv.length; i++){
-			fv[i] = l2.fv[i];
+		for(int i = l1.fv.length; i < l2.fv.length+l1.fv.length; i++){
+			fv[i] = l2.fv[i-l2.fv.length];
 		}
 		
 		l1_side = l1.ks;

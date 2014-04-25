@@ -38,15 +38,21 @@ public class WordMatch {
 	public WordMatch(WordProfile wp){
 		potentialMatches = new ArrayList<String>();
 		predictionProfile = wp.getWordProfile();
+		run(wp);
+	}
+
+	
+	public void run(WordProfile wp){
 		for(int i = 0; i < predictionProfile.size(); i++){
 			for(int j = 0; j < predictionProfile.get(i).length; j++){
-				System.out.println("Prediction profile: "+predictionProfile.get(i)[j]);
+				System.out.println("Prediction profile of: " + i + " and " + j + " "+predictionProfile.get(i)[j]);
 			}
 		}
 		this.wp = wp;
 
-		ArrayList<String> wordMatches = queryWordMatches(wp.getWordLength());
+		ArrayList<String []> wordMatches = queryWordMatches(wp.getWordLength());
 		int maxScore = 0;
+		int mostFrequent = 10001;
 		int secondHighest = 0;
 		int thirdHighest = 0;
 		int finalWordPos = 0;
@@ -54,14 +60,25 @@ public class WordMatch {
 		int thirdWordPos = 0;
 		for(int i = 0; i < wordMatches.size(); i++){
 //			System.out.println(i+": "+wordMatches.get(i));
-			ArrayList<String> bigrams = queryFindBigrams(wordMatches.get(i));
+			ArrayList<String> bigrams = queryFindBigrams(wordMatches.get(i)[0]);
 			ArrayList<double[]> wordProfile = new ArrayList<double[]>();
 			for(int j = 0; j < bigrams.size(); j++){
 				double[] bigramProfile = queryFindBigramProfile(bigrams.get(j));
 				wordProfile.add(bigramProfile);
 			}
 			int score = compareProfiles(predictionProfile, wordProfile);
-			if(score > maxScore){
+			if(score == maxScore) {
+				int frequency = Integer.parseInt(wordMatches.get(i)[1]);
+				if(frequency < mostFrequent){
+					mostFrequent = frequency;
+					thirdWordPos = secondWordPos;
+					thirdHighest = secondHighest;
+					secondWordPos = finalWordPos;
+					secondHighest = maxScore;
+					maxScore = score;
+					finalWordPos = i;
+				}
+			} else if(score > maxScore){
 				maxScore = score;
 				finalWordPos = i;
 			} else if (score > secondHighest) {
@@ -73,12 +90,11 @@ public class WordMatch {
 			}
 		}
 		
-		System.out.println("Best word is: "+wordMatches.get(finalWordPos)+" with a score of: "+maxScore);
-		System.out.println("Second best word is: "+wordMatches.get(secondWordPos)+" with a score of: "+secondHighest);
-		System.out.println("Third best word is: "+wordMatches.get(thirdWordPos)+" with a score of: "+thirdHighest);
+		System.out.println("Best word is: "+wordMatches.get(finalWordPos)[0]+" with a score of: "+maxScore+" and a frequency of "+mostFrequent);
+		System.out.println("Second best word is: "+wordMatches.get(secondWordPos)[0]+" with a score of: "+secondHighest+" and a frequency of "+wordMatches.get(secondWordPos)[1]);
+		System.out.println("Third best word is: "+wordMatches.get(thirdWordPos)[0]+" with a score of: "+thirdHighest+" and a frequency of "+wordMatches.get(thirdWordPos)[1]);
 
 	}
-
 
 	/**
 	 * Compares the profiles of two words and returns the score, that is, the number of values
@@ -105,9 +121,11 @@ public class WordMatch {
 
 		return score;
 	}
+	
+	
 
-	public ArrayList<String> queryWordMatches(int wordLength) {
-		ArrayList<String> matches = new ArrayList<String>();
+	public ArrayList<String[]> queryWordMatches(int wordLength) {
+		ArrayList<String []> matches = new ArrayList<String []>();
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		try{
@@ -117,7 +135,11 @@ public class WordMatch {
 			ResultSet rs = stmt.executeQuery();
 			while(rs.next()) {
 				String id = rs.getString(1);
-				matches.add(id);
+				String freq = ""+rs.getInt(3)+""; 
+				String [] tuple = new String [2];
+				tuple[0] = id;
+				tuple[1] = freq;
+				matches.add(tuple);
 			}
 			rs.close();
 		}catch(SQLException se){

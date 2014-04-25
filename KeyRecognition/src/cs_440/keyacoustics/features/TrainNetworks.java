@@ -15,11 +15,8 @@ public class TrainNetworks {
 			System.err.println("Number of inputted characters and found feature vectors do not match. Uh oh. Probably a "
 					+ "threshold problem.");
 		}
-		
 		this.characterStream = characterStream;
-		this.characterFV = characterFV;
-
-		
+		this.characterFV = characterFV;	
 	}
 	
 	public void trainLeftRightNeuralNetwork(){

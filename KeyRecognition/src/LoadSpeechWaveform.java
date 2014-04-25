@@ -104,7 +104,7 @@ public class LoadSpeechWaveform{
 	    	double increment = 10;
 	    	boolean addConsecutive = true;
 	    	boolean minusConsecutive = true;
-	    	double newThresh = 1;
+	    	double newThresh = 0;
 	    	PeakAnalysis pa = new PeakAnalysis();
 	    	pa.setThreshold(newThresh);
 	    	pa.run(trainingData);
@@ -119,6 +119,7 @@ public class LoadSpeechWaveform{
 	    			}
 	    			pa = new PeakAnalysis();
 	        		pa.setThreshold(newThresh);
+	        		System.out.println("THRESHOLD before pa.run()"+newThresh);
 	        		pa.run(trainingData);
 	        		minusConsecutive = false;
 	        		addConsecutive = true;
@@ -179,11 +180,15 @@ public class LoadSpeechWaveform{
 			LeftRightNeuralNetwork.loadNetwork(FILE_PATH_LR);
 			NearFarNeuralNetwork.loadNetwork(FILE_PATH_NF);
 			TrainNetworks tn = new TrainNetworks(ts.getArray(), mfccData);
+			tn.trainLeftRightNeuralNetwork();
+			tn.trainNearFarNeuralNetwork();
 			LeftRightNeuralNetwork.saveNetwork(FILE_PATH_LR);
 			NearFarNeuralNetwork.saveNetwork(FILE_PATH_NF);
 		}else{
 			System.out.println("Creating a new network :\n\t"+FILE_PATH_LR+"\n\t"+FILE_PATH_NF);
 			TrainNetworks tn = new TrainNetworks(ts.getArray(), mfccData);
+			tn.trainLeftRightNeuralNetwork();
+			tn.trainNearFarNeuralNetwork();
 			LeftRightNeuralNetwork.saveNetwork(FILE_PATH_LR);
 			NearFarNeuralNetwork.saveNetwork(FILE_PATH_NF);
 		}
@@ -192,6 +197,8 @@ public class LoadSpeechWaveform{
 		double[] attackData = fileReader("attack data"); //Get our second audio file (audio we want to get text from).
 		//threshold = determineThreshold(5, attackData);
 		PeakAnalysis pa2 = new PeakAnalysis(); 
+		//hello = 1.31
+		//dad = 
 		pa2.setThreshold(1.31);
 		pa2.run(attackData);
 		ComputeMFCC cm2 = new ComputeMFCC(pa2.getMFCC()); 
@@ -201,6 +208,7 @@ public class LoadSpeechWaveform{
 		ArrayList<double[]> mfccData2 = sdc2.run();
 		System.out.println(mfccData2.get(0)[0]);
 		WordMatch wm = new WordMatch(new WordProfile(mfccData2));
+		System.out.println("All done.");
 		
 		
 		
