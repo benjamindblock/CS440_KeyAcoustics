@@ -4,6 +4,7 @@ import jAudioFeatureExtractor.jAudioTools.FFT;
 import java.math.*;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -87,6 +88,7 @@ public class PeakAnalysis {
 			double[] vector = deltaVector(normalized);
 			double thresh = computeThreshold(vector);
 			peaks = findPeaks(thresh, vector);
+			no_of_peaks = peaks.size();
 			setMFCC(peaks);
 //			ArrayList<Peak> peaks = getPeaks(thresh, vector);
 //			setUpMFCC(peaks);
@@ -379,19 +381,32 @@ public class PeakAnalysis {
 	 * @param input
 	 */
 	private void setMFCC(HashMap<Integer, Double> input){
-		Set<Integer> locations = input.keySet();
-		for(Integer loc : locations){ //Our very outer loop that will go through all the peak positions.
-			List<Double> addTo = new ArrayList<Double>(); //Create the list that will hold all of the data for these
-														  //twenty windows of audio
-			
-			for(int x = PEAK_WIDTH; x < Math.abs(PEAK_WIDTH); x++){ //Our loop to go to ten windows before and ten after
-				for(int y = 0; y < 100; y++){ //Our loop to get all 100 samples from each window
-					addTo.add(samples.get(loc+x).get(y)); //Put each sample into our ArrayList that holds all data
-				}	
+//		Set<Integer> locations = new LinkedHashSet<Integer>();
+//		for(int i = 0; i < input.keySet().size(); i++){
+//			if(input.get(i) != null){
+//				locations.add(i);
+//			}
+//		}
+		
+//		Set<Integer> locations = input.keySet();
+//		for(int x : locations){
+//			System.out.println("Location is "+x+" and the FFT for that is "+input.get(x));
+//		}
+		
+		
+		for(int loc = 0; loc < samples.size(); loc++){ //Our very outer loop that will go through all the peak positions.
+			if(input.get(loc) != null){
+				List<Double> addTo = new ArrayList<Double>(); //Create the list that will hold all of the data for these
+				//twenty windows of audio
+
+						for(int x = PEAK_WIDTH; x < Math.abs(PEAK_WIDTH); x++){ //Our loop to go to ten windows before and ten after
+							for(int y = 0; y < 100; y++){ //Our loop to get all 100 samples from each window
+								addTo.add(samples.get(loc+x).get(y)); //Put each sample into our ArrayList that holds all data
+							}	
+						}
+				mfcc.add(addTo); //Put this peak data into the master MFCC "to do" array that we will then give to 
+				//our MFCC class
 			}
-			
-			mfcc.add(addTo); //Put this peak data into the master MFCC "to do" array that we will then give to 
-							 //our MFCC class
 		}
 		
 	}

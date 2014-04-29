@@ -24,8 +24,8 @@ import java.util.Vector;
 
 public class NearFarNeuralNetwork {
 
-//	private static NeuralNetwork<SupervisedLearning> neuralNetwork = new Perceptron(4, 1, TransferFunctionType.STEP);
-	private static NeuralNetwork<SupervisedLearning> neuralNetwork = new Perceptron(2, 1, TransferFunctionType.STEP);
+	private static NeuralNetwork<SupervisedLearning> neuralNetwork = new Perceptron(4, 1, TransferFunctionType.STEP);
+//	private static NeuralNetwork<SupervisedLearning> neuralNetwork = new Perceptron(2, 1, TransferFunctionType.STEP);
 
 	
 	public static void trainNetwork(ArrayList<LetterPair> letterPairs){
@@ -48,7 +48,7 @@ public class NearFarNeuralNetwork {
 //		neuralNetwork = new Perceptron(4, 1);
 		
 		// Create our training set.
-		DataSet trainingSet = new DataSet(2, 1); 
+		DataSet trainingSet = new DataSet(4, 1); 
 		for(int i = 0; i < letterPairs.size(); i++){
 			LetterPair letPair = letterPairs.get(i);
 			
@@ -57,10 +57,10 @@ public class NearFarNeuralNetwork {
 				nearOrFar = 1;
 			}
 			
-			DataSetRow addTo = new DataSetRow(new double[]{letPair.fv[1], 
+			DataSetRow addTo = new DataSetRow(new double[]{letPair.fv[0], letPair.fv[1], letPair.fv[2],
 					letPair.fv[3]}, new double[]{nearOrFar});
 			trainingSet.addRow(addTo);
-			System.out.println(i+" "+addTo);
+			//System.out.println(i+" "+addTo);
 		}
 		
 
@@ -111,18 +111,18 @@ public class NearFarNeuralNetwork {
 		ArrayList<Double> ret = new ArrayList<Double>();
 		
 		for(int i = 0; i < inputs.size()-1; i++){
-			double[] input = new double[2];
-//			input[0] = inputs.get(i)[0];
-			input[0] = inputs.get(i)[1];
-//			input[2] = inputs.get(i+1)[0];
-			input[1] = inputs.get(i+1)[1];
+			double[] input = new double[4];
+			input[0] = inputs.get(i)[0];
+			input[1] = inputs.get(i)[1];
+			input[2] = inputs.get(i+1)[0];
+			input[3] = inputs.get(i+1)[1];
 			
 			neuralNetwork.setInput(input);
 			neuralNetwork.calculate();
 			double[] output = neuralNetwork.getOutput();
 			ret.add(output[0]);
 		}
-		System.out.println("ret : "+ret);
+		//System.out.println("ret : "+ret);
 		return ret;
 	}
 

@@ -23,7 +23,7 @@ import java.util.Vector;
  */
 public class LeftRightNeuralNetwork {
 
-	private static NeuralNetwork<SupervisedLearning> neuralNetwork = new Perceptron(1, 1, TransferFunctionType.STEP);
+	private static NeuralNetwork<SupervisedLearning> neuralNetwork = new Perceptron(2, 1, TransferFunctionType.STEP);
 	
 	public static void trainNetwork(ArrayList<Letter> letters){
 		/**
@@ -32,7 +32,7 @@ public class LeftRightNeuralNetwork {
 		 * 
 		 * Inputs
 		 * 1. Standard Deviation of MFCC
-		 * 2. Mean of MFCC
+		 * 2. Standard Deviation of FFT
 		 * 
 		 * Output
 		 * 1. Whether the letter is left or right. A returned 0 means the letter is on the left, and a
@@ -42,7 +42,7 @@ public class LeftRightNeuralNetwork {
 //		neuralNetwork = new Perceptron(2, 1);
 		
 		// Create our training set.
-		DataSet trainingSet = new DataSet(1, 1); 
+		DataSet trainingSet = new DataSet(2, 1); 
 		for(int i = 0; i < letters.size(); i++){
 			Letter let = letters.get(i);
 			
@@ -50,13 +50,14 @@ public class LeftRightNeuralNetwork {
 			if(let.ks.equals(KEYBOARD_SIDE.RIGHT)){
 				leftOrRight = 1;
 			}
-			DataSetRow addTo = new DataSetRow(new double[]{let.fv[1]}, new double[]{leftOrRight});
+			DataSetRow addTo = new DataSetRow(new double[]{let.fv[0], let.fv[1]}, new double[]{leftOrRight});
 			trainingSet.addRow(addTo);
 		}
 		
 
 		// Learn the training set
 		System.out.println("Learning LR training set...");
+		System.out.println("Training set size:" +trainingSet.size());
 		neuralNetwork.learnInNewThread(trainingSet);
 		System.out.println(neuralNetwork.toString());
 		neuralNetwork.stopLearning();
@@ -79,7 +80,7 @@ public class LeftRightNeuralNetwork {
 		
 		for(int i = 0; i < inputs.size(); i++){
 			System.out.println("In evaluateValues loop, i = "+i+", inputs.size() = "+inputs.size());
-			neuralNetwork.setInput(inputs.get(i)[1]);
+			neuralNetwork.setInput(inputs.get(i));
 			System.out.println("Input: "+inputs.get(i)+" ");
 			neuralNetwork.calculate();
 			double[] output = neuralNetwork.getOutput();

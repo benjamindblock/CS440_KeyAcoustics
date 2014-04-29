@@ -12,6 +12,7 @@ public class TrainNetworks {
 	
 	public TrainNetworks(ArrayList<Character> characterStream, ArrayList<double[]> characterFV){
 		if(characterStream.size() != characterFV.size()){
+			System.out.println("Character stream length is: "+characterStream.size()+" and there are "+characterFV.size()+" feature vectors");
 			System.err.println("Number of inputted characters and found feature vectors do not match. Uh oh. Probably a "
 					+ "threshold problem.");
 		}

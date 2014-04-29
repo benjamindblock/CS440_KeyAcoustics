@@ -114,12 +114,11 @@ public class LoadSpeechWaveform{
 	    				newThresh = newThresh + increment;
 	    			} else {
 	    				increment = increment/2;
-	    				System.out.println("Addition increment changed! New increment is "+increment);
+	    				//System.out.println("Addition increment changed! New increment is "+increment);
 	    				newThresh = newThresh + increment;
 	    			}
 	    			pa = new PeakAnalysis();
 	        		pa.setThreshold(newThresh);
-	        		System.out.println("THRESHOLD before pa.run()"+newThresh);
 	        		pa.run(trainingData);
 	        		minusConsecutive = false;
 	        		addConsecutive = true;
@@ -130,7 +129,7 @@ public class LoadSpeechWaveform{
 	    				newThresh = newThresh - increment;
 	    			} else {
 	    				increment = increment/2;
-	    				System.out.println("Minus increment changed! New increment is "+increment);
+	    				//System.out.println("Minus increment changed! New increment is "+increment);
 	    				newThresh = newThresh - increment;
 	    			}
 	    			pa = new PeakAnalysis();
@@ -171,22 +170,31 @@ public class LoadSpeechWaveform{
 		ComputeMFCC cm = new ComputeMFCC(pa.getMFCC()); 
 		cm.run(); //Run our MFCC calculations
 		ArrayList<double[][]> mfcc = cm.getMFCCOutput();
-		StandardDeviationCalculator sdc = new StandardDeviationCalculator(mfcc);
-		ArrayList<double[]> mfccData = sdc.run();
+		StandardDeviationCalculator sdc = new StandardDeviationCalculator(mfcc, pa.getMFCC());
+		ArrayList<double[]> mfccData = sdc.runMFCCStandardDeviation();
+		ArrayList<double[]> fftData = sdc.runFFTStandardDeviation();
+		
+		ArrayList<double[]> masterData = new ArrayList<double[]>();
+		//START HERE
+		if(mfccData.size() == fftData.size()){
+			for(int i = 0; i < mfccData.size(); i++){
+				masterData.add(new double []{mfccData.get(i)[1], fftData.get(i)[1]});
+			}
+		}
 		
 		System.out.println("Training neural networks...");
 		if(USESAVEDNETWORKS){
 			System.out.println("Using previously saved networks :\n\t"+FILE_PATH_LR+"\n\t"+FILE_PATH_NF);
 			LeftRightNeuralNetwork.loadNetwork(FILE_PATH_LR);
 			NearFarNeuralNetwork.loadNetwork(FILE_PATH_NF);
-			TrainNetworks tn = new TrainNetworks(ts.getArray(), mfccData);
+			TrainNetworks tn = new TrainNetworks(ts.getArray(), masterData);
 			tn.trainLeftRightNeuralNetwork();
 			tn.trainNearFarNeuralNetwork();
 			LeftRightNeuralNetwork.saveNetwork(FILE_PATH_LR);
 			NearFarNeuralNetwork.saveNetwork(FILE_PATH_NF);
 		}else{
 			System.out.println("Creating a new network :\n\t"+FILE_PATH_LR+"\n\t"+FILE_PATH_NF);
-			TrainNetworks tn = new TrainNetworks(ts.getArray(), mfccData);
+			TrainNetworks tn = new TrainNetworks(ts.getArray(), masterData);
 			tn.trainLeftRightNeuralNetwork();
 			tn.trainNearFarNeuralNetwork();
 			LeftRightNeuralNetwork.saveNetwork(FILE_PATH_LR);
@@ -195,19 +203,30 @@ public class LoadSpeechWaveform{
 		
 		//Steps for our attack data.
 		double[] attackData = fileReader("attack data"); //Get our second audio file (audio we want to get text from).
-		//threshold = determineThreshold(5, attackData);
+		threshold = determineThreshold(4, attackData);
 		PeakAnalysis pa2 = new PeakAnalysis(); 
-		//hello = 1.31
-		//dad = 
-		pa2.setThreshold(1.31);
+		//double hello = 1.31;
+		//double dad = ;
+		//double aged = ;
+		pa2.setThreshold(threshold);
 		pa2.run(attackData);
 		ComputeMFCC cm2 = new ComputeMFCC(pa2.getMFCC()); 
 		cm2.run(); //Run our MFCC calculations
 		ArrayList<double[][]> mfcc2 = cm2.getMFCCOutput();
-		StandardDeviationCalculator sdc2 = new StandardDeviationCalculator(mfcc2);
-		ArrayList<double[]> mfccData2 = sdc2.run();
+		StandardDeviationCalculator sdc2 = new StandardDeviationCalculator(mfcc2, pa2.getMFCC());
+		ArrayList<double[]> mfccData2 = sdc2.runMFCCStandardDeviation();
+		ArrayList<double[]> fftData2 = sdc2.runFFTStandardDeviation();
+		
+		ArrayList<double[]> masterData2 = new ArrayList<double[]>();
+		//START HERE
+		if(mfccData2.size() == fftData2.size()){
+			for(int i = 0; i < mfccData2.size(); i++){
+				masterData2.add(new double []{mfccData2.get(i)[1], fftData2.get(i)[1]});
+			}
+		}
+		
 		System.out.println(mfccData2.get(0)[0]);
-		WordMatch wm = new WordMatch(new WordProfile(mfccData2));
+		WordMatch wm = new WordMatch(new WordProfile(masterData2));
 		System.out.println("All done.");
 		
 		
