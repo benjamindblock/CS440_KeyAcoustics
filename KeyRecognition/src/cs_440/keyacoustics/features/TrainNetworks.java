@@ -20,16 +20,16 @@ public class TrainNetworks {
 		this.characterFV = characterFV;	
 	}
 	
-	public void trainLeftRightNeuralNetwork(){
+	public void trainLeftRightNeuralNetwork(LeftRightNeuralNetwork lrnnet){
 		ArrayList<Letter> letters = new ArrayList<Letter>();
 		for(int i = 0; i < characterStream.size(); i++){		
 			Letter addTo = new Letter(Character.toString(characterStream.get(i)), characterFV.get(i));
 			letters.add(addTo);
 		}
-		LeftRightNeuralNetwork.trainNetwork(letters);
+		lrnnet.trainNetwork(letters);
 	}
 	
-	public void trainNearFarNeuralNetwork(){
+	public void trainNearFarNeuralNetwork(NearFarNeuralNetwork nfnnet){
 		ArrayList<LetterPair> letterPairs = new ArrayList<LetterPair>();
 		for(int i = 0; i < characterStream.size()-1; i++){
 			Letter charOne = new Letter(Character.toString(characterStream.get(i)), characterFV.get(i));
@@ -37,7 +37,7 @@ public class TrainNetworks {
 			LetterPair addTo = new LetterPair(charOne, charTwo);
 			letterPairs.add(addTo);
 		}
-		NearFarNeuralNetwork.trainNetwork(letterPairs);
+		nfnnet.trainNetwork(letterPairs);
 	}
 	
 }

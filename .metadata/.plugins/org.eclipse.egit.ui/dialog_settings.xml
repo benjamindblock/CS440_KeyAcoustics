@@ -10,31 +10,31 @@
 	<section name="org.eclipse.egit.ui.internal.dialogs.ResetTargetSelectionDialog.dialogBounds">
 		<item value="525" key="DIALOG_WIDTH"/>
 		<item value="0" key="DIALOG_Y_ORIGIN"/>
-		<item value="453" key="DIALOG_X_ORIGIN"/>
 		<item value="728" key="DIALOG_HEIGHT"/>
-		<item value="1|Lucida Grande|11.0|0|COCOA|1|LucidaGrande" key="DIALOG_FONT_NAME"/>
-	</section>
-	<section name="org.eclipse.egit.ui.internal.dialogs.MergeTargetSelectionDialog.dialogBounds">
-		<item value="525" key="DIALOG_WIDTH"/>
-		<item value="0" key="DIALOG_Y_ORIGIN"/>
-		<item value="458" key="DIALOG_X_ORIGIN"/>
-		<item value="686" key="DIALOG_HEIGHT"/>
+		<item value="453" key="DIALOG_X_ORIGIN"/>
 		<item value="1|Lucida Grande|11.0|0|COCOA|1|LucidaGrande" key="DIALOG_FONT_NAME"/>
 	</section>
 	<section name="GitCommitMessageComponent">
 	</section>
-	<section name="org.eclipse.egit.ui.COMMIT_DIALOG_SECTION">
-		<item value="626" key="DIALOG_WIDTH"/>
+	<section name="org.eclipse.egit.ui.internal.dialogs.MergeTargetSelectionDialog.dialogBounds">
+		<item value="525" key="DIALOG_WIDTH"/>
 		<item value="0" key="DIALOG_Y_ORIGIN"/>
-		<item value="352" key="DIALOG_X_ORIGIN"/>
-		<item value="623" key="DIALOG_HEIGHT"/>
+		<item value="686" key="DIALOG_HEIGHT"/>
+		<item value="458" key="DIALOG_X_ORIGIN"/>
 		<item value="1|Lucida Grande|11.0|0|COCOA|1|LucidaGrande" key="DIALOG_FONT_NAME"/>
 	</section>
 	<section name="org.eclipse.egit.ui.internal.dialogs.RebaseTargetSelectionDialog.dialogBounds">
 		<item value="525" key="DIALOG_WIDTH"/>
 		<item value="129" key="DIALOG_Y_ORIGIN"/>
-		<item value="458" key="DIALOG_X_ORIGIN"/>
 		<item value="462" key="DIALOG_HEIGHT"/>
+		<item value="458" key="DIALOG_X_ORIGIN"/>
+		<item value="1|Lucida Grande|11.0|0|COCOA|1|LucidaGrande" key="DIALOG_FONT_NAME"/>
+	</section>
+	<section name="org.eclipse.egit.ui.COMMIT_DIALOG_SECTION">
+		<item value="626" key="DIALOG_WIDTH"/>
+		<item value="0" key="DIALOG_Y_ORIGIN"/>
+		<item value="623" key="DIALOG_HEIGHT"/>
+		<item value="352" key="DIALOG_X_ORIGIN"/>
 		<item value="1|Lucida Grande|11.0|0|COCOA|1|LucidaGrande" key="DIALOG_FONT_NAME"/>
 	</section>
 	<section name="CommitSelectionDialogSection">
@@ -43,30 +43,30 @@
 		<section name="DialogBoundsSettings">
 			<item value="600" key="DIALOG_WIDTH"/>
 			<item value="104" key="DIALOG_Y_ORIGIN"/>
-			<item value="500" key="DIALOG_HEIGHT"/>
 			<item value="420" key="DIALOG_X_ORIGIN"/>
+			<item value="500" key="DIALOG_HEIGHT"/>
 			<item value="1|Lucida Grande|11.0|0|COCOA|1|LucidaGrande" key="DIALOG_FONT_NAME"/>
 		</section>
 	</section>
 	<section name="org.eclipse.egit.ui.internal.fetch.FetchResultDialog.dialogBounds">
 		<item value="992" key="DIALOG_WIDTH"/>
 		<item value="144" key="DIALOG_Y_ORIGIN"/>
-		<item value="420" key="DIALOG_X_ORIGIN"/>
 		<item value="440" key="DIALOG_HEIGHT"/>
+		<item value="420" key="DIALOG_X_ORIGIN"/>
 		<item value="1|Lucida Grande|11.0|0|COCOA|1|LucidaGrande" key="DIALOG_FONT_NAME"/>
 	</section>
 	<section name="org.eclipse.egit.ui.internal.merge.MergeResultDialog.dialogBounds">
 		<item value="1106" key="DIALOG_WIDTH"/>
 		<item value="311" key="DIALOG_Y_ORIGIN"/>
-		<item value="167" key="DIALOG_X_ORIGIN"/>
 		<item value="190" key="DIALOG_HEIGHT"/>
+		<item value="167" key="DIALOG_X_ORIGIN"/>
 		<item value="1|Lucida Grande|11.0|0|COCOA|1|LucidaGrande" key="DIALOG_FONT_NAME"/>
 	</section>
 	<section name="org.eclipse.egit.ui.internal.push.PushResultDialog.dialogBounds">
 		<item value="650" key="DIALOG_WIDTH"/>
 		<item value="144" key="DIALOG_Y_ORIGIN"/>
-		<item value="395" key="DIALOG_X_ORIGIN"/>
 		<item value="440" key="DIALOG_HEIGHT"/>
+		<item value="395" key="DIALOG_X_ORIGIN"/>
 		<item value="1|Lucida Grande|11.0|0|COCOA|1|LucidaGrande" key="DIALOG_FONT_NAME"/>
 	</section>
 </section>

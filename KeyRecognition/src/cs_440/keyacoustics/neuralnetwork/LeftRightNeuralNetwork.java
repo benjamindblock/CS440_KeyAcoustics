@@ -23,9 +23,17 @@ import java.util.Vector;
  */
 public class LeftRightNeuralNetwork {
 
-	private static NeuralNetwork<SupervisedLearning> neuralNetwork = new Perceptron(2, 1, TransferFunctionType.STEP);
+	private NeuralNetwork<SupervisedLearning> neuralNetwork;
 	
-	public static void trainNetwork(ArrayList<Letter> letters){
+	public LeftRightNeuralNetwork(NeuralNetwork<SupervisedLearning> nnet){
+		neuralNetwork = nnet;
+	}
+	
+	public LeftRightNeuralNetwork(String filePath){
+		neuralNetwork = loadNetwork(filePath); 
+	}
+	
+	public void trainNetwork(ArrayList<Letter> letters){
 		/**
 		 *
 		 * We want our neural network to have two inputs and one output:
@@ -74,17 +82,14 @@ public class LeftRightNeuralNetwork {
 	 * @param inputs The Feature Vectors for each letter.
 	 * @return An ArrayList with left or right values for every letter pair passed to the neural network.
 	 */
-	public static ArrayList<Double> evaluateValues(ArrayList<double[]> inputs){
+	public ArrayList<Double> evaluateValues(ArrayList<double[]> inputs){
 		
 		ArrayList<Double> ret = new ArrayList<Double>();
 		
 		for(int i = 0; i < inputs.size(); i++){
-			System.out.println("In evaluateValues loop, i = "+i+", inputs.size() = "+inputs.size());
 			neuralNetwork.setInput(inputs.get(i));
-			System.out.println("Input: "+inputs.get(i)+" ");
 			neuralNetwork.calculate();
 			double[] output = neuralNetwork.getOutput();
-			ret.add(output[0]);
 			System.out.println(output[0]);
 		}
 		
@@ -95,7 +100,7 @@ public class LeftRightNeuralNetwork {
 	/**
 	 * Save our neural network at the file path designated.
 	 */
-	public static void saveNetwork(String filePath){
+	public void saveNetwork(String filePath){
 		neuralNetwork.save(filePath);
 	}
 	
@@ -104,8 +109,8 @@ public class LeftRightNeuralNetwork {
 	 * 
 	 * @param filePath where our network is.
 	 */
-	public static void loadNetwork(String filePath){
-		neuralNetwork = NeuralNetwork.createFromFile(filePath);
+	public NeuralNetwork<SupervisedLearning> loadNetwork(String filePath){
+		return neuralNetwork.createFromFile(filePath);
 	}
 	
 }

@@ -35,21 +35,20 @@ public class WordMatch {
 	static final String PASS = "";
 	
 	
-	public WordMatch(WordProfile wp){
+	public WordMatch(WordProfile wordProfile){
+		wp = wordProfile;
 		potentialMatches = new ArrayList<String>();
 		predictionProfile = wp.getWordProfile();
-		run(wp);
+		run();
 	}
 
 	
-	public void run(WordProfile wp){
+	public void run(){
 		for(int i = 0; i < predictionProfile.size(); i++){
 			for(int j = 0; j < predictionProfile.get(i).length; j++){
 				System.out.println("Prediction profile of: " + i + " and " + j + " "+predictionProfile.get(i)[j]);
 			}
 		}
-		this.wp = wp;
-
 		ArrayList<String []> wordMatches = queryWordMatches(wp.getWordLength());
 		int maxScore = 0;
 		int mostFrequent = 10001;

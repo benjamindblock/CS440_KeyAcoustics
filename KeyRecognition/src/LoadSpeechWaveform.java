@@ -15,9 +15,15 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import javax.swing.*;
 import javax.swing.filechooser.*;
+
+import org.neuroph.core.NeuralNetwork;
+import org.neuroph.core.learning.SupervisedLearning;
+import org.neuroph.nnet.Perceptron;
+import org.neuroph.util.TransferFunctionType;
 
 import cs_440.keyacoustics.dictionary.TextStream;
 import cs_440.keyacoustics.features.ComputeMFCC;
@@ -149,17 +155,8 @@ public class LoadSpeechWaveform{
 		//		Text Stream call
 		TextStream ts = new TextStream();
 		ts.textReader();
-		//ts.insertIntoDatabase();
-		//		ArrayList<Character> textArray = TextStream.getArray();
-		//		for(int i = 0; i < textArray.size(); i++){
-		//			System.out.println(textArray.get(i));
-		//		}
-
-		//		Word w = new Word("patagonia");
-
-
 		//Get our first audio file (training data).
-		//		
+		
 		//Steps for our training data.
 		double[] trainingData = fileReader("training data"); 
 		int numOfCharacters = ts.getNumOfCharacters();
@@ -167,10 +164,11 @@ public class LoadSpeechWaveform{
 		PeakAnalysis pa = new PeakAnalysis();
 		pa.setThreshold(threshold);
 		pa.run(trainingData);
-		ComputeMFCC cm = new ComputeMFCC(pa.getMFCC()); 
+		ArrayList <List <Double>> fft = pa.getMFCC();
+		ComputeMFCC cm = new ComputeMFCC(fft); 
 		cm.run(); //Run our MFCC calculations
 		ArrayList<double[][]> mfcc = cm.getMFCCOutput();
-		StandardDeviationCalculator sdc = new StandardDeviationCalculator(mfcc, pa.getMFCC());
+		StandardDeviationCalculator sdc = new StandardDeviationCalculator(mfcc, fft);
 		ArrayList<double[]> mfccData = sdc.runMFCCStandardDeviation();
 		ArrayList<double[]> fftData = sdc.runFFTStandardDeviation();
 		
@@ -182,33 +180,38 @@ public class LoadSpeechWaveform{
 			}
 		}
 		
+		
 		System.out.println("Training neural networks...");
 		if(USESAVEDNETWORKS){
 			System.out.println("Using previously saved networks :\n\t"+FILE_PATH_LR+"\n\t"+FILE_PATH_NF);
-			LeftRightNeuralNetwork.loadNetwork(FILE_PATH_LR);
-			NearFarNeuralNetwork.loadNetwork(FILE_PATH_NF);
 			TrainNetworks tn = new TrainNetworks(ts.getArray(), masterData);
-			tn.trainLeftRightNeuralNetwork();
-			tn.trainNearFarNeuralNetwork();
-			LeftRightNeuralNetwork.saveNetwork(FILE_PATH_LR);
-			NearFarNeuralNetwork.saveNetwork(FILE_PATH_NF);
+			LeftRightNeuralNetwork lrnnet = new LeftRightNeuralNetwork(FILE_PATH_LR);
+			NearFarNeuralNetwork nfnnet = new NearFarNeuralNetwork(FILE_PATH_NF);
+			tn.trainLeftRightNeuralNetwork(lrnnet);
+			tn.trainNearFarNeuralNetwork(nfnnet);
+			lrnnet.saveNetwork(FILE_PATH_LR);
+			nfnnet.saveNetwork(FILE_PATH_NF);
 		}else{
 			System.out.println("Creating a new network :\n\t"+FILE_PATH_LR+"\n\t"+FILE_PATH_NF);
 			TrainNetworks tn = new TrainNetworks(ts.getArray(), masterData);
-			tn.trainLeftRightNeuralNetwork();
-			tn.trainNearFarNeuralNetwork();
-			LeftRightNeuralNetwork.saveNetwork(FILE_PATH_LR);
-			NearFarNeuralNetwork.saveNetwork(FILE_PATH_NF);
+			NeuralNetwork<SupervisedLearning> lrNeuralNetwork = new Perceptron(2, 1, TransferFunctionType.STEP);
+			NeuralNetwork<SupervisedLearning> nfNeuralNetwork = new Perceptron(4, 1, TransferFunctionType.STEP);
+			LeftRightNeuralNetwork lrnnet = new LeftRightNeuralNetwork(lrNeuralNetwork);
+			NearFarNeuralNetwork nfnnet = new NearFarNeuralNetwork(nfNeuralNetwork);
+			tn.trainLeftRightNeuralNetwork(lrnnet);
+			tn.trainNearFarNeuralNetwork(nfnnet);
+			lrnnet.saveNetwork(FILE_PATH_LR);
+			nfnnet.saveNetwork(FILE_PATH_NF);
 		}
 		
 		//Steps for our attack data.
 		double[] attackData = fileReader("attack data"); //Get our second audio file (audio we want to get text from).
-		threshold = determineThreshold(4, attackData);
+		//threshold = determineThreshold(5, attackData);
 		PeakAnalysis pa2 = new PeakAnalysis(); 
 		//double hello = 1.31;
 		//double dad = ;
 		//double aged = ;
-		pa2.setThreshold(threshold);
+		pa2.setThreshold(1.31);
 		pa2.run(attackData);
 		ComputeMFCC cm2 = new ComputeMFCC(pa2.getMFCC()); 
 		cm2.run(); //Run our MFCC calculations
@@ -226,15 +229,10 @@ public class LoadSpeechWaveform{
 		}
 		
 		System.out.println(mfccData2.get(0)[0]);
-		WordMatch wm = new WordMatch(new WordProfile(masterData2));
+		WordMatch wm = new WordMatch(new WordProfile(masterData2, new LeftRightNeuralNetwork(FILE_PATH_LR), new NearFarNeuralNetwork(FILE_PATH_NF)));
 		System.out.println("All done.");
 		
-		
-		
-		
-		
 		//System.out.println("Predicted word is :"+wm.findWord());
-
 		//		
 		//		TextRetrieval tr = new TextRetrieval(km.getModels(), mfccData2);
 		//		System.out.println("You typed: " + tr.getUtterance() + " ?");

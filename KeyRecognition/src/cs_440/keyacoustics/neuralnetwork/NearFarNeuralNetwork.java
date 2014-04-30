@@ -24,11 +24,19 @@ import java.util.Vector;
 
 public class NearFarNeuralNetwork {
 
-	private static NeuralNetwork<SupervisedLearning> neuralNetwork = new Perceptron(4, 1, TransferFunctionType.STEP);
+	private NeuralNetwork<SupervisedLearning> neuralNetwork;
 //	private static NeuralNetwork<SupervisedLearning> neuralNetwork = new Perceptron(2, 1, TransferFunctionType.STEP);
 
 	
-	public static void trainNetwork(ArrayList<LetterPair> letterPairs){
+	public NearFarNeuralNetwork(NeuralNetwork<SupervisedLearning> nnet){
+		neuralNetwork = nnet;
+	}
+	
+	public NearFarNeuralNetwork(String filePath){
+		neuralNetwork = loadNetwork(filePath); 
+	}
+	
+	public void trainNetwork(ArrayList<LetterPair> letterPairs){
 		
 		/**
 		 *
@@ -106,7 +114,7 @@ public class NearFarNeuralNetwork {
 	 * @param inputs The Feature Vectors for each letter.
 	 * @return An ArrayList with near or far values for every letter pair passed to the neural network.
 	 */
-	public static ArrayList<Double> evaluateValues(ArrayList<double[]> inputs){
+	public ArrayList<Double> evaluateValues(ArrayList<double[]> inputs){
 		
 		ArrayList<Double> ret = new ArrayList<Double>();
 		
@@ -130,7 +138,7 @@ public class NearFarNeuralNetwork {
 	/**
 	 * Save our neural network at the file path designated.
 	 */
-	public static void saveNetwork(String filePath){
+	public void saveNetwork(String filePath){
 		neuralNetwork.save(filePath);
 	}
 	
@@ -139,8 +147,8 @@ public class NearFarNeuralNetwork {
 	 * 
 	 * @param filePath where our network is.
 	 */
-	public static void loadNetwork(String filePath){
-		neuralNetwork = NeuralNetwork.createFromFile(filePath);
+	public NeuralNetwork<SupervisedLearning>  loadNetwork(String filePath){
+		return NeuralNetwork.createFromFile(filePath);
 	}
 	
 	
