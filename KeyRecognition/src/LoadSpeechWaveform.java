@@ -42,8 +42,8 @@ public class LoadSpeechWaveform{
 	static File inFile;
 	private static final double MAX_16_BIT = Short.MAX_VALUE;     // 32,767
 	private final static boolean USESAVEDNETWORKS = true;
-	private static final String FILE_PATH_LR = "/Users/walkerbohannan/Documents/GitHub/CS440_KeyAcoustics/NeuralNetworks/perceptron_lr.nnet";
-	private static final String FILE_PATH_NF = "/Users/walkerbohannan/Documents/GitHub/CS440_KeyAcoustics/NeuralNetworks/perceptron_nf.nnet";
+	private static final String FILE_PATH_LR = "/perceptron_lr.nnet";
+	private static final String FILE_PATH_NF = "/perceptron_nf.nnet";
 
 
 	public static double[] fileReader(String audioType) throws FileNotFoundException{
@@ -206,12 +206,12 @@ public class LoadSpeechWaveform{
 		
 		//Steps for our attack data.
 		double[] attackData = fileReader("attack data"); //Get our second audio file (audio we want to get text from).
-		//threshold = determineThreshold(5, attackData);
+		threshold = determineThreshold(4, attackData);
 		PeakAnalysis pa2 = new PeakAnalysis(); 
 		//double hello = 1.31;
 		//double dad = ;
 		//double aged = ;
-		pa2.setThreshold(1.31);
+		pa2.setThreshold(threshold);
 		pa2.run(attackData);
 		ComputeMFCC cm2 = new ComputeMFCC(pa2.getMFCC()); 
 		cm2.run(); //Run our MFCC calculations

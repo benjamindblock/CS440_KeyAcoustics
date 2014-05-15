@@ -21,6 +21,9 @@ public class WordProfile {
 		ArrayList<Double> keyPositions = lrnnet.evaluateValues(input);
 		ArrayList<Double> keyDistances = nfnnet.evaluateValues(input);
 		
+		System.out.println(keyPositions.isEmpty());
+		
+		
 		for(int i = 0; i < input.size()-1; i++){
 			double[] temp = new double[3];
 			//System.out.println("Key positions:" + keyPositions.toString());

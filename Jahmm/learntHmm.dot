@@ -1,8 +1,0 @@
-digraph G {
-	0 -> 0 [label=0.95];
-	0 -> 1 [label=0.05];
-	1 -> 0 [label=0.1];
-	1 -> 1 [label=0.9];
-	0 [shape=doublecircle, label="0 - Pi= 0.9 - [ Discrete distribution --- OK 0.951, LOSS 0.049 ]"];
-	1 [shape=doublecircle, label="1 - Pi= 0.1 - [ Discrete distribution --- OK 0.207, LOSS 0.793 ]"];
-}

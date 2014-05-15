@@ -76,7 +76,6 @@ public class NearFarNeuralNetwork {
 		System.out.println("Learning NF training set...");
 
 		neuralNetwork.learnInNewThread(trainingSet);
-		neuralNetwork.stopLearning();
 		System.out.println(neuralNetwork.toString());
 		System.out.println("Learned NF training set.");
 		

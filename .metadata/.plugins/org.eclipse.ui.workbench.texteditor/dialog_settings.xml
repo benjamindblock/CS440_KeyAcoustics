@@ -2,27 +2,27 @@
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
 		<item value="263" key="DIALOG_WIDTH"/>
-		<item value="222" key="DIALOG_Y_ORIGIN"/>
-		<item value="1084" key="DIALOG_X_ORIGIN"/>
+		<item value="385" key="DIALOG_Y_ORIGIN"/>
 		<item value="399" key="DIALOG_HEIGHT"/>
+		<item value="1151" key="DIALOG_X_ORIGIN"/>
 		<item value="1|Lucida Grande|11.0|0|COCOA|1|LucidaGrande" key="DIALOG_FONT_NAME"/>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="true" key="wrap"/>
-		<item value="false" key="casesensitive"/>
 		<item value="false" key="isRegEx"/>
+		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="true" key="wholeword"/>
-		<item value="System" key="selection"/>
+		<item value="loadNetwork" key="selection"/>
 		<list key="findhistory">
+			<item value="loadnetwork"/>
+			<item value="load"/>
 			<item value="system"/>
 			<item value="evaluate"/>
 			<item value="setmfcc"/>
 			<item value="fft"/>
 			<item value="calculate"/>
 			<item value="prediction profile"/>
-			<item value="learn"/>
-			<item value="learningrule"/>
 		</list>
 		<list key="replacehistory">
 			<item value="double"/>

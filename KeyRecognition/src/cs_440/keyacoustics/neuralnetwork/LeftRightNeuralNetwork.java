@@ -68,7 +68,6 @@ public class LeftRightNeuralNetwork {
 		System.out.println("Training set size:" +trainingSet.size());
 		neuralNetwork.learnInNewThread(trainingSet);
 		System.out.println(neuralNetwork.toString());
-		neuralNetwork.stopLearning();
 		System.out.println("Learned LR training set.");
 
 		// Test perceptron
@@ -90,6 +89,7 @@ public class LeftRightNeuralNetwork {
 			neuralNetwork.setInput(inputs.get(i));
 			neuralNetwork.calculate();
 			double[] output = neuralNetwork.getOutput();
+			ret.add(output[0]);
 			System.out.println(output[0]);
 		}
 		
